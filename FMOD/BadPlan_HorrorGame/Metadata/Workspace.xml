@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="Workspace" id="{9e075127-1b4d-4416-ab9d-a860b1488c6a}">
+		<property name="builtBanksOutputDirectory">
+			<value>../../../../../../../Volumes/NM Library SSD A/GameJams/Bad-Plan-Horror-Jam/FMOD</value>
+		</property>
+		<relationship name="masterEventFolder">
+			<destination>{95f0da7c-8868-4a52-a910-bffe877db6ae}</destination>
+		</relationship>
+		<relationship name="masterTagFolder">
+			<destination>{3c7ac4e4-d9e0-48e6-9912-09faa31d2734}</destination>
+		</relationship>
+		<relationship name="masterEffectPresetFolder">
+			<destination>{350118ed-0e32-4e18-a85d-0f4a0332906f}</destination>
+		</relationship>
+		<relationship name="masterParameterPresetFolder">
+			<destination>{7d8a8359-4ef9-4ab1-9f64-77db4380d4a8}</destination>
+		</relationship>
+		<relationship name="masterBankFolder">
+			<destination>{2499b0e2-d45f-4d67-9c72-1bad18d0c45c}</destination>
+		</relationship>
+		<relationship name="masterSandboxFolder">
+			<destination>{3cad560c-f074-49f3-85d7-73216680d65a}</destination>
+		</relationship>
+		<relationship name="masterAssetFolder">
+			<destination>{db9613a3-c35d-48eb-a22c-3b3c0dc0d07c}</destination>
+		</relationship>
+		<relationship name="mixer">
+			<destination>{b0c888b5-91e6-45ca-bdad-d515f2587533}</destination>
+		</relationship>
+		<relationship name="profilerSessionFolder">
+			<destination>{86294199-4fc8-4be8-addf-c77ac49bf133}</destination>
+		</relationship>
+		<relationship name="platforms">
+			<destination>{9464c0e4-e1b4-43ff-993d-3cf2f964465e}</destination>
+		</relationship>
+	</object>
+</objects>
