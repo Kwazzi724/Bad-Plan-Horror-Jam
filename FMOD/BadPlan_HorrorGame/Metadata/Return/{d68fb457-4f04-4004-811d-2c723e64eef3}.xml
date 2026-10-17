@@ -23,7 +23,11 @@
 			<destination>{8b692758-bd18-45cf-aaa8-524f0dc0c76b}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{1ab025f7-42bc-4769-8c2c-fe11a35f51b0}" />
+	<object class="MixerBusPanner" id="{1ab025f7-42bc-4769-8c2c-fe11a35f51b0}">
+		<relationship name="automators">
+			<destination>{578cff27-d6df-400e-8077-15578c5da91b}</destination>
+		</relationship>
+	</object>
 	<object class="SFXReverbEffect" id="{00e442ca-9a50-4057-bbc6-09e58b93964e}">
 		<property name="decayTime">
 			<value>850</value>
@@ -45,4 +49,9 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{8b692758-bd18-45cf-aaa8-524f0dc0c76b}" />
+	<object class="Automator" id="{578cff27-d6df-400e-8077-15578c5da91b}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>surroundPanDirection</value>
+		</property>
+	</object>
 </objects>
