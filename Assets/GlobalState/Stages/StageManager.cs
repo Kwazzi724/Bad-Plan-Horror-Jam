@@ -29,6 +29,7 @@ public class StageManager : MonoBehaviour
         loadedStages = new List<GameObject> { stages[0] };
         loadedStages[0].GetComponent<Stage>().CleanupReady += CleanupPreviousStage;
         
+        stageLoadedStatuses = new List<bool>();
         for(int i = 0; i < stages.Count; i++)
             stageLoadedStatuses.Add(false);
         stageLoadedStatuses[0] = true;
