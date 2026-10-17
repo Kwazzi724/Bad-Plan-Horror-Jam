@@ -34,6 +34,9 @@ public class PlayerLook : MonoBehaviour
 
     private void Update()
     {
+        if(PauseManager.Instance.IsPaused) 
+            return;
+        
         Vector2 look = input.Look * lookSensitivity;
         transform.Rotate(0f, look.x, 0f);
         pitch += invertY ? look.y : -look.y;
