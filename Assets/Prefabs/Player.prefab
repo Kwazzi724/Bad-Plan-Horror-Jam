@@ -190,6 +190,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 0
     m_Flags: 0
+    m_Priority: 0
   lookAction:
     m_Name: Look
     m_Type: 0
@@ -207,6 +208,7 @@ MonoBehaviour:
       m_Action: Look
       m_Flags: 0
     m_Flags: 0
+    m_Priority: 0
   interactAction:
     m_Name: Interact
     m_Type: 0
@@ -224,6 +226,7 @@ MonoBehaviour:
       m_Action: Interact
       m_Flags: 0
     m_Flags: 0
+    m_Priority: 0
 --- !u!114 &5050873230832270051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +399,7 @@ GameObject:
   - component: {fileID: 9213756176276499599}
   - component: {fileID: 1911828069350039384}
   - component: {fileID: 6936978998366286070}
+  - component: {fileID: 203915036647685897}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -521,3 +525,17 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &203915036647685897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2875874512853572772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
