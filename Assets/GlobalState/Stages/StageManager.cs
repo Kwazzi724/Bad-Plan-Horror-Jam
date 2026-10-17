@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -50,8 +51,16 @@ public class StageManager : MonoBehaviour
 
     private void LoadNextStage()
     {
-        Stage currentStageComponent = stages[currentStage].GetComponent<Stage>();
-        AsyncInstantiateOperation<GameObject> instantiateOperation = InstantiateAsync(stages[currentStage + 1], null, currentStageComponent.LoadRoot.transform.position, Quaternion.identity);
+        // We should always have the current stage loaded before trying to load the next one
+        Assert.IsTrue(currentStage < loadedStages.Count);
+        
+        Stage currentStageComponent = loadedStages[currentStage].GetComponent<Stage>();
+        
+        InstantiateParameters parameters = new InstantiateParameters
+        {
+            worldSpace = true
+        };
+        AsyncInstantiateOperation<GameObject> instantiateOperation = InstantiateAsync(stages[currentStage + 1], 1, currentStageComponent.LoadRoot.transform.position, Quaternion.identity, parameters, CancellationToken.None);
         instantiateOperation.completed += OnNextStageLoaded;
     }
 
