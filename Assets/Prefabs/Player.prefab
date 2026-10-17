@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e724df8a05b2e24ca2740990b87948f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 8
+  moveSpeed: 2.1
   gravity: -20
   groundedStickForce: -2
 --- !u!114 &5513327416753921652
@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 6491885841778956510}
   - component: {fileID: 9213756176276499599}
   - component: {fileID: 6936978998366286070}
-  - component: {fileID: 4593743369162487931}
+  - component: {fileID: 203915036647685897}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -516,7 +516,7 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &4593743369162487931
+--- !u!114 &203915036647685897
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
