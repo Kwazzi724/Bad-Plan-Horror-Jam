@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,10 +7,12 @@ public class Door : MonoBehaviour, IInteractable
     [Header("Parts")]
     [SerializeField] private Transform hinge;
     [SerializeField] private Transform panel;
+
     [Header("Swing")]
     [SerializeField] private float openAngle = 80f;
     [SerializeField] private float openSpeed = 120f;
     [SerializeField] private float closeSpeed = 240f;
+
     [Header("Lock")]
     [SerializeField] private float passDistance = 1f;
     [SerializeField] private float closeDelay = 1.5f;
@@ -22,6 +25,8 @@ public class Door : MonoBehaviour, IInteractable
     private Coroutine swingRoutine;
 
     public bool IsLocked => state == DoorState.Locked;
+
+    public event Action Locked;
 
     private void Awake()
     {
@@ -78,8 +83,10 @@ public class Door : MonoBehaviour, IInteractable
         Vector3 panelPosition = panel.position;
         Quaternion panelRotation = panel.rotation;
         Vector3 panelScale = panel.lossyScale;
+
         transform.localScale = Vector3.one;
         hinge.localScale = Vector3.one;
+
         hinge.SetPositionAndRotation(hingePosition, hingeRotation);
         panel.SetPositionAndRotation(panelPosition, panelRotation);
         panel.localScale = panelScale;
@@ -88,6 +95,7 @@ public class Door : MonoBehaviour, IInteractable
     private IEnumerator CloseAfterDelay()
     {
         state = DoorState.WaitingToClose;
+
         float targetAngle = entrySide > 0f ? openAngle : -openAngle;
         Quaternion fullyOpen = Quaternion.Euler(0f, targetAngle, 0f);
 
@@ -98,6 +106,7 @@ public class Door : MonoBehaviour, IInteractable
         }
 
         yield return new WaitForSeconds(closeDelay);
+
         swingRoutine = null;
         Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
     }
@@ -126,5 +135,7 @@ public class Door : MonoBehaviour, IInteractable
         hinge.localRotation = target;
         state = after;
         swingRoutine = null;
+        if (state == DoorState.Locked)
+            Locked?.Invoke();
     }
 }

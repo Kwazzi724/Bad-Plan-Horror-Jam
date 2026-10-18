@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private MapGenerator mapGenerator;
+    [SerializeField] private StageManager stageManager;
     [SerializeField] private Camera overviewCamera;
 
     [Header("Player")]
@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (mapGenerator == null) return;
-        if (!mapGenerator.Generate()) return;
+        if (stageManager == null)
+            stageManager = StageManager.Instance;
+        if (stageManager == null)
+            return;
         StartCoroutine(SpawnPlayerAfterDelay());
     }
 
@@ -38,9 +40,9 @@ public class GameManager : MonoBehaviour
         Quaternion rotation = spawnPoint != null
             ? Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f)
             : Quaternion.identity;
-        currentPlayer = Instantiate(playerPrefab, position, rotation);
-        Debug.Log("player spawned at {position}.", this);
 
+        currentPlayer = Instantiate(playerPrefab, position, rotation);
+        stageManager.SetTraveller(currentPlayer.transform);
         if (overviewCamera != null)
         {
             overviewCamera.gameObject.SetActive(false);
