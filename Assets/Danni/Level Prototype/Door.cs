@@ -13,6 +13,10 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private float openSpeed = 120f;
     [SerializeField] private float closeSpeed = 360f;
 
+    [Header("Menu")]
+    [SerializeField] private float menuOpenAngle = 30f;
+    [SerializeField] private float menuOpenSpeed = 40f;
+
     [Header("Lock")]
     [SerializeField] private float passClearance = 0.6f;
 
@@ -26,6 +30,7 @@ public class Door : MonoBehaviour, IInteractable
     private Vector3 localPlanePoint;
     private Collider[] panelColliders;
     private Transform referenceSpace;
+    private Quaternion closedHingeRotation;
 
     private Transform ReferenceSpace => referenceSpace;
 
@@ -35,7 +40,8 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Awake()
     {
-        NormaliseScale();
+        WarnAboutRootScale();
+        closedHingeRotation = hinge.localRotation;
         panelColliders = panel.GetComponentsInChildren<Collider>();
         referenceSpace = hinge == transform || transform.IsChildOf(hinge) ? hinge.parent : transform.parent;
         localCrossingAxis = ToReferenceDirection(FindCrossingAxis());
@@ -69,6 +75,23 @@ public class Door : MonoBehaviour, IInteractable
         Swing(targetAngle, openSpeed, DoorState.Opening, DoorState.Open);
     }
 
+    public void MenuSwingOpen()
+    {
+        MenuSwingOpen(null);
+    }
+
+    public void MenuSwingOpen(Action onComplete)
+    {
+        if (state == DoorState.Locked)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        passer = null;
+        Swing(menuOpenAngle, menuOpenSpeed, DoorState.Opening, DoorState.Open, onComplete);
+    }
+
     private void Update()
     {
         if (passer == null) return;
@@ -83,22 +106,15 @@ public class Door : MonoBehaviour, IInteractable
         }
     }
 
-    private void NormaliseScale()
+    private void WarnAboutRootScale()
     {
-        if (transform.localScale == Vector3.one && hinge.localScale == Vector3.one) return;
+        Vector3 scale = transform.localScale;
+        bool uniform = Mathf.Approximately(scale.x, scale.y) && Mathf.Approximately(scale.y, scale.z);
 
-        Vector3 hingePosition = hinge.position;
-        Quaternion hingeRotation = hinge.rotation;
-        Vector3 panelPosition = panel.position;
-        Quaternion panelRotation = panel.rotation;
-        Vector3 panelScale = panel.lossyScale;
-
-        transform.localScale = Vector3.one;
-        hinge.localScale = Vector3.one;
-
-        hinge.SetPositionAndRotation(hingePosition, hingeRotation);
-        panel.SetPositionAndRotation(panelPosition, panelRotation);
-        panel.localScale = panelScale;
+        if (!uniform)
+        {
+            Debug.LogWarning($"Door: '{name}' root has uneven scale {scale}, the door will squash when it swings. Set the root to an even scale and size the panel instead.", this);
+        }
     }
 
     private Vector3 FindCrossingAxis()
@@ -169,22 +185,22 @@ public class Door : MonoBehaviour, IInteractable
         }
     }
 
-    private void Swing(float targetAngle, float speed, DoorState during, DoorState after)
+    private void Swing(float targetAngle, float speed, DoorState during, DoorState after, Action onComplete = null)
     {
         if (swingRoutine != null)
         {
             StopCoroutine(swingRoutine);
         }
 
-        swingRoutine = StartCoroutine(SwingRoutine(targetAngle, speed, during, after));
+        swingRoutine = StartCoroutine(SwingRoutine(targetAngle, speed, during, after, onComplete));
     }
 
-    private IEnumerator SwingRoutine(float targetAngle, float speed, DoorState during, DoorState after)
+    private IEnumerator SwingRoutine(float targetAngle, float speed, DoorState during, DoorState after, Action onComplete)
     {
         state = during;
         SetPanelSolid(false);
 
-        Quaternion target = Quaternion.Euler(0f, targetAngle, 0f);
+        Quaternion target = closedHingeRotation * Quaternion.Euler(0f, targetAngle, 0f);
 
         while (Quaternion.Angle(hinge.localRotation, target) > 0.01f)
         {
@@ -196,6 +212,8 @@ public class Door : MonoBehaviour, IInteractable
         SetPanelSolid(true);
         state = after;
         swingRoutine = null;
+
+        onComplete?.Invoke();
 
         if (state == DoorState.Locked)
         {
