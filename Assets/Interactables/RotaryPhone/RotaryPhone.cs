@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class RotaryPhone : MonoBehaviour, IInteractable
 {
+    [SerializeField] private Triggerable testTriggerable;
+    
     public void OnInteract(GameObject interactor)
     {
-        StageManager.Instance.NextStage();
-        StageManager.Instance.GetStageByIndex(0).SetReadyForCleanup();
+        testTriggerable.Trigger();
     }
 }
