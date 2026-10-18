@@ -16,12 +16,14 @@
 			<value>2</value>
 		</property>
 		<property name="maximum">
-			<value>3</value>
+			<value>5</value>
 		</property>
 		<property name="enumerationLabels">
 			<value>Ring</value>
 			<value>PickUp</value>
 			<value>PutDown</value>
+			<value>Dial</value>
+			<value>HungUp</value>
 		</property>
 		<property name="initialValue">
 			<value>0</value>
