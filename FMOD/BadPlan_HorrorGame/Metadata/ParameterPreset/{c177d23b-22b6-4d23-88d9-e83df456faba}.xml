@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{c177d23b-22b6-4d23-88d9-e83df456faba}">
+		<property name="name">
+			<value>NoiseType</value>
+		</property>
+		<relationship name="folder">
+			<destination>{7d8a8359-4ef9-4ab1-9f64-77db4380d4a8}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{94c4efa4-55be-4f92-9d45-1af02d15d798}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{94c4efa4-55be-4f92-9d45-1af02d15d798}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>3</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>KnockSingle</value>
+			<value>KnockMulti</value>
+			<value>Rattling</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
