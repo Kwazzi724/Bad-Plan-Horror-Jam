@@ -156,6 +156,95 @@ Transform:
   - {fileID: 884071956}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &155807295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 155807298}
+  - component: {fileID: 155807297}
+  - component: {fileID: 155807296}
+  - component: {fileID: 155807299}
+  m_Layer: 0
+  m_Name: TestSoundMaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &155807296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155807295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33c269326e147a89ce653e0fa185876, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestSoundMaker
+--- !u!114 &155807297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155807295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -37701237
+      Data2: 1170551377
+      Data3: -962506862
+      Data4: -1212330951
+    Path: event:/Ambience/test_ambience
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!4 &155807298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155807295}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.52, y: 1.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &155807299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155807295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7f658ce43847e3b6fa198c22e2c246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Triggerable
 --- !u!1 &291519733
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,9 +545,9 @@ GameObject:
   - component: {fileID: 1003635518}
   - component: {fileID: 1003635517}
   - component: {fileID: 1003635516}
-  - component: {fileID: 1003635520}
   - component: {fileID: 1003635521}
   - component: {fileID: 1003635522}
+  - component: {fileID: 1003635523}
   m_Layer: 0
   m_Name: Telephone
   m_TagString: Untagged
@@ -561,18 +650,6 @@ Transform:
   - {fileID: 291519734}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1003635520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 5493419393053554540, guid: 56ee0e7cfb1017f4592f48ab08753506, type: 3}
-  m_PrefabInstance: {fileID: 8441786723302471500}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003635515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e28ad377a15624da355266480237b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RotaryPhone
 --- !u!114 &1003635521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,6 +694,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stage
   loadRoot: {fileID: 337972075}
+--- !u!114 &1003635523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003635515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a251e0f2c764d439caf0aa2b4213fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionTrigger
+  triggerables:
+  - {fileID: 155807299}
 --- !u!1 &1191974066
 GameObject:
   m_ObjectHideFlags: 0
@@ -4171,7 +4262,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Telephone
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -4740,3 +4832,4 @@ SceneRoots:
   - {fileID: 4727693435162487133}
   - {fileID: 6506774604487797889}
   - {fileID: 7149238728432663713}
+  - {fileID: 155807298}
