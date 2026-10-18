@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5513327416753921652}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -225,6 +225,16 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Interact
       m_Flags: 0
+    m_Flags: 0
+    m_Priority: 0
+  pauseAction:
+    m_Name: Pause
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f9c0a58a-2795-4598-a1a2-514ca8e6ed2f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
     m_Flags: 0
     m_Priority: 0
 --- !u!114 &5050873230832270051
