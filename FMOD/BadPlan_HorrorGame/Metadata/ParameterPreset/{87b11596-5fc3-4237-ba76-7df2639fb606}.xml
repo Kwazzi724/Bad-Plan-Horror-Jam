@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{87b11596-5fc3-4237-ba76-7df2639fb606}">
+		<property name="name">
+			<value>HardSoft</value>
+		</property>
+		<relationship name="folder">
+			<destination>{7d8a8359-4ef9-4ab1-9f64-77db4380d4a8}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{d889641c-b315-4899-8fb3-34d50f2d35b7}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{d889641c-b315-4899-8fb3-34d50f2d35b7}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Hard</value>
+			<value>Soft</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
