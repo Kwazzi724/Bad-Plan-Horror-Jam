@@ -7,6 +7,7 @@ public class StageManager : MonoBehaviour
     public static StageManager Instance { get; private set; }
     
     [SerializeField] private List<GameObject> stages;
+    // only used for where the very first hallway spawns, everything after chains off the LoadRoots
     [SerializeField] private Transform homeAnchor; 
     // [SerializeField] private bool loopStages;
 
@@ -15,7 +16,6 @@ public class StageManager : MonoBehaviour
     public Stage UpcomingStage { get; private set; }
     public int CurrentStageIndex { get; private set; }
     
-    private Transform traveller;
     private int upcomingIndex = -1;
 
     private void Awake()
@@ -36,11 +36,13 @@ public class StageManager : MonoBehaviour
             Debug.LogError("the stages list is empty", this);
             return;
         }
-        // spawn the first hallway straight away at slot A so the player has somewhere to stand
+        // spawn the first hallway straight away at the home anchor so the player has somewhere to stand
         GameObject firstStage = Instantiate(stages[0], homeAnchor.position, homeAnchor.rotation);
         CurrentStage = firstStage.GetComponent<Stage>();
         CurrentStageIndex = 0;
-        Debug.Log("loaded first stage '{stages[0].name}' at the home anchor.", this);
+        // listen to the first hallway's doors too, in case its exit door is the one that locks
+        CurrentStage.DoorLocked += HandleDoorLocked;
+        Debug.Log($"loaded first stage '{stages[0].name}' at the home anchor.", this);
 
         PreloadNextStage();
     }
@@ -50,26 +52,33 @@ public class StageManager : MonoBehaviour
         if (Instance == this)
             Instance = null;
     }
-    public void SetTraveller(Transform newTraveller)
+
+    // any door locking in either loaded hallway means the player just crossed into the upcoming one
+    private void HandleDoorLocked(Stage stage, Door door)
     {
-        traveller = newTraveller;
+        // if the locked door belongs to the hallway we're about to delete, hand it over to the new hallway so it doesn't vanish behind the player
+        if (stage == CurrentStage && UpcomingStage != null)
+            door.transform.SetParent(UpcomingStage.transform, true);
+
+        NextStage();
     }
 
-    // ping-pong load the current and next stages: delete the old hallway, pull the new one back to slot A, then preload the next one ahead
+    // delete the old hallway, the one the player just walked into becomes current, then preload the next one ahead at its LoadRoot
+    // nothing gets moved or teleported, hallways just chain forward
     public void NextStage()
     {
         if (UpcomingStage == null)
+        {
+            Debug.LogWarning("NextStage called but the upcoming stage hasn't finished loading yet", this);
             return;
-
-        UpcomingStage.CleanupReady -= NextStage;
+        }
 
         Destroy(CurrentStage.gameObject);
-        SnapToHome(UpcomingStage);
 
         CurrentStage = UpcomingStage;
         CurrentStageIndex = upcomingIndex;
         UpcomingStage = null;
-        Debug.Log("now in stage {CurrentStageIndex} '{CurrentStage.name}', snapped to the default anchor", this);
+        Debug.Log($"now in stage {CurrentStageIndex} '{CurrentStage.name}'", this);
         PreloadNextStage();
     }
 
@@ -85,8 +94,12 @@ public class StageManager : MonoBehaviour
         }
 
         if (CurrentStage.LoadRoot == null)
+        {
+            Debug.LogError($"'{CurrentStage.name}' has no LoadRoot, can't place the next stage", CurrentStage);
             return;
+        }
 
+        // the next hallway spawns at the current hallway's LoadRoot (position and rotation), so turns and different lengths just line up
         Transform loadRoot = CurrentStage.LoadRoot.transform;
         upcomingIndex = nextIndex;
 
@@ -111,42 +124,9 @@ public class StageManager : MonoBehaviour
         }
 
         UpcomingStage = instance.GetComponent<Stage>();
-        // when entry door locks, cue to swap hallway
-        UpcomingStage.CleanupReady += NextStage;
-    }
-
-    // moves the hallway back to slot A and offset player
-    private void SnapToHome(Stage stage)
-    {
-        Transform stageTransform = stage.transform;
-        Vector3 oldStagePosition = stageTransform.position;
-        Quaternion rotationDelta = homeAnchor.rotation * Quaternion.Inverse(stageTransform.rotation);
-
-        stageTransform.SetPositionAndRotation(homeAnchor.position, homeAnchor.rotation);
-
-        if (traveller != null)
-        {
-            Vector3 offset = traveller.position - oldStagePosition;
-            Vector3 newPosition = homeAnchor.position + rotationDelta * offset;
-            Quaternion newRotation = rotationDelta * traveller.rotation;
-
-            // switch off charactercontroller while teleport
-            CharacterController controller = traveller.GetComponent<CharacterController>();
-            bool controllerWasEnabled = controller != null && controller.enabled;
-
-            if (controller != null)
-            {
-                controller.enabled = false;
-            }
-
-            traveller.SetPositionAndRotation(newPosition, newRotation);
-
-            if (controller != null)
-            {
-                controller.enabled = controllerWasEnabled;
-            }
-        }
-        Physics.SyncTransforms();
+        // when any door in this hallway locks, cue to clean up the old hallway and preload the next
+        UpcomingStage.DoorLocked += HandleDoorLocked;
+        Debug.Log($"preloaded stage {upcomingIndex} '{instance.name}'", this);
     }
 
     private void OnValidate()
@@ -157,7 +137,6 @@ public class StageManager : MonoBehaviour
         {
             if (stageObject == null)
                 continue;
-
             if (stageObject.GetComponent<Stage>() == null)
                 Debug.LogWarning($"Stage manager list has no stage on game object {stageObject.name}");
         }

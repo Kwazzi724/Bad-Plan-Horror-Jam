@@ -482,6 +482,7 @@ MonoBehaviour:
   - Ambience
   - Music
   - SFX
+  - VoiceOver
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
@@ -497,18 +498,18 @@ MonoBehaviour:
   HideSetupWizard: 1
   LastEventReferenceScanVersion: 131860
   Platforms:
-  - {fileID: 3710567166693451354}
-  - {fileID: 4448490047190987982}
-  - {fileID: 2175394752896577636}
-  - {fileID: -7301275177136102264}
   - {fileID: -8273117925583453088}
+  - {fileID: -7301275177136102264}
   - {fileID: -7054385300417591589}
+  - {fileID: -6579843028787163619}
   - {fileID: -6543052047572315707}
   - {fileID: -2990518158468949504}
-  - {fileID: 1932883779253701656}
   - {fileID: 275474091284643275}
+  - {fileID: 1932883779253701656}
+  - {fileID: 2175394752896577636}
+  - {fileID: 3710567166693451354}
+  - {fileID: 4448490047190987982}
   - {fileID: 5300881982324181385}
-  - {fileID: -6579843028787163619}
   MigratedPlatforms: 0a00000000000000150000000b00000009000000050000001200000008000000060000000c0000000200000001000000
 --- !u!114 &275474091284643275
 MonoBehaviour:
@@ -872,16 +873,16 @@ MonoBehaviour:
     HasValue: 0
   displaySortOrder: 0
   childIdentifiers:
-  - 2fea114e74ecf3c4f920e1d5cc1c4c40
-  - c88d16e5272a4e241b0ef0ac2e53b73d
   - 2c5177b11d81d824dbb064f9ac8527da
+  - c88d16e5272a4e241b0ef0ac2e53b73d
   - e7a046c753c3c3d4aacc91f6597f310d
+  - b7716510a1f36934c87976f3a81dbf3d
   - fd7c55dab0fce234b8c25f6ffca523c1
   - 52eb9df5db46521439908db3a29a1bbb
-  - 0f8eb3f400726694eb47beb1a9f94ce8
   - 46fbfdf3fc43db0458918377fd40293e
+  - 0f8eb3f400726694eb47beb1a9f94ce8
+  - 2fea114e74ecf3c4f920e1d5cc1c4c40
   - de700ef3f37a49b58a57ae3addf01ad9
-  - b7716510a1f36934c87976f3a81dbf3d
   codecChannels:
     Value: []
     HasValue: 0

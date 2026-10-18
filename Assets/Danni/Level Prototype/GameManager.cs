@@ -19,8 +19,10 @@ public class GameManager : MonoBehaviour
     {
         if (stageManager == null)
             stageManager = StageManager.Instance;
+        
         if (stageManager == null)
             return;
+        
         StartCoroutine(SpawnPlayerAfterDelay());
     }
 
@@ -36,16 +38,14 @@ public class GameManager : MonoBehaviour
             return;
         if (currentPlayer != null)
             Destroy(currentPlayer);
+
         Vector3 position = spawnPoint != null ? spawnPoint.position : fallbackSpawnPosition;
         Quaternion rotation = spawnPoint != null
             ? Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f)
             : Quaternion.identity;
-
         currentPlayer = Instantiate(playerPrefab, position, rotation);
-        stageManager.SetTraveller(currentPlayer.transform);
         if (overviewCamera != null)
-        {
             overviewCamera.gameObject.SetActive(false);
-        }
+        
     }
 }

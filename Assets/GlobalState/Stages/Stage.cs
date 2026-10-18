@@ -4,27 +4,34 @@ using UnityEngine;
 public class Stage : MonoBehaviour
 {
     public event Action CleanupReady;
+    // fires with this stage and the door that just locked, so the manager knows what happened and where
+    public event Action<Stage, Door> DoorLocked;
 
     public GameObject LoadRoot => loadRoot;
-    public Door EntryDoor => entryDoor;
-    [SerializeField] private GameObject loadRoot;
-    [SerializeField] private Door entryDoor;// The door player walk through to get INTO this hallway, which belongs to the current hallway
 
-    // Once the entry door locks behind the player, cleanup previous hallway
-    private void OnEnable()
+    // Where the next hallway gets spawned, so stick it at this hallway's exit
+    [SerializeField] private GameObject loadRoot;
+
+    // grabs every door inside this hallway automatically, so it doesn't matter if a door is set up as an entry or an exit
+    private Door[] doors;
+
+    private void Awake()
     {
-        if (entryDoor != null)
+        doors = GetComponentsInChildren<Door>(true);
+
+        foreach (Door door in doors)
         {
-            entryDoor.Locked += SetReadyForCleanup;
+            door.Locked += () => HandleDoorLocked(door);
         }
+
+        Debug.Log($"{name}: found {doors.Length} door(s).", this);
     }
 
-    private void OnDisable()
+    private void HandleDoorLocked(Door door)
     {
-        if (entryDoor != null)
-        {
-            entryDoor.Locked -= SetReadyForCleanup;
-        }
+        Debug.Log($"{name}: door '{door.name}' locked.", this);
+        DoorLocked?.Invoke(this, door);
+        SetReadyForCleanup();
     }
 
     public void SetReadyForCleanup()
