@@ -255,6 +255,13 @@ MonoBehaviour:
   batteryLifeSeconds: 30
   dimStartPercent: 0.1
   startOn: 1
+  toggleSound:
+    Guid:
+      Data1: -638277194
+      Data2: 1236274536
+      Data3: 1233619357
+      Data4: -675566774
+    Path: event:/SFX/Player/Torch
 --- !u!1 &2979223127526191665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1029,14 @@ MonoBehaviour:
   moveSpeed: 5
   gravity: -20
   groundedStickForce: -2
+  footstepEvent:
+    Guid:
+      Data1: 1934713875
+      Data2: 1150512364
+      Data3: -2137387370
+      Data4: -548044253
+    Path: event:/SFX/Env/Footsteps
+  stepDistance: 1.8
 --- !u!114 &6702591491034009952
 MonoBehaviour:
   m_ObjectHideFlags: 0

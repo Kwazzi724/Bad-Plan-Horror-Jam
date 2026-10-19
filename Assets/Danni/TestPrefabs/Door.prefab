@@ -167,6 +167,27 @@ MonoBehaviour:
   closeSpeed: 200
   menuOpenAngle: 30
   menuOpenSpeed: 40
+  openSound:
+    Guid:
+      Data1: 727690603
+      Data2: 1141786987
+      Data3: -1533022333
+      Data4: -2103758392
+    Path: event:/SFX/Env/Door_Open
+  closeSound:
+    Guid:
+      Data1: -1191005051
+      Data2: 1130549215
+      Data3: -101075282
+      Data4: -488882835
+    Path: event:/SFX/Env/Door_Close
+  squeakSound:
+    Guid:
+      Data1: 1966272866
+      Data2: 1221187994
+      Data3: 1169360827
+      Data4: 1311280275
+    Path: event:/SFX/Env/Door_Squeak
   passClearance: 0.2
 --- !u!1001 &3515024920271489348
 PrefabInstance:

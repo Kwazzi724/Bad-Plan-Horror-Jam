@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class Torch : MonoBehaviour
@@ -11,8 +12,14 @@ public class Torch : MonoBehaviour
 
     [Header("Battery")]
     [SerializeField] private float batteryLifeSeconds = 120f;
-    [SerializeField] private float dimStartPercent = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float dimStartPercent = 0.1f;
     [SerializeField] private bool startOn = true;
+
+    [Header("Sounds")]
+    [SerializeField] private EventReference toggleSound;
+    [SerializeField] private string toggleParameter = "OnOff";
+    [SerializeField] private string onLabel = "On";
+    [SerializeField] private string offLabel = "Off";
 
     public float BatteryPercent => battery;
     public bool IsOn => isOn;
@@ -89,6 +96,10 @@ public class Torch : MonoBehaviour
     public void Toggle()
     {
         if (IsPaused) return;
+
+        string label = isOn ? offLabel : onLabel;
+        SoundPlayer.PlayOneShot(toggleSound, transform.position, new SoundLabel(toggleParameter, label));
+
         if (!isOn && battery <= 0f) return;
 
         isOn = !isOn;

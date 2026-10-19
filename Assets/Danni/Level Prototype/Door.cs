@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using FMODUnity;
 using UnityEngine;
 
 public class Door : MonoBehaviour, IInteractable
@@ -16,6 +17,14 @@ public class Door : MonoBehaviour, IInteractable
     [Header("Menu")]
     [SerializeField] private float menuOpenAngle = 30f;
     [SerializeField] private float menuOpenSpeed = 40f;
+    
+    [Header("Sounds")]
+    [SerializeField] private EventReference openSound;
+    [SerializeField] private EventReference closeSound;
+    [SerializeField] private EventReference squeakSound;
+    [SerializeField] private SoundLabel openStyle = new SoundLabel("HardSoft", "Soft");
+    [SerializeField] private SoundLabel closeStyle = new SoundLabel("HardSoft", "Hard");
+    [SerializeField] private SoundLabel squeakStyle = new SoundLabel("FastMedSlow", "Fast");
 
     [Header("Lock")]
     [SerializeField] private float passClearance = 0.6f;
@@ -35,6 +44,7 @@ public class Door : MonoBehaviour, IInteractable
     private Transform ReferenceSpace => referenceSpace;
 
     public bool IsLocked => state == DoorState.Locked;
+    public bool CanInteract => state == DoorState.Closed;
 
     public event Action Locked;
 
@@ -46,11 +56,6 @@ public class Door : MonoBehaviour, IInteractable
         referenceSpace = hinge == transform || transform.IsChildOf(hinge) ? hinge.parent : transform.parent;
         localCrossingAxis = ToReferenceDirection(FindCrossingAxis());
         localPlanePoint = ToReferencePoint(hinge.position);
-
-        if (hinge == transform || transform.IsChildOf(hinge))
-        {
-            Debug.LogWarning($"Door: '{name}' has the Door script on the object that rotates. It still works, but ideally put it on a parent of the Hinge.", this);
-        }
     }
 
     public void Configure(float width, float height, float thickness)
@@ -72,6 +77,9 @@ public class Door : MonoBehaviour, IInteractable
         entrySide = Mathf.Sign(SideOf(passer.position));
 
         float targetAngle = entrySide > 0f ? openAngle : -openAngle;
+        // open + squeak as it starts swinging open
+        PlaySound(openSound, openStyle);
+        PlaySound(squeakSound, squeakStyle);
         Swing(targetAngle, openSpeed, DoorState.Opening, DoorState.Open);
     }
 
@@ -89,6 +97,9 @@ public class Door : MonoBehaviour, IInteractable
         }
 
         passer = null;
+        // same sounds for the menu door
+        PlaySound(openSound, openStyle);
+        PlaySound(squeakSound, squeakStyle);
         Swing(menuOpenAngle, menuOpenSpeed, DoorState.Opening, DoorState.Open, onComplete);
     }
 
@@ -102,6 +113,8 @@ public class Door : MonoBehaviour, IInteractable
         if (Mathf.Sign(side) != entrySide && Mathf.Abs(side) >= passClearance)
         {
             passer = null;
+            // squeak as it starts swinging shut
+            PlaySound(squeakSound, squeakStyle);
             Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
         }
     }
@@ -110,11 +123,6 @@ public class Door : MonoBehaviour, IInteractable
     {
         Vector3 scale = transform.localScale;
         bool uniform = Mathf.Approximately(scale.x, scale.y) && Mathf.Approximately(scale.y, scale.z);
-
-        if (!uniform)
-        {
-            Debug.LogWarning($"Door: '{name}' root has uneven scale {scale}, the door will squash when it swings. Set the root to an even scale and size the panel instead.", this);
-        }
     }
 
     private Vector3 FindCrossingAxis()
@@ -176,6 +184,10 @@ public class Door : MonoBehaviour, IInteractable
     {
         return ReferenceSpace != null ? ReferenceSpace.TransformPoint(referencePoint) : referencePoint;
     }
+    private void PlaySound(EventReference sound, SoundLabel style)
+    {
+        SoundPlayer.PlayOneShot(sound, hinge.position, style);
+    }
 
     private void SetPanelSolid(bool solid)
     {
@@ -217,7 +229,8 @@ public class Door : MonoBehaviour, IInteractable
 
         if (state == DoorState.Locked)
         {
-            Debug.Log($"Door: '{name}' locked.", this);
+            // slam sound once it's fully shut
+            PlaySound(closeSound, closeStyle);
             Locked?.Invoke();
         }
     }
