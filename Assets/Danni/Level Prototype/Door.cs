@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using FMODUnity;
 using UnityEngine;
 
 public class Door : MonoBehaviour, IInteractable
@@ -6,26 +8,54 @@ public class Door : MonoBehaviour, IInteractable
     [Header("Parts")]
     [SerializeField] private Transform hinge;
     [SerializeField] private Transform panel;
+
     [Header("Swing")]
     [SerializeField] private float openAngle = 80f;
     [SerializeField] private float openSpeed = 120f;
-    [SerializeField] private float closeSpeed = 240f;
-    [Header("Lock")]
-    [SerializeField] private float passDistance = 1f;
-    [SerializeField] private float closeDelay = 1.5f;
+    [SerializeField] private float closeSpeed = 360f;
 
-    private enum DoorState { Closed, Opening, Open, WaitingToClose, Closing, Locked }
+    [Header("Menu")]
+    [SerializeField] private float menuOpenAngle = 30f;
+    [SerializeField] private float menuOpenSpeed = 40f;
+    
+    [Header("Sounds")]
+    [SerializeField] private EventReference openSound;
+    [SerializeField] private EventReference closeSound;
+    [SerializeField] private EventReference squeakSound;
+    [SerializeField] private SoundLabel openStyle = new SoundLabel("HardSoft", "Soft");
+    [SerializeField] private SoundLabel closeStyle = new SoundLabel("HardSoft", "Hard");
+    [SerializeField] private SoundLabel squeakStyle = new SoundLabel("FastMedSlow", "Fast");
+
+    [Header("Lock")]
+    [SerializeField] private float passClearance = 0.6f;
+
+    private enum DoorState { Closed, Opening, Open, Closing, Locked }
 
     private DoorState state = DoorState.Closed;
     private Transform passer;
     private float entrySide;
     private Coroutine swingRoutine;
+    private Vector3 localCrossingAxis = Vector3.forward;
+    private Vector3 localPlanePoint;
+    private Collider[] panelColliders;
+    private Transform referenceSpace;
+    private Quaternion closedHingeRotation;
+
+    private Transform ReferenceSpace => referenceSpace;
 
     public bool IsLocked => state == DoorState.Locked;
+    public bool CanInteract => state == DoorState.Closed;
+
+    public event Action Locked;
 
     private void Awake()
     {
-        NormaliseScale();
+        WarnAboutRootScale();
+        closedHingeRotation = hinge.localRotation;
+        panelColliders = panel.GetComponentsInChildren<Collider>();
+        referenceSpace = hinge == transform || transform.IsChildOf(hinge) ? hinge.parent : transform.parent;
+        localCrossingAxis = ToReferenceDirection(FindCrossingAxis());
+        localPlanePoint = ToReferencePoint(hinge.position);
     }
 
     public void Configure(float width, float height, float thickness)
@@ -47,7 +77,30 @@ public class Door : MonoBehaviour, IInteractable
         entrySide = Mathf.Sign(SideOf(passer.position));
 
         float targetAngle = entrySide > 0f ? openAngle : -openAngle;
+        // open + squeak as it starts swinging open
+        PlaySound(openSound, openStyle);
+        PlaySound(squeakSound, squeakStyle);
         Swing(targetAngle, openSpeed, DoorState.Opening, DoorState.Open);
+    }
+
+    public void MenuSwingOpen()
+    {
+        MenuSwingOpen(null);
+    }
+
+    public void MenuSwingOpen(Action onComplete)
+    {
+        if (state == DoorState.Locked)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        passer = null;
+        // same sounds for the menu door
+        PlaySound(openSound, openStyle);
+        PlaySound(squeakSound, squeakStyle);
+        Swing(menuOpenAngle, menuOpenSpeed, DoorState.Opening, DoorState.Open, onComplete);
     }
 
     private void Update()
@@ -57,74 +110,128 @@ public class Door : MonoBehaviour, IInteractable
 
         float side = SideOf(passer.position);
 
-        if (Mathf.Sign(side) != entrySide && Mathf.Abs(side) >= passDistance)
+        if (Mathf.Sign(side) != entrySide && Mathf.Abs(side) >= passClearance)
         {
             passer = null;
-
-            if (swingRoutine != null)
-            {
-                StopCoroutine(swingRoutine);
-            }
-
-            swingRoutine = StartCoroutine(CloseAfterDelay());
+            // squeak as it starts swinging shut
+            PlaySound(squeakSound, squeakStyle);
+            Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
         }
     }
 
-    private void NormaliseScale()
+    private void WarnAboutRootScale()
     {
-        if (transform.localScale == Vector3.one && hinge.localScale == Vector3.one) return;
-        Vector3 hingePosition = hinge.position;
-        Quaternion hingeRotation = hinge.rotation;
-        Vector3 panelPosition = panel.position;
-        Quaternion panelRotation = panel.rotation;
-        Vector3 panelScale = panel.lossyScale;
-        transform.localScale = Vector3.one;
-        hinge.localScale = Vector3.one;
-        hinge.SetPositionAndRotation(hingePosition, hingeRotation);
-        panel.SetPositionAndRotation(panelPosition, panelRotation);
-        panel.localScale = panelScale;
+        Vector3 scale = transform.localScale;
+        bool uniform = Mathf.Approximately(scale.x, scale.y) && Mathf.Approximately(scale.y, scale.z);
     }
 
-    private IEnumerator CloseAfterDelay()
+    private Vector3 FindCrossingAxis()
     {
-        state = DoorState.WaitingToClose;
-        float targetAngle = entrySide > 0f ? openAngle : -openAngle;
-        Quaternion fullyOpen = Quaternion.Euler(0f, targetAngle, 0f);
+        Vector3 hingeUp = hinge.up;
+        Vector3 alongDoor = Vector3.ProjectOnPlane(GetPanelCenter() - hinge.position, hingeUp);
 
-        while (Quaternion.Angle(hinge.localRotation, fullyOpen) > 0.01f)
+        if (alongDoor.sqrMagnitude < 0.0001f)
+            return transform.forward;
+        return Vector3.Cross(hingeUp, alongDoor).normalized;
+    }
+
+    private Vector3 GetPanelCenter()
+    {
+        Renderer[] renderers = panel.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length > 0)
         {
-            hinge.localRotation = Quaternion.RotateTowards(hinge.localRotation, fullyOpen, openSpeed * Time.deltaTime);
-            yield return null;
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+            {
+                bounds.Encapsulate(renderers[i].bounds);
+            }
+            return bounds.center;
         }
 
-        yield return new WaitForSeconds(closeDelay);
-        swingRoutine = null;
-        Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
+        if (panelColliders.Length > 0)
+        {
+            return panelColliders[0].bounds.center;
+        }
+
+        return panel.position;
     }
 
     private float SideOf(Vector3 position)
     {
-        return Vector3.Dot(position - transform.position, transform.forward);
+        Vector3 crossingAxis = FromReferenceDirection(localCrossingAxis);
+        Vector3 planePoint = FromReferencePoint(localPlanePoint);
+        return Vector3.Dot(position - planePoint, crossingAxis);
     }
 
-    private void Swing(float targetAngle, float speed, DoorState during, DoorState after)
+
+    private Vector3 ToReferenceDirection(Vector3 worldDirection)
+    {
+        return ReferenceSpace != null ? ReferenceSpace.InverseTransformDirection(worldDirection) : worldDirection;
+    }
+
+    private Vector3 FromReferenceDirection(Vector3 referenceDirection)
+    {
+        return ReferenceSpace != null ? ReferenceSpace.TransformDirection(referenceDirection).normalized : referenceDirection;
+    }
+
+    private Vector3 ToReferencePoint(Vector3 worldPoint)
+    {
+        return ReferenceSpace != null ? ReferenceSpace.InverseTransformPoint(worldPoint) : worldPoint;
+    }
+
+    private Vector3 FromReferencePoint(Vector3 referencePoint)
+    {
+        return ReferenceSpace != null ? ReferenceSpace.TransformPoint(referencePoint) : referencePoint;
+    }
+    private void PlaySound(EventReference sound, SoundLabel style)
+    {
+        SoundPlayer.PlayOneShot(sound, hinge.position, style);
+    }
+
+    private void SetPanelSolid(bool solid)
+    {
+        foreach (Collider panelCollider in panelColliders)
+        {
+            panelCollider.enabled = solid;
+        }
+    }
+
+    private void Swing(float targetAngle, float speed, DoorState during, DoorState after, Action onComplete = null)
     {
         if (swingRoutine != null)
+        {
             StopCoroutine(swingRoutine);
-        swingRoutine = StartCoroutine(SwingRoutine(targetAngle, speed, during, after));
+        }
+
+        swingRoutine = StartCoroutine(SwingRoutine(targetAngle, speed, during, after, onComplete));
     }
 
-    private IEnumerator SwingRoutine(float targetAngle, float speed, DoorState during, DoorState after)
+    private IEnumerator SwingRoutine(float targetAngle, float speed, DoorState during, DoorState after, Action onComplete)
     {
         state = during;
-        Quaternion target = Quaternion.Euler(0f, targetAngle, 0f);
+        SetPanelSolid(false);
+
+        Quaternion target = closedHingeRotation * Quaternion.Euler(0f, targetAngle, 0f);
+
         while (Quaternion.Angle(hinge.localRotation, target) > 0.01f)
         {
             hinge.localRotation = Quaternion.RotateTowards(hinge.localRotation, target, speed * Time.deltaTime);
             yield return null;
         }
+
         hinge.localRotation = target;
+        SetPanelSolid(true);
         state = after;
         swingRoutine = null;
+
+        onComplete?.Invoke();
+
+        if (state == DoorState.Locked)
+        {
+            // slam sound once it's fully shut
+            PlaySound(closeSound, closeStyle);
+            Locked?.Invoke();
+        }
     }
 }
