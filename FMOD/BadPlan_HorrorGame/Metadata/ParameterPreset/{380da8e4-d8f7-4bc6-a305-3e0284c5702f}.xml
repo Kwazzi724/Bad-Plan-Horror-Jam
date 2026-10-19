@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{380da8e4-d8f7-4bc6-a305-3e0284c5702f}">
+		<property name="name">
+			<value>DialNumber</value>
+		</property>
+		<relationship name="folder">
+			<destination>{7d8a8359-4ef9-4ab1-9f64-77db4380d4a8}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{477834e0-0ece-461e-9b7d-beee7bdb8cf2}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{477834e0-0ece-461e-9b7d-beee7bdb8cf2}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
+		<property name="maximum">
+			<value>10</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
