@@ -11,12 +11,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Vector3 fallbackSpawnPosition = new Vector3(0f, 1f, 0f);
-    [SerializeField] private float spawnDelay = 3f;
+    [SerializeField] private float spawnDelay;
+
+    [Header("Fade")]
+    [SerializeField] private float fadeInDuration = 1f;
 
     private GameObject currentPlayer;
 
     private void Start()
     {
+        if (ScreenFadeManager.Instance != null)
+            ScreenFadeManager.Instance.FadeIn(fadeInDuration);
+
         if (stageManager == null)
             stageManager = StageManager.Instance;
         

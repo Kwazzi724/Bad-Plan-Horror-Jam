@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerInputReader : MonoBehaviour
@@ -9,11 +8,13 @@ public class PlayerInputReader : MonoBehaviour
     [SerializeField] private InputAction lookAction;
     [SerializeField] private InputAction interactAction;
     [SerializeField] private InputAction pauseAction;
+    [SerializeField] private InputAction torchAction;
 
     public Vector2 Move => moveAction.ReadValue<Vector2>();
     public Vector2 Look => lookAction.ReadValue<Vector2>();
 
     public event Action Interacted;
+    public event Action TorchToggled;
 
     private void OnEnable()
     {
@@ -23,6 +24,8 @@ public class PlayerInputReader : MonoBehaviour
         interactAction.Enable();
         pauseAction.performed += PauseActionPerformed;
         pauseAction.Enable();
+        torchAction.performed += HandleTorchPerformed;
+        torchAction.Enable();
     }
 
     private void OnDisable()
@@ -33,11 +36,18 @@ public class PlayerInputReader : MonoBehaviour
         interactAction.Disable();
         pauseAction.performed -= PauseActionPerformed;
         pauseAction.Disable();
+        torchAction.performed -= HandleTorchPerformed;
+        torchAction.Disable();
     }
 
     private void HandleInteractPerformed(InputAction.CallbackContext context)
     {
         Interacted?.Invoke();
+    }
+
+    private void HandleTorchPerformed(InputAction.CallbackContext context)
+    {
+        TorchToggled?.Invoke();
     }
 
     private void PauseActionPerformed(InputAction.CallbackContext obj)
