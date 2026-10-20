@@ -139,6 +139,7 @@
 	<object class="MixerBusEffectChain" id="{3199ec14-fd82-49e5-a49a-73e321ac86e6}">
 		<relationship name="effects">
 			<destination>{cec911f4-4888-49b6-9858-bec55fc72ce1}</destination>
+			<destination>{f4828a4f-bf08-42e6-b0e7-1b00485441bd}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{dc3c52ab-83d6-4b71-88de-c8208c09ddc0}" />
@@ -190,5 +191,41 @@
 	</object>
 	<object class="MixerBusPanner" id="{fe89a5de-366d-4729-b5fe-98af3c5b2523}" />
 	<object class="MixerBusFader" id="{cec911f4-4888-49b6-9858-bec55fc72ce1}" />
+	<object class="PluginEffect" id="{f4828a4f-bf08-42e6-b0e7-1b00485441bd}">
+		<relationship name="plugin">
+			<destination>{bb2ea9a6-605c-4d42-8c4d-600f4d05ebc9}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{1b2137e2-69fa-49c9-9d92-49467d834a73}" />
+	<object class="Plugin" id="{bb2ea9a6-605c-4d42-8c4d-600f4d05ebc9}">
+		<property name="identifier">
+			<value>atmoky Externalizer</value>
+		</property>
+		<relationship name="pluginParameters">
+			<destination>{0be2b481-63e1-4ce9-a90b-e789772a6322}</destination>
+			<destination>{f428a706-3809-410f-8ea9-970767cdcc29}</destination>
+		</relationship>
+	</object>
+	<object class="FloatPluginParameter" id="{0be2b481-63e1-4ce9-a90b-e789772a6322}">
+		<property name="name">
+			<value>amount</value>
+		</property>
+		<property name="value">
+			<value>50</value>
+		</property>
+		<property name="curve">
+			<value>{(0.000000,0.000000)(1.000000,100.000000)}</value>
+		</property>
+	</object>
+	<object class="FloatPluginParameter" id="{f428a706-3809-410f-8ea9-970767cdcc29}">
+		<property name="name">
+			<value>character</value>
+		</property>
+		<property name="value">
+			<value>50</value>
+		</property>
+		<property name="curve">
+			<value>{(0.000000,0.000000)(1.000000,100.000000)}</value>
+		</property>
+	</object>
 </objects>
