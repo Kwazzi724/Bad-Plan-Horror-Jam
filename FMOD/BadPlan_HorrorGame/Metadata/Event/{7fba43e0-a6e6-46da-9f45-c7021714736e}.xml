@@ -315,7 +315,7 @@
 			<value>1.25</value>
 		</property>
 		<property name="timelockedOffset">
-			<value>0.44595266812602036</value>
+			<value>0.4459526681260203</value>
 		</property>
 		<property name="pitch">
 			<value>3</value>
@@ -1220,7 +1220,6 @@
 		<property name="name">
 			<value>3DAttributes</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-2</value>
 		</property>
@@ -1378,7 +1377,6 @@
 		<property name="name">
 			<value>3DAttributesMul</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-5</value>
 		</property>
@@ -1387,7 +1385,6 @@
 		<property name="name">
 			<value>overallGain</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-1</value>
 		</property>
@@ -1396,7 +1393,6 @@
 		<property name="name">
 			<value>attenuationRang</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-6</value>
 		</property>
