@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{7fba8c57-98d5-4337-8395-30bcda1e6f20}">
+		<property name="name">
+			<value>ClockModes</value>
+		</property>
+		<relationship name="folder">
+			<destination>{7d8a8359-4ef9-4ab1-9f64-77db4380d4a8}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{580f43ba-f719-433e-b888-f76ea67ac814}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{580f43ba-f719-433e-b888-f76ea67ac814}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>3</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Ticking</value>
+			<value>Alarm</value>
+			<value>Value C</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
