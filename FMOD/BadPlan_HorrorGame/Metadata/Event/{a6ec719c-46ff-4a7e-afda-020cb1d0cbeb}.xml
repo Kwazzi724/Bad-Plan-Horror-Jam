@@ -149,6 +149,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{0a84231f-752f-4bf3-8092-b2604e6c0192}">
+		<property name="volume">
+			<value>2.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -310,7 +313,6 @@
 		<property name="name">
 			<value>3DAttributes</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-2</value>
 		</property>
@@ -468,7 +470,6 @@
 		<property name="name">
 			<value>3DAttributesMul</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-5</value>
 		</property>
@@ -477,7 +478,6 @@
 		<property name="name">
 			<value>overallGain</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-1</value>
 		</property>
@@ -486,7 +486,6 @@
 		<property name="name">
 			<value>attenuationRang</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-6</value>
 		</property>
