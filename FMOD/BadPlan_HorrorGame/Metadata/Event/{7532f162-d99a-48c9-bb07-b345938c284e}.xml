@@ -33,6 +33,7 @@
 		</relationship>
 		<relationship name="parameters">
 			<destination>{44b8b9e4-03db-42e0-808a-fc11fd5a65e4}</destination>
+			<destination>{420a00d9-6974-4c6c-9e54-973c81d4325f}</destination>
 		</relationship>
 		<relationship name="banks">
 			<destination>{6540b5ce-5e97-4aca-be85-5a73b5fa22d2}</destination>
@@ -44,6 +45,9 @@
 		</relationship>
 	</object>
 	<object class="MasterTrack" id="{d885799c-94fe-48d3-ad1d-4bdc2b8e0059}">
+		<relationship name="automationTracks">
+			<destination>{e08c4c5f-036e-40ad-85fd-c0eccd35e969}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{3aa69f5b-52a3-4339-a966-74e2c2173c04}</destination>
 		</relationship>
@@ -82,6 +86,11 @@
 			<destination>{f9505b68-305c-42dc-9eab-67501bf27279}</destination>
 		</relationship>
 	</object>
+	<object class="ParameterProxy" id="{420a00d9-6974-4c6c-9e54-973c81d4325f}">
+		<relationship name="preset">
+			<destination>{f28656d6-2fd5-43b5-80ed-36995a5c0c0e}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerMaster" id="{3aa69f5b-52a3-4339-a966-74e2c2173c04}">
 		<relationship name="effectChain">
 			<destination>{20fb1934-42f6-4a1d-beb8-e40b60e8a3e8}</destination>
@@ -91,6 +100,11 @@
 		</relationship>
 		<relationship name="mixer">
 			<destination>{6090fe80-23a7-45e4-a80b-eda67d0b1267}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationTrack" id="{e08c4c5f-036e-40ad-85fd-c0eccd35e969}">
+		<relationship name="automator">
+			<destination>{3c72156c-681d-47e3-a23c-bbffd1f1ac8d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{db3892bb-5f64-483b-9132-32560c958ac3}">
@@ -351,7 +365,6 @@
 		<property name="name">
 			<value>3DAttributes</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-2</value>
 		</property>
@@ -457,6 +470,9 @@
 		<property name="curve">
 			<value>{(0.000000,0.000000)(1.000000,1.000000)}</value>
 		</property>
+		<relationship name="automators">
+			<destination>{3c72156c-681d-47e3-a23c-bbffd1f1ac8d}</destination>
+		</relationship>
 	</object>
 	<object class="FloatPluginParameter" id="{dd3699b1-4cdc-4588-b3f8-b4766e78224f}">
 		<property name="name">
@@ -506,7 +522,6 @@
 		<property name="name">
 			<value>3DAttributesMul</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-5</value>
 		</property>
@@ -515,7 +530,6 @@
 		<property name="name">
 			<value>overallGain</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-1</value>
 		</property>
@@ -524,7 +538,6 @@
 		<property name="name">
 			<value>attenuationRang</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-6</value>
 		</property>
@@ -540,6 +553,39 @@
 			<value>0</value>
 		</property>
 		<property name="maximumValue">
+			<value>1</value>
+		</property>
+	</object>
+	<object class="Automator" id="{3c72156c-681d-47e3-a23c-bbffd1f1ac8d}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>value</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{e0e1c077-cf08-41e4-bc56-20169cea992e}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationCurve" id="{e0e1c077-cf08-41e4-bc56-20169cea992e}">
+		<relationship name="parameter">
+			<destination>{f28656d6-2fd5-43b5-80ed-36995a5c0c0e}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{2e1dc788-ef4a-4259-b6aa-dc59a6b27677}</destination>
+			<destination>{5601f2a8-b411-4acc-9dee-609ea03e584f}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationPoint" id="{2e1dc788-ef4a-4259-b6aa-dc59a6b27677}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{5601f2a8-b411-4acc-9dee-609ea03e584f}">
+		<property name="position">
+			<value>1</value>
+		</property>
+		<property name="value">
 			<value>1</value>
 		</property>
 	</object>
