@@ -8,7 +8,7 @@
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{5a2257a9-86da-4eaa-b8f3-9a2228927dcd}</destination>
+			<destination>{a7ca09dc-bd6f-4ee8-b9b6-701718ad9af1}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{989a96bd-2df6-42b7-bdda-a5961341a0f8}</destination>
@@ -302,7 +302,6 @@
 		<property name="name">
 			<value>3DAttributes</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-2</value>
 		</property>
@@ -457,7 +456,6 @@
 		<property name="name">
 			<value>3DAttributesMul</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-5</value>
 		</property>
@@ -466,7 +464,6 @@
 		<property name="name">
 			<value>overallGain</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-1</value>
 		</property>
@@ -475,7 +472,6 @@
 		<property name="name">
 			<value>attenuationRang</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-6</value>
 		</property>
