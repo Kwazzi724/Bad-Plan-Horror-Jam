@@ -33,6 +33,7 @@ public class Door : MonoBehaviour, IInteractable
 
     private DoorState state = DoorState.Closed;
     private Transform passer;
+    private float passerRadius;
     private float entrySide;
     private Coroutine swingRoutine;
     private Vector3 localCrossingAxis = Vector3.forward;
@@ -73,8 +74,8 @@ public class Door : MonoBehaviour, IInteractable
     {
         if (state != DoorState.Closed) return;
 
-        passer = interactor.transform;
-        entrySide = Mathf.Sign(SideOf(passer.position));
+        passer = FindBody(interactor, out passerRadius);
+        entrySide = FindEntrySide(passer);
 
         float targetAngle = entrySide > 0f ? openAngle : -openAngle;
         // open + squeak as it starts swinging open
@@ -109,13 +110,63 @@ public class Door : MonoBehaviour, IInteractable
         if (state != DoorState.Opening && state != DoorState.Open) return;
 
         float side = SideOf(passer.position);
+        float clearance = Mathf.Max(passClearance, passerRadius + 0.05f);
 
-        if (Mathf.Sign(side) != entrySide && Mathf.Abs(side) >= passClearance)
+        if (side * entrySide < 0f && Mathf.Abs(side) >= clearance)
         {
+            Debug.Log($"Door: '{name}' passed by '{passer.name}' ({side:F2} from the door), closing.", this);
             passer = null;
             // squeak as it starts swinging shut
             PlaySound(squeakSound, squeakStyle);
             Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
+        }
+    }
+
+    private Transform FindBody(GameObject interactor, out float radius)
+    {
+        CharacterController body = interactor.GetComponentInParent<CharacterController>();
+
+        if (body == null)
+            body = interactor.transform.root.GetComponentInChildren<CharacterController>();
+
+        if (body == null)
+        {
+            radius = 0.5f;
+            return interactor.transform.root;
+        }
+
+        radius = body.radius * Mathf.Max(body.transform.lossyScale.x, body.transform.lossyScale.z);
+        return body.transform;
+    }
+
+    private float FindEntrySide(Transform body)
+    {
+        float side = SideOf(body.position);
+
+        if (Mathf.Abs(side) > 0.01f)
+            return Mathf.Sign(side);
+
+        Vector3 crossingAxis = FromReferenceDirection(localCrossingAxis);
+        return -Mathf.Sign(Vector3.Dot(body.forward, crossingAxis));
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (hinge == null || !Application.isPlaying) return;
+
+        Vector3 crossingAxis = FromReferenceDirection(localCrossingAxis);
+        Vector3 planePoint = FromReferencePoint(localPlanePoint);
+        float clearance = Mathf.Max(passClearance, passerRadius + 0.05f);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(planePoint, planePoint + crossingAxis * clearance);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(planePoint, planePoint - crossingAxis * clearance);
+
+        if (passer != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(passer.position, 0.15f);
         }
     }
 
