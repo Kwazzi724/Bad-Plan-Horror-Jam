@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: AutopsyReports
   m_EditorClassIdentifier: Assembly-CSharp::ImageLibrary
   images:
-  - id: 1
-    sprite: {fileID: 0}
-  - id: 2
-    sprite: {fileID: 0}
   - id: 3
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 5b919f3bb97d4fb4a86fdd579a6d57c5, type: 3}
+  - id: 2
+    sprite: {fileID: 21300000, guid: b31905bfb4655614ebf41bc362882211, type: 3}
+  - id: 1
+    sprite: {fileID: 21300000, guid: bd6277c10afce08498e37cfcfeedabee, type: 3}
