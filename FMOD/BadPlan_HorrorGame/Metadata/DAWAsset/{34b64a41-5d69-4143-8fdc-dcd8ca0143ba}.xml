@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
-	<object class="DAWAsset" id="{042e745f-4acd-49ee-8644-bb9dccf38702}">
+	<object class="DAWAsset" id="{34b64a41-5d69-4143-8fdc-dcd8ca0143ba}">
 		<property name="assetPath">
-			<value>BadPlanGJ_SFX.RPP.link/Psychosis_Lvl_01.mp3</value>
-		</property>
-		<property name="isStreaming">
-			<value>true</value>
+			<value>BadPlanGJ_SFX.RPP.link/Door_Unlock_05.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
@@ -14,7 +11,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>136.512</value>
+			<value>0.70841666666666669</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{db9613a3-c35d-48eb-a22c-3b3c0dc0d07c}</destination>

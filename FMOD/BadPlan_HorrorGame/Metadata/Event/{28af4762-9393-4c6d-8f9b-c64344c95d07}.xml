@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{28af4762-9393-4c6d-8f9b-c64344c95d07}">
 		<property name="name">
-			<value>DigitalAlarmClock</value>
+			<value>AlarmClock</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -29,6 +29,7 @@
 		</relationship>
 		<relationship name="groupTracks">
 			<destination>{9e737329-ddb1-4f16-afc6-7df6a7826b07}</destination>
+			<destination>{a46ab021-6b16-46cf-a6b0-043b37d67717}</destination>
 		</relationship>
 		<relationship name="timeline">
 			<destination>{8b427796-b91c-458e-9da5-db0668f4d287}</destination>
@@ -72,16 +73,23 @@
 	<object class="GroupTrack" id="{9e737329-ddb1-4f16-afc6-7df6a7826b07}">
 		<relationship name="modules">
 			<destination>{fb0eeb56-4926-4ecc-b7f4-d59c93f90f1a}</destination>
-			<destination>{c8933201-db84-4068-893e-f1137e7e1d03}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{6a469cad-881d-4550-817d-02ff28138ef4}</destination>
 		</relationship>
 	</object>
+	<object class="GroupTrack" id="{a46ab021-6b16-46cf-a6b0-043b37d67717}">
+		<relationship name="modules">
+			<destination>{f0263e96-3b25-4b8c-99cd-61691061b08f}</destination>
+		</relationship>
+		<relationship name="mixerGroup">
+			<destination>{dcd0218a-78e9-464f-b1ab-072a709832f6}</destination>
+		</relationship>
+	</object>
 	<object class="Timeline" id="{8b427796-b91c-458e-9da5-db0668f4d287}">
 		<relationship name="modules">
 			<destination>{fb0eeb56-4926-4ecc-b7f4-d59c93f90f1a}</destination>
-			<destination>{c8933201-db84-4068-893e-f1137e7e1d03}</destination>
+			<destination>{f0263e96-3b25-4b8c-99cd-61691061b08f}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{90ebbc04-d3b5-463c-b6eb-8d76ed98a67e}</destination>
@@ -132,17 +140,6 @@
 			<destination>{21d7dcdd-72e4-4cf9-b994-74225c9213f3}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{c8933201-db84-4068-893e-f1137e7e1d03}">
-		<property name="start">
-			<value>3</value>
-		</property>
-		<property name="length">
-			<value>2</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{41eb65c4-e3af-4a29-8bf8-d738be8d7c7f}</destination>
-		</relationship>
-	</object>
 	<object class="EventMixerGroup" id="{6a469cad-881d-4550-817d-02ff28138ef4}">
 		<property name="name">
 			<value>Audio 1</value>
@@ -152,6 +149,31 @@
 		</relationship>
 		<relationship name="panner">
 			<destination>{3513c19b-3ef4-45fa-a0c7-e5dd04010b69}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{a2711f95-63cf-4840-a518-fd41ca4a4523}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{f0263e96-3b25-4b8c-99cd-61691061b08f}">
+		<property name="start">
+			<value>3</value>
+		</property>
+		<property name="length">
+			<value>5.1221458333333345</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{8cdb2889-4217-4a6b-9422-047771a2f13c}</destination>
+		</relationship>
+	</object>
+	<object class="EventMixerGroup" id="{dcd0218a-78e9-464f-b1ab-072a709832f6}">
+		<property name="name">
+			<value>Audio 2</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{88583f9c-9eac-4274-a859-cfe103600017}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{964aa6f7-0a36-4771-87b3-3fd01326ed3c}</destination>
 		</relationship>
 		<relationship name="output">
 			<destination>{a2711f95-63cf-4840-a518-fd41ca4a4523}</destination>
@@ -176,7 +198,7 @@
 			<value>3</value>
 		</property>
 		<property name="length">
-			<value>2</value>
+			<value>5.1221458333333345</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{8b427796-b91c-458e-9da5-db0668f4d287}</destination>
@@ -190,7 +212,7 @@
 			<value>3</value>
 		</property>
 		<property name="length">
-			<value>2</value>
+			<value>5.1221458333333345</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{8b427796-b91c-458e-9da5-db0668f4d287}</destination>
@@ -267,6 +289,13 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{3513c19b-3ef4-45fa-a0c7-e5dd04010b69}" />
+	<object class="MixerBusEffectChain" id="{88583f9c-9eac-4274-a859-cfe103600017}">
+		<relationship name="effects">
+			<destination>{faa42e3b-50ce-496f-b455-381f660b0cbc}</destination>
+			<destination>{2d64919b-6e5d-4d7c-9136-ba71c98e00aa}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{964aa6f7-0a36-4771-87b3-3fd01326ed3c}" />
 	<object class="ParameterCondition" id="{244d9c13-4667-49a8-819b-f310fae946b3}">
 		<property name="minimum">
 			<value>0</value>
@@ -296,6 +325,27 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{e93c8fde-6948-4404-9418-4081780dc8b7}" />
+	<object class="MixerBusFader" id="{faa42e3b-50ce-496f-b455-381f660b0cbc}" />
+	<object class="MultibandEqEffect" id="{2d64919b-6e5d-4d7c-9136-ba71c98e00aa}">
+		<property name="filterTypeA">
+			<value>4</value>
+		</property>
+		<property name="filterTypeE">
+			<value>1</value>
+		</property>
+		<property name="frequencyA">
+			<value>691.389343</value>
+		</property>
+		<property name="frequencyE">
+			<value>9407.97559</value>
+		</property>
+		<property name="qualityA">
+			<value>0.44460237</value>
+		</property>
+		<property name="qualityE">
+			<value>0.655046582</value>
+		</property>
+	</object>
 	<object class="Plugin" id="{a2feb87c-9843-4ea9-bd30-2b8d9ea3f09e}">
 		<property name="identifier">
 			<value>atmoky Spatializer</value>
@@ -364,7 +414,6 @@
 		<property name="name">
 			<value>3DAttributes</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-2</value>
 		</property>
@@ -522,7 +571,6 @@
 		<property name="name">
 			<value>3DAttributesMul</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-5</value>
 		</property>
@@ -531,7 +579,6 @@
 		<property name="name">
 			<value>overallGain</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-1</value>
 		</property>
@@ -540,7 +587,6 @@
 		<property name="name">
 			<value>attenuationRang</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-6</value>
 		</property>
