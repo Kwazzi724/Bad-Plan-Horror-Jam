@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private SoundLabel stepPace = new SoundLabel("WalkRun", "Walk");
     [SerializeField] private SoundLabel stepFloor = new SoundLabel("Floor", "Wood");
 
+    public bool Frozen { get; set; }
+
     private CharacterController controller;
     private PlayerInputReader input;
     private float verticalVelocity;
@@ -25,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Vector2 moveInput = Vector2.ClampMagnitude(input.Move, 1f);
+        Vector2 moveInput = Frozen ? Vector2.zero : Vector2.ClampMagnitude(input.Move, 1f);
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
 
         if (controller.isGrounded && verticalVelocity < 0f)

@@ -262,6 +262,9 @@ MonoBehaviour:
       Data3: 1233619357
       Data4: -675566774
     Path: event:/SFX/Player/Torch
+  toggleParameter: OnOff
+  onLabel: On
+  offLabel: Off
 --- !u!1 &2979223127526191665
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,8 +350,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1.5, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: -0.3, z: 0}
 --- !u!54 &4010343137442754090
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1014,6 +1017,24 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
     m_Priority: 0
+  releaseAction:
+    m_Name: Release
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: d7cecc6b-1113-40bd-98f8-7088edfa70d4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 7a81101c-bff5-43a5-b3b3-633b3f647253
+      m_Path: <Mouse>/rightButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Release
+      m_Flags: 0
+    m_Flags: 0
+    m_Priority: 0
 --- !u!114 &221675877458983472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1037,6 +1058,12 @@ MonoBehaviour:
       Data4: -548044253
     Path: event:/SFX/Env/Footsteps
   stepDistance: 1.8
+  stepPace:
+    parameter: WalkRun
+    label: Walk
+  stepFloor:
+    parameter: Floor
+    label: Wood
 --- !u!114 &6702591491034009952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,3 +1082,4 @@ MonoBehaviour:
   maxPitch: 85
   invertY: 0
   lockCursor: 1
+  faceDuration: 0.35
