@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "com.atmoky.truespatial-fmod": {
-      "version": "file:/Users/nicolasmerk/Downloads/atmokyTrueSpatial_FMOD_v2.2.0/atmokyTrueSpatial_FMOD_v2.2.0_UnityIntegration/com.atmoky.truespatial-fmod-2.2.0.tgz",
+      "version": "file:C:/Users/User/Downloads/atmokyTrueSpatial_FMOD_v2.2.0_UnityIntegration/atmokyTrueSpatial_FMOD_v2.2.0_UnityIntegration/com.atmoky.truespatial-fmod-2.2.0/package",
       "depth": 0,
-      "source": "local-tarball",
+      "source": "local",
       "dependencies": {}
     },
     "com.unity.ai.navigation": {
@@ -187,6 +187,15 @@
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.unity.visualeffectgraph": {
+      "version": "17.3.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.shadergraph": "17.3.0",
+        "com.unity.render-pipelines.core": "17.3.0"
       }
     },
     "com.unity.visualscripting": {

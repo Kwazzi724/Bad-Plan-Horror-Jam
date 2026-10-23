@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     public static StageManager Instance { get; private set; }
+    public event Action<Stage> StageEntered;
     
     [SerializeField] private List<GameObject> stages;
     // only used for where the very first hallway spawns, everything after chains off the LoadRoots
@@ -79,6 +81,7 @@ public class StageManager : MonoBehaviour
         CurrentStageIndex = upcomingIndex;
         UpcomingStage = null;
         Debug.Log($"now in stage {CurrentStageIndex} '{CurrentStage.name}'", this);
+        StageEntered?.Invoke(CurrentStage);
         PreloadNextStage();
     }
 
@@ -137,6 +140,7 @@ public class StageManager : MonoBehaviour
         {
             if (stageObject == null)
                 continue;
+
             if (stageObject.GetComponent<Stage>() == null)
                 Debug.LogWarning($"Stage manager list has no stage on game object {stageObject.name}");
         }
