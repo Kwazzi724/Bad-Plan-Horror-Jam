@@ -203,7 +203,7 @@ MonoBehaviour:
   phoneActionParameter: PhoneAction
   ringLabel: Ring
   pickUpLabel: PickUp
-  hangUpLabel: HungUp
+  hangUpLabel: PickUp
   staticSound:
     Guid:
       Data1: 633179777
