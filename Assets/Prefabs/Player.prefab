@@ -1052,11 +1052,11 @@ MonoBehaviour:
   groundedStickForce: -2
   footstepEvent:
     Guid:
-      Data1: 1934713875
-      Data2: 1150512364
-      Data3: -2137387370
-      Data4: -548044253
-    Path: event:/SFX/Env/Footsteps
+      Data1: -576419971
+      Data2: 1338956157
+      Data3: -1635326292
+      Data4: 205240205
+    Path: event:/SFX/Player/Steps
   stepDistance: 1.8
   stepPace:
     parameter: WalkRun
