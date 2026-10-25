@@ -34,7 +34,8 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [SerializeField] private string phoneActionParameter = "PhoneAction";
     [SerializeField] private string ringLabel = "Ring";
     [SerializeField] private string pickUpLabel = "PickUp";
-    [SerializeField] private string hangUpLabel = "HungUp";
+    [SerializeField] private string hangUpLabel = "PutDown";
+    [SerializeField] private string staticSoundLabel = "HangUp";
     [SerializeField] private EventReference staticSound;
 
     [Header("Stages")]
@@ -206,7 +207,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
     private void StartStatic()
     {
-        staticInstance = CreateInstance(staticSound, null);
+        staticInstance = CreateInstance(staticSound, staticSoundLabel);
         if (staticInstance.isValid())
             staticInstance.start();
     }

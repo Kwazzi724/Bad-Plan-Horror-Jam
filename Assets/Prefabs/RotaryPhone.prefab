@@ -203,14 +203,15 @@ MonoBehaviour:
   phoneActionParameter: PhoneAction
   ringLabel: Ring
   pickUpLabel: PickUp
-  hangUpLabel: HungUp
+  hangUpLabel: PutDown
+  staticSoundLabel: HungUp
   staticSound:
     Guid:
-      Data1: 633179777
-      Data2: 1175607636
-      Data3: -475151466
-      Data4: 394519282
-    Path: event:/SFX/Env/ElectricalStaticNoise
+      Data1: 2142913504
+      Data2: 1188734694
+      Data3: 46613919
+      Data4: 1853035543
+    Path: event:/SFX/Objects/Telephone
   stageBehaviours:
   - stage: 2
     rings: 1
@@ -221,7 +222,7 @@ MonoBehaviour:
         Data2: 1171353409
         Data3: 1065698988
         Data4: -2019873888
-      Path: event:/SFX/Objects/PaperRustle
+      Path: event:/SFX/Player/PaperRustle
 --- !u!65 &-2102475860883971488
 BoxCollider:
   m_ObjectHideFlags: 0
