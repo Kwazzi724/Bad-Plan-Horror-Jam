@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{c61367ba-4c6b-45c8-86f6-2179cbf9ff97}">
+		<property name="name">
+			<value>MouthActino</value>
+		</property>
+		<relationship name="folder">
+			<destination>{7d8a8359-4ef9-4ab1-9f64-77db4380d4a8}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{1b30b88e-a450-438c-8bc8-c08c6acb2911}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{1b30b88e-a450-438c-8bc8-c08c6acb2911}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Attach</value>
+			<value>Detach</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
