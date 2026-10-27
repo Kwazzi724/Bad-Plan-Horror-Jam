@@ -70,6 +70,8 @@ public class Clock : MonoBehaviour, IHoldInteractable
 
     public void ClockTuneFail()
     {
+        if (GameManager.Instance != null)
+            GameManager.Instance.GameOver();
     }
 
     private static bool TryParseTime(string time, out int hour, out int minute)

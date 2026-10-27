@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Fade")]
     [SerializeField] private float fadeInDuration = 1f;
-
-    // NEW: text (or any UI object) that appears when the player goes insane
     [Header("Sanity")]
     [SerializeField] private GameObject insaneText;
 
@@ -51,7 +49,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // NEW: make sure the insane text starts hidden
         if (insaneText != null)
             insaneText.SetActive(false);
 
@@ -83,6 +80,10 @@ public class GameManager : MonoBehaviour
     {
         if (insaneText != null)
             insaneText.SetActive(true);
+    }
+
+    public void GameOver()
+    {
     }
 
     private void HandleStageEntered(Stage stage)

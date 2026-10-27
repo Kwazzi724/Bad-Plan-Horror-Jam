@@ -73,7 +73,7 @@ public class PlayerInteractor : MonoBehaviour
 
         if (carried != null)
         {
-            SetTarget(null);
+            SetTarget(FindNearestReceiver() as IInteractable);
             return;
         }
 
@@ -106,7 +106,13 @@ public class PlayerInteractor : MonoBehaviour
 
         if (carried != null)
         {
-            carried.Drop();
+            ItemReceiver receiver = FindNearestReceiver();
+
+            if (receiver != null)
+                receiver.Receive(carried);
+            else
+                carried.Drop();
+
             carried = null;
             SetTarget(FindNearest());
             return;
@@ -204,6 +210,30 @@ public class PlayerInteractor : MonoBehaviour
             GameManager.Instance.HideHoldPrompt();
     }
 
+    private ItemReceiver FindNearestReceiver()
+    {
+        interactablesInRange.RemoveAll(item => item as Object == null);
+
+        ItemReceiver nearest = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (IInteractable interactable in interactablesInRange)
+        {
+            if (!(interactable is ItemReceiver receiver) || !receiver.CanReceive(carried)) continue;
+
+            Component component = interactable as Component;
+            float distance = (component.transform.position - transform.position).sqrMagnitude;
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearest = receiver;
+            }
+        }
+
+        return nearest;
+    }
+
     private IInteractable FindNearest()
     {
         interactablesInRange.RemoveAll(item => item as Object == null);
@@ -213,7 +243,6 @@ public class PlayerInteractor : MonoBehaviour
 
         foreach (IInteractable interactable in interactablesInRange)
         {
-
             Component component = interactable as Component;
             float distance = (component.transform.position - transform.position).sqrMagnitude;
 
