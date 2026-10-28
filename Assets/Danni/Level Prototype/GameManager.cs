@@ -20,12 +20,15 @@ public class GameManager : MonoBehaviour
     [Header("Fade")]
     [SerializeField] private float fadeInDuration = 1f;
 
-    // NEW: text (or any UI object) that appears when the player goes insane
     [Header("Sanity")]
     [SerializeField] private GameObject insaneText;
 
     [Header("Interaction")]
     [SerializeField] private TMP_Text holdPromptText;
+
+    [Header("Messages")]
+    [SerializeField] private TMP_Text messageText;
+    [SerializeField] private float messageDuration = 1.5f;
 
     public int CurrentStageNumber { get; private set; }
     public int NextStageNumber => CurrentStageNumber + 1;
@@ -34,6 +37,7 @@ public class GameManager : MonoBehaviour
     public event Action<Stage, int> StageEntered;
 
     private GameObject currentPlayer;
+    private Coroutine messageRoutine;
 
     private void Awake()
     {
@@ -51,7 +55,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // NEW: make sure the insane text starts hidden
         if (insaneText != null)
             insaneText.SetActive(false);
 
@@ -65,6 +68,8 @@ public class GameManager : MonoBehaviour
             return;
 
         HideHoldPrompt();
+        if (messageText != null)
+            messageText.gameObject.SetActive(false);
         stageManager.StageEntered += HandleStageEntered;
         CurrentStageNumber = 1;
         StageEntered?.Invoke(stageManager.CurrentStage, CurrentStageNumber);
@@ -78,11 +83,14 @@ public class GameManager : MonoBehaviour
         SpawnPlayer();
     }
 
-    // NEW: called by SanityVoices when the player has been in the dark too long
     public void Insane()
     {
         if (insaneText != null)
             insaneText.SetActive(true);
+    }
+
+    public void GameOver()
+    {
     }
 
     private void HandleStageEntered(Stage stage)
@@ -103,6 +111,25 @@ public class GameManager : MonoBehaviour
 
         holdPromptText.text = message;
         holdPromptText.gameObject.SetActive(true);
+    }
+
+    public void ShowMessage(string message)
+    {
+        if (messageText == null || string.IsNullOrEmpty(message)) return;
+
+        if (messageRoutine != null)
+            StopCoroutine(messageRoutine);
+
+        messageRoutine = StartCoroutine(MessageRoutine(message));
+    }
+
+    private IEnumerator MessageRoutine(string message)
+    {
+        messageText.text = message;
+        messageText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(messageDuration);
+        messageText.gameObject.SetActive(false);
+        messageRoutine = null;
     }
 
     public void HideHoldPrompt()

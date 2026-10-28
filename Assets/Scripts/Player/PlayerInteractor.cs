@@ -17,6 +17,7 @@ public class PlayerInteractor : MonoBehaviour
     private PlayerMovement movement;
     private PlayerLook look;
     private Pickup carried;
+    private Cloth carriedCloth;
 
     public Pickup Carried => carried;
 
@@ -71,9 +72,15 @@ public class PlayerInteractor : MonoBehaviour
             return;
         }
 
-        if (carried != null)
+        if (carriedCloth != null && (carriedCloth.IsWiping || carriedCloth.Target != null))
         {
             SetTarget(null);
+            return;
+        }
+
+        if (carried != null)
+        {
+            SetTarget(FindNearestReceiver() as IInteractable);
             return;
         }
 
@@ -103,11 +110,25 @@ public class PlayerInteractor : MonoBehaviour
     private void HandleInteracted()
     {
         if (heldInteractable != null) return;
+        if (carriedCloth != null && carriedCloth.IsWiping) return;
+
+        if (carriedCloth != null && carriedCloth.Target != null)
+        {
+            BeginWipe();
+            return;
+        }
 
         if (carried != null)
         {
-            carried.Drop();
+            IItemReceiver receiver = FindNearestReceiver();
+
+            if (receiver != null)
+                receiver.Receive(carried);
+            else
+                carried.Drop();
+
             carried = null;
+            carriedCloth = null;
             SetTarget(FindNearest());
             return;
         }
@@ -124,6 +145,7 @@ public class PlayerInteractor : MonoBehaviour
             }
 
             carried = pickup;
+            carriedCloth = pickup.GetComponent<Cloth>();
             pickup.PickUp(holdPose);
             SetTarget(null);
             return;
@@ -138,6 +160,31 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         SetTarget(FindNearest());
+    }
+
+    private void BeginWipe()
+    {
+        SetFrozen(true);
+
+        if (look != null)
+            look.FaceTowards(carriedCloth.Target.Center);
+
+        if (!carriedCloth.Wipe(EndWipe))
+            SetFrozen(false);
+    }
+
+    private void EndWipe()
+    {
+        SetFrozen(false);
+    }
+
+    private void SetFrozen(bool frozen)
+    {
+        if (movement != null)
+            movement.Frozen = frozen;
+
+        if (look != null)
+            look.Frozen = frozen;
     }
 
     private void HandleReleased()
@@ -204,6 +251,30 @@ public class PlayerInteractor : MonoBehaviour
             GameManager.Instance.HideHoldPrompt();
     }
 
+    private IItemReceiver FindNearestReceiver()
+    {
+        interactablesInRange.RemoveAll(item => item as Object == null);
+
+        IItemReceiver nearest = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (IInteractable interactable in interactablesInRange)
+        {
+            if (!(interactable is IItemReceiver receiver) || !receiver.CanReceive(carried)) continue;
+
+            Component component = interactable as Component;
+            float distance = (component.transform.position - transform.position).sqrMagnitude;
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearest = receiver;
+            }
+        }
+
+        return nearest;
+    }
+
     private IInteractable FindNearest()
     {
         interactablesInRange.RemoveAll(item => item as Object == null);
@@ -213,7 +284,6 @@ public class PlayerInteractor : MonoBehaviour
 
         foreach (IInteractable interactable in interactablesInRange)
         {
-
             Component component = interactable as Component;
             float distance = (component.transform.position - transform.position).sqrMagnitude;
 
