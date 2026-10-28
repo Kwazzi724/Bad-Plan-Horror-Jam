@@ -8,7 +8,7 @@
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{326d6446-b674-4e29-8c09-dce39786e5a8}</destination>
+			<destination>{59bbd3ca-2b7d-4dbd-9e87-26dae4d46d31}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{57d1f019-f6d6-4f1c-a689-ae1fcbfa2658}</destination>
@@ -112,7 +112,6 @@
 			<value>-11.5</value>
 		</property>
 		<relationship name="parameters">
-			<destination>{8f5e09fe-d547-4a05-b8a9-26b2245c53e8}</destination>
 			<destination>{6c71ccc0-1c66-45b2-8edc-f3dd93894b4a}</destination>
 		</relationship>
 		<relationship name="event">
@@ -142,11 +141,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{0b435adf-e391-46bd-9d33-acb9adc8623e}" />
 	<object class="MixerBusFader" id="{840e92dc-d9c6-42a2-bbfd-d9fdc079a184}" />
-	<object class="ParameterProperty" id="{8f5e09fe-d547-4a05-b8a9-26b2245c53e8}">
-		<relationship name="parameter">
-			<destination>{43996b75-1bfe-48a4-a528-2d4147a4a16c}</destination>
-		</relationship>
-	</object>
 	<object class="ParameterProperty" id="{6c71ccc0-1c66-45b2-8edc-f3dd93894b4a}">
 		<relationship name="parameter">
 			<destination>{6e4af902-9734-4d15-b367-7affbe137784}</destination>
@@ -247,7 +241,6 @@
 		<property name="name">
 			<value>3DAttributes</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-2</value>
 		</property>
@@ -405,7 +398,6 @@
 		<property name="name">
 			<value>3DAttributesMul</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-5</value>
 		</property>
@@ -414,7 +406,6 @@
 		<property name="name">
 			<value>overallGain</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-1</value>
 		</property>
@@ -423,7 +414,6 @@
 		<property name="name">
 			<value>attenuationRang</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-6</value>
 		</property>
