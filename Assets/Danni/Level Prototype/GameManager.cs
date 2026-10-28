@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,8 +27,9 @@ public class GameManager : MonoBehaviour
     [Header("Interaction")]
     [SerializeField] private TMP_Text holdPromptText;
 
+    [FormerlySerializedAs("messageText")]
     [Header("Messages")]
-    [SerializeField] private TMP_Text messageText;
+    [SerializeField] private TMP_Text lockedText;
     [SerializeField] private float messageDuration = 1.5f;
 
     public int CurrentStageNumber { get; private set; }
@@ -68,8 +70,8 @@ public class GameManager : MonoBehaviour
             return;
 
         HideHoldPrompt();
-        if (messageText != null)
-            messageText.gameObject.SetActive(false);
+        if (lockedText != null)
+            lockedText.gameObject.SetActive(false);
         stageManager.StageEntered += HandleStageEntered;
         CurrentStageNumber = 1;
         StageEntered?.Invoke(stageManager.CurrentStage, CurrentStageNumber);
@@ -87,6 +89,12 @@ public class GameManager : MonoBehaviour
     {
         if (insaneText != null)
             insaneText.SetActive(true);
+    }
+
+    public void Sane()
+    {
+        if (insaneText != null)
+            insaneText.SetActive(false);
     }
 
     public void GameOver()
@@ -115,7 +123,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowMessage(string message)
     {
-        if (messageText == null || string.IsNullOrEmpty(message)) return;
+        if (lockedText == null || string.IsNullOrEmpty(message)) return;
 
         if (messageRoutine != null)
             StopCoroutine(messageRoutine);
@@ -125,10 +133,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MessageRoutine(string message)
     {
-        messageText.text = message;
-        messageText.gameObject.SetActive(true);
+        lockedText.text = message;
+        lockedText.gameObject.SetActive(true);
         yield return new WaitForSeconds(messageDuration);
-        messageText.gameObject.SetActive(false);
+        lockedText.gameObject.SetActive(false);
         messageRoutine = null;
     }
 

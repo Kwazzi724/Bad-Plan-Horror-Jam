@@ -38,6 +38,9 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [SerializeField] private string staticSoundLabel = "HangUp";
     [SerializeField] private EventReference staticSound;
 
+    [Header("Ringing")]
+    [SerializeField] private float heldRingDuration = 2f;
+
     [Header("Stages")]
     [SerializeField] private List<PhoneStageBehaviour> stageBehaviours = new List<PhoneStageBehaviour> { new PhoneStageBehaviour() };
 
@@ -45,8 +48,10 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private PhoneStageBehaviour currentBehaviour;
     private bool isActive;
     private bool isHeld;
-    private bool hasAnswered;
+    private bool hasRung;
+    private bool isRinging;
     private Coroutine ringRoutine;
+    private Coroutine heldRingRoutine;
     private EventInstance ringInstance;
     private EventInstance voiceInstance;
     private EventInstance staticInstance;
@@ -94,7 +99,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
     private void Update()
     {
-        if (IsStopped(ringInstance))
+        if (isRinging && IsStopped(ringInstance))
             ringInstance.start();
 
         if (!isHeld) return;
@@ -118,18 +123,27 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         if (!CanInteract) return;
 
         isHeld = true;
-        hasAnswered = true;
-        StopRinging();
 
         PlayAnimation(pickUpState);
         SoundPlayer.PlayOneShot(telephoneSound, transform.position, new SoundLabel(phoneActionParameter, pickUpLabel));
-        StartListening();
+
+        if (isRinging)
+        {
+            AnswerRing();
+            return;
+        }
+
+        if (hasRung)
+            StartListening();
+        else
+            StartStatic();
     }
 
     public void EndInteract()
     {
         if (!isHeld) return;
         isHeld = false;
+        StopHeldRing();
 
         StopInstance(ref voiceInstance);
         StopInstance(ref staticInstance);
@@ -151,7 +165,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private void Activate(int stageNumber)
     {
         isActive = true;
-        hasAnswered = false;
+        hasRung = false;
         StopRinging();
 
         currentBehaviour = stageBehaviours.Find(behaviour => behaviour.stage == stageNumber);
@@ -170,13 +184,52 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     {
         yield return new WaitForSeconds(delay);
         ringRoutine = null;
+        StartRinging();
+    }
 
-        if (!isHeld && !hasAnswered)
+    private void StartRinging()
+    {
+        hasRung = true;
+        isRinging = true;
+
+        StopInstance(ref ringInstance);
+        ringInstance = CreateInstance(telephoneSound, ringLabel);
+        if (ringInstance.isValid())
+            ringInstance.start();
+
+        if (isHeld)
         {
-            ringInstance = CreateInstance(telephoneSound, ringLabel);
-            if (ringInstance.isValid())
-                ringInstance.start();
+            StopInstance(ref voiceInstance);
+            StopInstance(ref staticInstance);
+            StopHeldRing();
+            heldRingRoutine = StartCoroutine(HeldRing());
         }
+    }
+
+    private IEnumerator HeldRing()
+    {
+        yield return new WaitForSeconds(heldRingDuration);
+        heldRingRoutine = null;
+
+        if (isHeld && isRinging)
+            AnswerRing();
+    }
+
+    private void AnswerRing()
+    {
+        StopHeldRing();
+        isRinging = false;
+        StopInstance(ref ringInstance);
+        StopInstance(ref staticInstance);
+        StartListening();
+    }
+
+    private void StopHeldRing()
+    {
+        if (heldRingRoutine == null) return;
+
+        StopCoroutine(heldRingRoutine);
+        heldRingRoutine = null;
     }
 
     private void StopRinging()
@@ -187,11 +240,16 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             ringRoutine = null;
         }
 
+        StopHeldRing();
+        isRinging = false;
         StopInstance(ref ringInstance);
     }
 
     private void StartListening()
     {
+        StopInstance(ref voiceInstance);
+        StopInstance(ref staticInstance);
+
         if (currentBehaviour != null && !currentBehaviour.voiceLine.IsNull)
         {
             voiceInstance = CreateInstance(currentBehaviour.voiceLine, null);
@@ -207,6 +265,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
     private void StartStatic()
     {
+        StopInstance(ref staticInstance);
         staticInstance = CreateInstance(staticSound, staticSoundLabel);
         if (staticInstance.isValid())
             staticInstance.start();

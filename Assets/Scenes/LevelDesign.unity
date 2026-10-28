@@ -1678,6 +1678,9 @@ MonoBehaviour:
   spawnDelay: 1
   fadeInDuration: 1
   insaneText: {fileID: 0}
+  holdPromptText: {fileID: 0}
+  messageText: {fileID: 0}
+  messageDuration: 1.5
 --- !u!4 &1234739105
 Transform:
   m_ObjectHideFlags: 0
