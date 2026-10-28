@@ -1,0 +1,31 @@
+# 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
+# File Created: 27.10.2026 14:01:46
+
+mtllib LongWall.mtl
+
+#
+# object longWall
+#
+
+v  -360.1041 90.5232 0.4265
+v  -360.1041 52.1543 0.4265
+v  -167.2774 52.1543 0.4265
+v  -167.2774 90.5232 0.4265
+# 4 vertices
+
+vn 0.0000 -0.0000 1.0000
+# 1 vertex normals
+
+vt 0.0000 0.1990 0.0000
+vt 0.0000 0.0000 0.0000
+vt 1.0000 0.0000 0.0000
+vt 1.0000 0.1990 0.0000
+# 4 texture coords
+
+o longWall
+g longWall
+usemtl wire_202221104
+s 1
+f 1/1/1 2/2/1 3/3/1 4/4/1 
+# 1 polygons
+
