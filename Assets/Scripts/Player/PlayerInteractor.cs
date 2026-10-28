@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerInteractor : MonoBehaviour
 {
     [SerializeField] private GameObject interactorRoot;
+    [SerializeField] private Transform holdPose;
 
     private readonly List<IInteractable> interactablesInRange = new List<IInteractable>();
     private PlayerInputReader input;
@@ -15,6 +16,9 @@ public class PlayerInteractor : MonoBehaviour
     private bool cursorUnlocked;
     private PlayerMovement movement;
     private PlayerLook look;
+    private Pickup carried;
+
+    public Pickup Carried => carried;
 
     private void Awake()
     {
@@ -67,6 +71,12 @@ public class PlayerInteractor : MonoBehaviour
             return;
         }
 
+        if (carried != null)
+        {
+            SetTarget(null);
+            return;
+        }
+
         SetTarget(FindNearest());
     }
 
@@ -94,8 +104,30 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (heldInteractable != null) return;
 
+        if (carried != null)
+        {
+            carried.Drop();
+            carried = null;
+            SetTarget(FindNearest());
+            return;
+        }
+
         IInteractable nearest = FindNearest();
         if (nearest == null) return;
+
+        if (nearest is Pickup pickup)
+        {
+            if (holdPose == null)
+            {
+                Debug.LogWarning("PlayerInteractor: no Hold Pose assigned, can't pick things up.", this);
+                return;
+            }
+
+            carried = pickup;
+            pickup.PickUp(holdPose);
+            SetTarget(null);
+            return;
+        }
 
         nearest.OnInteract(interactorRoot);
 
@@ -181,6 +213,7 @@ public class PlayerInteractor : MonoBehaviour
 
         foreach (IInteractable interactable in interactablesInRange)
         {
+
             Component component = interactable as Component;
             float distance = (component.transform.position - transform.position).sqrMagnitude;
 

@@ -176,7 +176,7 @@ MonoBehaviour:
   stepFloor:
     parameter: Floor
     label: Wood
-  emptyLooksBeforeReveal: 3
+  emptyLooksBeforeReveal: 2
   lookAngle: 30
   minUnseenTime: 2
   offScreenMargin: 0.15
