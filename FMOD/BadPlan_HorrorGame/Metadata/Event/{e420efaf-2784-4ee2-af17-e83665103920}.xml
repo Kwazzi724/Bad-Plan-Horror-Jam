@@ -432,15 +432,15 @@
 			<value>2.7093596059113301</value>
 		</property>
 		<property name="value">
-			<value>-4</value>
+			<value>-1</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{d398090a-dea9-4b0c-8db5-c10689a11f2e}">
 		<property name="position">
-			<value>95</value>
+			<value>100</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>2</value>
 		</property>
 	</object>
 	<object class="Automator" id="{53ce3a20-80df-4d3e-9732-fcaf9f3fdcdd}">
@@ -475,7 +475,7 @@
 			<value>MaxDistance</value>
 		</property>
 		<property name="value">
-			<value>20</value>
+			<value>50</value>
 		</property>
 		<property name="curve">
 			<value>{(0.000000,0.000000)(2.000000,1.000000)(5.000000,5.000000)(10.000000,10.000000)(15.000000,100.000000)(20.000000,1000.000000)(27.000000,10000.000000)}</value>
@@ -632,7 +632,7 @@
 			<value>nfeBassBoost</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>1.80000007</value>
 		</property>
 		<property name="curve">
 			<value>{(0.000000,0.000000)(1.000000,10.000000)}</value>
