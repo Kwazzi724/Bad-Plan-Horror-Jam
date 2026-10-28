@@ -3838,6 +3838,7 @@ Transform:
   - {fileID: 2928107305331957740}
   - {fileID: 5771293570574140981}
   - {fileID: 3390513896075704419}
+  - {fileID: 3092555456506388332}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1053884801181194304
@@ -5666,6 +5667,13 @@ MonoBehaviour:
   moveOffset: {x: 1, y: 0, z: 0}
   moveSpace: 1
   moveSpeed: 0.7
+  discoverySound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &6576239356079586543
 GameObject:
   m_ObjectHideFlags: 0
@@ -8743,6 +8751,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5184544329424100934, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: isCorrect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8950046776148094412, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
       propertyPath: m_Name
       value: AgroMannequin
@@ -9100,6 +9112,72 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4310844424288089638, guid: 079266b678d848a499bed4c2d7865a5e, type: 3}
   m_PrefabInstance: {fileID: 1347802299541837307}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1510703464667084923
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 877493876926364284}
+    m_Modifications:
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.144
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.381
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.438
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184544329424100934, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: isCorrect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8950046776148094412, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+      propertyPath: m_Name
+      value: AgroMannequin (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+--- !u!4 &3092555456506388332 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4475995294704379671, guid: b3660d7b848764b49b3108c140ae7b16, type: 3}
+  m_PrefabInstance: {fileID: 1510703464667084923}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1642016077502568245
 PrefabInstance:
@@ -12027,6 +12105,10 @@ PrefabInstance:
     - target: {fileID: 1531728787240878492, guid: cc13ae94dc727a94db52c4c5dfbedf70, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4966169871665403653, guid: cc13ae94dc727a94db52c4c5dfbedf70, type: 3}
+      propertyPath: isClock
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5984679069552473639, guid: cc13ae94dc727a94db52c4c5dfbedf70, type: 3}
       propertyPath: m_Name

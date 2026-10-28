@@ -106,7 +106,7 @@ public class PlayerInteractor : MonoBehaviour
 
         if (carried != null)
         {
-            ItemReceiver receiver = FindNearestReceiver();
+            IItemReceiver receiver = FindNearestReceiver();
 
             if (receiver != null)
                 receiver.Receive(carried);
@@ -210,16 +210,16 @@ public class PlayerInteractor : MonoBehaviour
             GameManager.Instance.HideHoldPrompt();
     }
 
-    private ItemReceiver FindNearestReceiver()
+    private IItemReceiver FindNearestReceiver()
     {
         interactablesInRange.RemoveAll(item => item as Object == null);
 
-        ItemReceiver nearest = null;
+        IItemReceiver nearest = null;
         float nearestDistance = float.MaxValue;
 
         foreach (IInteractable interactable in interactablesInRange)
         {
-            if (!(interactable is ItemReceiver receiver) || !receiver.CanReceive(carried)) continue;
+            if (!(interactable is IItemReceiver receiver) || !receiver.CanReceive(carried)) continue;
 
             Component component = interactable as Component;
             float distance = (component.transform.position - transform.position).sqrMagnitude;

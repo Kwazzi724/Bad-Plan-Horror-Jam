@@ -1,15 +1,20 @@
+using System;
 using FMODUnity;
 using UnityEngine;
 
-public class ItemSlot : MonoBehaviour, IInteractable, ItemReceiver
+public class MouthSlot : MonoBehaviour, IInteractable, IItemReceiver
 {
     [SerializeField] private Transform slotPoint;
     [SerializeField] private EventReference slotSound;
 
     private MouthItem slotted;
+    private bool solved;
 
     public bool CanInteract => false;
     public MouthItem Slotted => slotted;
+    public bool IsSolved => solved;
+
+    public event Action Solved;
 
     public void OnInteract(GameObject interactor)
     {
@@ -44,6 +49,9 @@ public class ItemSlot : MonoBehaviour, IInteractable, ItemReceiver
 
     public void Correct()
     {
+        if (solved) return;
+        solved = true;
+        Solved?.Invoke();
     }
 
     public void Incorrect()

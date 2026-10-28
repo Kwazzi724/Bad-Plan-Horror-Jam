@@ -188,6 +188,37 @@ MonoBehaviour:
       Data3: 1169360827
       Data4: 1311280275
     Path: event:/SFX/Env/Door_Squeak
+  openStyle:
+    parameter: HardSoft
+    label: Soft
+  closeStyle:
+    parameter: HardSoft
+    label: Hard
+  squeakStyle:
+    parameter: FastMedSlow
+    label: Fast
+  rattleSound:
+    Guid:
+      Data1: -1494453860
+      Data2: 1249789695
+      Data3: 201513647
+      Data4: -338964303
+    Path: event:/SFX/Env/Door_Noises
+  rattleStyle:
+    parameter: Type
+    label: Rattling
+  unlockSqueakStyle:
+    parameter: FastMedSlow
+    label: Slow
+  isClock: 0
+  isMouth: 0
+  isCleaning: 0
+  isTidying: 0
+  isFinal: 0
+  lockedMessage: Locked
+  rattleCooldown: 1
+  unlockOpenAngle: 30
+  unlockOpenSpeed: 20
   passClearance: 0.2
 --- !u!1001 &3515024920271489348
 PrefabInstance:

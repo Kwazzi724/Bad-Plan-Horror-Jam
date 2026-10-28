@@ -92,7 +92,12 @@ public class Stalker : MonoBehaviour, IEnemy
         if (state != StalkerState.Following || player == null || IsPaused) return;
 
         if (viewer == null)
-            viewer = Camera.main;
+        {
+            viewer = player.GetComponentInChildren<Camera>();
+
+            if (viewer == null)
+                viewer = Camera.main;
+        }
 
         RecordPlayer();
         Follow();

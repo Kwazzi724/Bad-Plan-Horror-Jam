@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1437,9 +1437,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   spawns:
-  - stage: 3
+  - stage: 4
     enemyPrefab: {fileID: 8347951012143195454, guid: b6dc98dd06febef448d280f46b4b88c7, type: 3}
-    spawnDelay: 10
+    spawnDelay: 3
     distanceBehindPlayer: 4
     despawnOnNextStage: 1
 --- !u!4 &1233134927
@@ -1874,7 +1874,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1469897609}
-  - component: {fileID: 1469897608}
+  - component: {fileID: 1469897610}
   m_Layer: 0
   m_Name: 'Ambience '
   m_TagString: Untagged
@@ -1882,27 +1882,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1469897608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469897607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cb6337797e2c7744b72f47f9ffe38a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LoopingSound
-  soundEvent:
-    Guid:
-      Data1: 1608513226
-      Data2: 1330221016
-      Data3: -2114083161
-      Data4: -1871121182
-    Path: event:/Ambience/Ambience
-  restartWhenFinished: 1
-  fadeOutOnStop: 1
 --- !u!4 &1469897609
 Transform:
   m_ObjectHideFlags: 0
@@ -1918,6 +1897,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1469897610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469897607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640abd7d9ee9c8542975dc0db1533cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelAmbiance
+  levelMusic:
+    Guid:
+      Data1: 1977592354
+      Data2: 1235753250
+      Data3: -2011732584
+      Data4: 531272037
+    Path: event:/Music/LevelMusic
+  loopParameter: Loop
+  loopPerStage: 00000000010000000200000003000000
+  restartWhenFinished: 1
+  fadeOutOnStop: 1
 --- !u!1 &1576513650
 GameObject:
   m_ObjectHideFlags: 0
@@ -2040,7 +2042,7 @@ PrefabInstance:
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[0]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: be1c46c629b4dd64bb85a8e78b2d0608, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: b48fac25383f378429804384bd4e2bfc, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[1]'
       value: 

@@ -15,8 +15,12 @@ public class Clock : MonoBehaviour, IHoldInteractable
     [SerializeField] private string startTime = "00:00";
 
     private bool isOpen;
+    private bool solved;
 
     public event Action Finished;
+    public event Action Solved;
+
+    public bool IsSolved => solved;
 
     public bool CanInteract => !isOpen && minigame != null;
     public Transform FocusPoint => focusPoint != null ? focusPoint : transform;
@@ -66,6 +70,9 @@ public class Clock : MonoBehaviour, IHoldInteractable
 
     public void ClockTuneSuccessful()
     {
+        if (solved) return;
+        solved = true;
+        Solved?.Invoke();
     }
 
     public void ClockTuneFail()

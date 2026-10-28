@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using FMODUnity;
 using UnityEngine;
 
@@ -25,11 +26,27 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private SoundLabel openStyle = new SoundLabel("HardSoft", "Soft");
     [SerializeField] private SoundLabel closeStyle = new SoundLabel("HardSoft", "Hard");
     [SerializeField] private SoundLabel squeakStyle = new SoundLabel("FastMedSlow", "Fast");
+    [SerializeField] private EventReference rattleSound;
+    [SerializeField] private SoundLabel rattleStyle = new SoundLabel("Type", "Rattling");
+    [SerializeField] private SoundLabel unlockSqueakStyle = new SoundLabel("FastMedSlow", "Slow");
+
+    [Header("Minigames")]
+    [SerializeField] private bool isClock;
+    [SerializeField] private bool isMouth;
+    [SerializeField] private bool isCleaning;
+    [SerializeField] private bool isTidying;
+    [SerializeField] private bool isFinal;
+
+    [Header("Locked")]
+    [SerializeField] private string lockedMessage = "Locked";
+    [SerializeField] private float rattleCooldown = 1f;
+    [SerializeField] private float unlockOpenAngle = 30f;
+    [SerializeField] private float unlockOpenSpeed = 20f;
 
     [Header("Lock")]
     [SerializeField] private float passClearance = 0.6f;
 
-    private enum DoorState { Closed, Opening, Open, Closing, Locked }
+    private enum DoorState { Closed, Opening, Open, Closing, Locked, LockedShut, Ajar }
 
     private DoorState state = DoorState.Closed;
     private Transform passer;
@@ -41,11 +58,18 @@ public class Door : MonoBehaviour, IInteractable
     private Collider[] panelColliders;
     private Transform referenceSpace;
     private Quaternion closedHingeRotation;
+    private float ajarSign = 1f;
+    private float nextRattleTime;
+    private readonly List<Clock> clocks = new List<Clock>();
+    private readonly List<MouthSlot> mouthSlots = new List<MouthSlot>();
+    private StageManager stageManager;
 
     private Transform ReferenceSpace => referenceSpace;
 
     public bool IsLocked => state == DoorState.Locked;
-    public bool CanInteract => state == DoorState.Closed;
+    public bool IsStartLocked => state == DoorState.LockedShut;
+    public bool NeedsMinigame => isClock || isMouth || isCleaning || isTidying || isFinal;
+    public bool CanInteract => state == DoorState.Closed || state == DoorState.LockedShut || state == DoorState.Ajar;
 
     public event Action Locked;
 
@@ -57,6 +81,116 @@ public class Door : MonoBehaviour, IInteractable
         referenceSpace = hinge == transform || transform.IsChildOf(hinge) ? hinge.parent : transform.parent;
         localCrossingAxis = ToReferenceDirection(FindCrossingAxis());
         localPlanePoint = ToReferencePoint(hinge.position);
+
+        if (NeedsMinigame)
+            state = DoorState.LockedShut;
+    }
+
+    private void Start()
+    {
+        if (state != DoorState.LockedShut) return;
+
+        stageManager = StageManager.Instance;
+        if (stageManager != null)
+            stageManager.StageEntered += HandleStageEntered;
+
+        FindMinigames();
+    }
+
+    private void OnDestroy()
+    {
+        if (stageManager != null)
+            stageManager.StageEntered -= HandleStageEntered;
+
+        ClearMinigames();
+    }
+
+    private void HandleStageEntered(Stage stage)
+    {
+        if (state != DoorState.LockedShut)
+        {
+            stageManager.StageEntered -= HandleStageEntered;
+            return;
+        }
+
+        FindMinigames();
+    }
+
+    private void FindMinigames()
+    {
+        ClearMinigames();
+
+        Stage source = stageManager != null ? stageManager.CurrentStage : null;
+        if (source == null) return;
+
+        if (isClock)
+        {
+            foreach (Clock clock in source.GetComponentsInChildren<Clock>(true))
+            {
+                clocks.Add(clock);
+                clock.Solved += CheckMinigames;
+            }
+
+            if (clocks.Count == 0)
+                Debug.LogWarning($"Door '{name}' needs a Clock but '{source.name}' has none.", this);
+        }
+
+        if (isMouth)
+        {
+            foreach (MouthSlot slot in source.GetComponentsInChildren<MouthSlot>(true))
+            {
+                mouthSlots.Add(slot);
+                slot.Solved += CheckMinigames;
+            }
+
+            if (mouthSlots.Count == 0)
+                Debug.LogWarning($"Door '{name}' needs a MouthSlot but '{source.name}' has none.", this);
+        }
+
+        CheckMinigames();
+    }
+
+    private void ClearMinigames()
+    {
+        foreach (Clock clock in clocks)
+        {
+            if (clock != null)
+                clock.Solved -= CheckMinigames;
+        }
+
+        foreach (MouthSlot slot in mouthSlots)
+        {
+            if (slot != null)
+                slot.Solved -= CheckMinigames;
+        }
+
+        clocks.Clear();
+        mouthSlots.Clear();
+    }
+
+    private void CheckMinigames()
+    {
+        if (state != DoorState.LockedShut) return;
+
+        if (isClock && !AllSolved(clocks, clock => clock.IsSolved)) return;
+        if (isMouth && !AllSolved(mouthSlots, slot => slot.IsSolved)) return;
+        if (isCleaning || isTidying || isFinal) return;
+
+        ClearMinigames();
+        Unlock();
+    }
+
+    private static bool AllSolved<T>(List<T> minigames, Func<T, bool> isSolved) where T : UnityEngine.Object
+    {
+        if (minigames.Count == 0) return false;
+
+        foreach (T minigame in minigames)
+        {
+            if (minigame == null || !isSolved(minigame))
+                return false;
+        }
+
+        return true;
     }
 
     public void Configure(float width, float height, float thickness)
@@ -72,16 +206,60 @@ public class Door : MonoBehaviour, IInteractable
 
     public void OnInteract(GameObject interactor)
     {
+        if (state == DoorState.LockedShut)
+        {
+            Rattle();
+            return;
+        }
+
+        if (state == DoorState.Ajar)
+        {
+            passer = FindBody(interactor, out passerRadius);
+            entrySide = FindEntrySide(passer);
+            PlaySound(squeakSound, squeakStyle);
+            Swing(ajarSign * openAngle, openSpeed, DoorState.Opening, DoorState.Open);
+            return;
+        }
+
         if (state != DoorState.Closed) return;
 
         passer = FindBody(interactor, out passerRadius);
         entrySide = FindEntrySide(passer);
 
         float targetAngle = entrySide > 0f ? openAngle : -openAngle;
-        // open + squeak as it starts swinging open
         PlaySound(openSound, openStyle);
         PlaySound(squeakSound, squeakStyle);
         Swing(targetAngle, openSpeed, DoorState.Opening, DoorState.Open);
+    }
+
+    public void Unlock()
+    {
+        if (state != DoorState.LockedShut && state != DoorState.Closed) return;
+
+        ajarSign = FindPlayerSide();
+        passer = null;
+        PlaySound(squeakSound, unlockSqueakStyle);
+        Swing(ajarSign * unlockOpenAngle, unlockOpenSpeed, DoorState.Opening, DoorState.Ajar);
+    }
+
+    private void Rattle()
+    {
+        if (Time.time >= nextRattleTime)
+        {
+            nextRattleTime = Time.time + rattleCooldown;
+            PlaySound(rattleSound, rattleStyle);
+        }
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.ShowMessage(lockedMessage);
+    }
+
+    private float FindPlayerSide()
+    {
+        PlayerMovement player = FindAnyObjectByType<PlayerMovement>();
+        if (player == null) return 1f;
+
+        return FindEntrySide(player.transform) > 0f ? 1f : -1f;
     }
 
     public void MenuSwingOpen()
@@ -98,7 +276,6 @@ public class Door : MonoBehaviour, IInteractable
         }
 
         passer = null;
-        // same sounds for the menu door
         PlaySound(openSound, openStyle);
         PlaySound(squeakSound, squeakStyle);
         Swing(menuOpenAngle, menuOpenSpeed, DoorState.Opening, DoorState.Open, onComplete);
@@ -116,7 +293,6 @@ public class Door : MonoBehaviour, IInteractable
         {
             Debug.Log($"Door: '{name}' passed by '{passer.name}' ({side:F2} from the door), closing.", this);
             passer = null;
-            // squeak as it starts swinging shut
             PlaySound(squeakSound, squeakStyle);
             Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
         }
@@ -215,7 +391,6 @@ public class Door : MonoBehaviour, IInteractable
         return Vector3.Dot(position - planePoint, crossingAxis);
     }
 
-
     private Vector3 ToReferenceDirection(Vector3 worldDirection)
     {
         return ReferenceSpace != null ? ReferenceSpace.InverseTransformDirection(worldDirection) : worldDirection;
@@ -280,7 +455,6 @@ public class Door : MonoBehaviour, IInteractable
 
         if (state == DoorState.Locked)
         {
-            // slam sound once it's fully shut
             PlaySound(closeSound, closeStyle);
             Locked?.Invoke();
         }
