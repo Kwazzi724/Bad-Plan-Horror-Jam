@@ -62,6 +62,7 @@ public class Door : MonoBehaviour, IInteractable
     private float nextRattleTime;
     private readonly List<Clock> clocks = new List<Clock>();
     private readonly List<MouthSlot> mouthSlots = new List<MouthSlot>();
+    private readonly List<StainManager> stainManagers = new List<StainManager>();
     private StageManager stageManager;
 
     private Transform ReferenceSpace => referenceSpace;
@@ -147,6 +148,18 @@ public class Door : MonoBehaviour, IInteractable
                 Debug.LogWarning($"Door '{name}' needs a MouthSlot but '{source.name}' has none.", this);
         }
 
+        if (isCleaning)
+        {
+            foreach (StainManager manager in source.GetComponentsInChildren<StainManager>(true))
+            {
+                stainManagers.Add(manager);
+                manager.Solved += CheckMinigames;
+            }
+
+            if (stainManagers.Count == 0)
+                Debug.LogWarning($"Door '{name}' needs a StainManager but '{source.name}' has none.", this);
+        }
+
         CheckMinigames();
     }
 
@@ -164,8 +177,15 @@ public class Door : MonoBehaviour, IInteractable
                 slot.Solved -= CheckMinigames;
         }
 
+        foreach (StainManager manager in stainManagers)
+        {
+            if (manager != null)
+                manager.Solved -= CheckMinigames;
+        }
+
         clocks.Clear();
         mouthSlots.Clear();
+        stainManagers.Clear();
     }
 
     private void CheckMinigames()
@@ -174,7 +194,8 @@ public class Door : MonoBehaviour, IInteractable
 
         if (isClock && !AllSolved(clocks, clock => clock.IsSolved)) return;
         if (isMouth && !AllSolved(mouthSlots, slot => slot.IsSolved)) return;
-        if (isCleaning || isTidying || isFinal) return;
+        if (isCleaning && !AllSolved(stainManagers, manager => manager.IsSolved)) return;
+        if (isTidying || isFinal) return;
 
         ClearMinigames();
         Unlock();

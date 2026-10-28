@@ -17,6 +17,7 @@ public class PlayerInteractor : MonoBehaviour
     private PlayerMovement movement;
     private PlayerLook look;
     private Pickup carried;
+    private Cloth carriedCloth;
 
     public Pickup Carried => carried;
 
@@ -71,6 +72,12 @@ public class PlayerInteractor : MonoBehaviour
             return;
         }
 
+        if (carriedCloth != null && (carriedCloth.IsWiping || carriedCloth.Target != null))
+        {
+            SetTarget(null);
+            return;
+        }
+
         if (carried != null)
         {
             SetTarget(FindNearestReceiver() as IInteractable);
@@ -103,6 +110,13 @@ public class PlayerInteractor : MonoBehaviour
     private void HandleInteracted()
     {
         if (heldInteractable != null) return;
+        if (carriedCloth != null && carriedCloth.IsWiping) return;
+
+        if (carriedCloth != null && carriedCloth.Target != null)
+        {
+            BeginWipe();
+            return;
+        }
 
         if (carried != null)
         {
@@ -114,6 +128,7 @@ public class PlayerInteractor : MonoBehaviour
                 carried.Drop();
 
             carried = null;
+            carriedCloth = null;
             SetTarget(FindNearest());
             return;
         }
@@ -130,6 +145,7 @@ public class PlayerInteractor : MonoBehaviour
             }
 
             carried = pickup;
+            carriedCloth = pickup.GetComponent<Cloth>();
             pickup.PickUp(holdPose);
             SetTarget(null);
             return;
@@ -144,6 +160,31 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         SetTarget(FindNearest());
+    }
+
+    private void BeginWipe()
+    {
+        SetFrozen(true);
+
+        if (look != null)
+            look.FaceTowards(carriedCloth.Target.Center);
+
+        if (!carriedCloth.Wipe(EndWipe))
+            SetFrozen(false);
+    }
+
+    private void EndWipe()
+    {
+        SetFrozen(false);
+    }
+
+    private void SetFrozen(bool frozen)
+    {
+        if (movement != null)
+            movement.Frozen = frozen;
+
+        if (look != null)
+            look.Frozen = frozen;
     }
 
     private void HandleReleased()

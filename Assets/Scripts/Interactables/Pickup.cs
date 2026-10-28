@@ -21,7 +21,7 @@ public class Pickup : MonoBehaviour, IInteractable
     private void Awake()
     {
         body = GetComponent<Rigidbody>();
-        colliders = GetComponentsInChildren<Collider>();
+        colliders = Array.FindAll(GetComponentsInChildren<Collider>(), itemCollider => !itemCollider.isTrigger);
         originalParent = transform.parent;
 
         if (body != null)
