@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,12 +23,16 @@ public class GameManager : MonoBehaviour
     [Header("Sanity")]
     [SerializeField] private GameObject insaneText;
 
+    [Header("Death")]
+    [SerializeField] private DeathSequence deathSequence;
+
+    public bool isDeathActivated;
+
     [Header("Interaction")]
     [SerializeField] private TMP_Text holdPromptText;
 
-    [FormerlySerializedAs("messageText")]
     [Header("Messages")]
-    [SerializeField] private TMP_Text lockedText;
+    [SerializeField] private TMP_Text messageText;
     [SerializeField] private float messageDuration = 1.5f;
 
     public int CurrentStageNumber { get; private set; }
@@ -37,6 +40,10 @@ public class GameManager : MonoBehaviour
     public Stage CurrentStage => stageManager != null ? stageManager.CurrentStage : null;
 
     public event Action<Stage, int> StageEntered;
+    public event Action<Stage, int> StageReset;
+
+    public GameObject CurrentPlayer => currentPlayer;
+    public bool IsDying => deathSequence != null && deathSequence.IsDying;
 
     private GameObject currentPlayer;
     private Coroutine messageRoutine;
@@ -70,8 +77,8 @@ public class GameManager : MonoBehaviour
             return;
 
         HideHoldPrompt();
-        if (lockedText != null)
-            lockedText.gameObject.SetActive(false);
+        if (messageText != null)
+            messageText.gameObject.SetActive(false);
         stageManager.StageEntered += HandleStageEntered;
         CurrentStageNumber = 1;
         StageEntered?.Invoke(stageManager.CurrentStage, CurrentStageNumber);
@@ -99,6 +106,39 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (!isDeathActivated) return;
+        if (deathSequence == null)
+            deathSequence = FindAnyObjectByType<DeathSequence>();
+
+        if (deathSequence == null)
+        {
+            Debug.LogWarning("GameManager: GameOver called but there's no DeathSequence in the scene.", this);
+            return;
+        }
+
+        deathSequence.Begin();
+    }
+
+    public void ResetCurrentStage()
+    {
+        if (stageManager == null) return;
+
+        Sane();
+        HideHoldPrompt();
+
+        if (messageText != null)
+            messageText.gameObject.SetActive(false);
+
+        Stage freshStage = stageManager.ResetStages();
+        if (freshStage == null) return;
+
+        PlayerSpawnPoint stageSpawn = freshStage.GetComponentInChildren<PlayerSpawnPoint>(true);
+
+        if (stageSpawn == null)
+            Debug.LogWarning($"GameManager: '{freshStage.name}' has no PlayerSpawnPoint, using the default spawn.", freshStage);
+
+        SpawnPlayerAt(stageSpawn != null ? stageSpawn.transform : spawnPoint);
+        StageReset?.Invoke(freshStage, CurrentStageNumber);
     }
 
     private void HandleStageEntered(Stage stage)
@@ -123,7 +163,7 @@ public class GameManager : MonoBehaviour
 
     public void ShowMessage(string message)
     {
-        if (lockedText == null || string.IsNullOrEmpty(message)) return;
+        if (messageText == null || string.IsNullOrEmpty(message)) return;
 
         if (messageRoutine != null)
             StopCoroutine(messageRoutine);
@@ -133,10 +173,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator MessageRoutine(string message)
     {
-        lockedText.text = message;
-        lockedText.gameObject.SetActive(true);
+        messageText.text = message;
+        messageText.gameObject.SetActive(true);
         yield return new WaitForSeconds(messageDuration);
-        lockedText.gameObject.SetActive(false);
+        messageText.gameObject.SetActive(false);
         messageRoutine = null;
     }
 
@@ -148,14 +188,23 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
+        SpawnPlayerAt(spawnPoint);
+    }
+
+    public void SpawnPlayerAt(Transform point)
+    {
         if (playerPrefab == null)
             return;
-        if (currentPlayer != null)
-            Destroy(currentPlayer);
 
-        Vector3 position = spawnPoint != null ? spawnPoint.position : fallbackSpawnPosition;
-        Quaternion rotation = spawnPoint != null
-            ? Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f)
+        if (currentPlayer != null)
+        {
+            currentPlayer.SetActive(false);
+            Destroy(currentPlayer);
+        }
+
+        Vector3 position = point != null ? point.position : fallbackSpawnPosition;
+        Quaternion rotation = point != null
+            ? Quaternion.Euler(0f, point.eulerAngles.y, 0f)
             : Quaternion.identity;
         currentPlayer = Instantiate(playerPrefab, position, rotation);
         if (overviewCamera != null)

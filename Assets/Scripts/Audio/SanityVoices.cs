@@ -48,6 +48,24 @@ public class SanityVoices : MonoBehaviour
         SetImageAlpha(0f);
     }
 
+    private void Start()
+    {
+        if (gameManager != null)
+            gameManager.StageReset += HandleStageReset;
+    }
+
+    private void HandleStageReset(Stage stage, int stageNumber)
+    {
+        if (insaneRoutine != null)
+        {
+            StopCoroutine(insaneRoutine);
+            insaneRoutine = null;
+        }
+
+        SetImageAlpha(0f);
+        ResetSanity();
+    }
+
     private void Update()
     {
         if (hasGoneInsane || IsPaused) return;
@@ -212,6 +230,9 @@ public class SanityVoices : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (gameManager != null)
+            gameManager.StageReset -= HandleStageReset;
+
         StopVoices();
     }
 }

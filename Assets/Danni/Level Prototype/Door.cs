@@ -283,6 +283,20 @@ public class Door : MonoBehaviour, IInteractable
         return FindEntrySide(player.transform) > 0f ? 1f : -1f;
     }
 
+    public void ForceLock()
+    {
+        if (swingRoutine != null)
+        {
+            StopCoroutine(swingRoutine);
+            swingRoutine = null;
+        }
+
+        passer = null;
+        hinge.localRotation = closedHingeRotation;
+        SetPanelSolid(true);
+        state = DoorState.Locked;
+    }
+
     public void MenuSwingOpen()
     {
         MenuSwingOpen(null);
