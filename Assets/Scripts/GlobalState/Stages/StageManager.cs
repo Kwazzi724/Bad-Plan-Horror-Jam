@@ -9,11 +9,8 @@ public class StageManager : MonoBehaviour
     public event Action<Stage> StageEntered;
     
     [SerializeField] private List<GameObject> stages;
-    // only used for where the very first hallway spawns, everything after chains off the LoadRoots
     [SerializeField] private Transform homeAnchor; 
-    // [SerializeField] private bool loopStages;
 
-    // theres only ever two hallways in the scene: the one player's in and the one preloaded ahead
     public Stage CurrentStage { get; private set; }
     public Stage UpcomingStage { get; private set; }
     public int CurrentStageIndex { get; private set; }
@@ -38,11 +35,9 @@ public class StageManager : MonoBehaviour
             Debug.LogError("the stages list is empty", this);
             return;
         }
-        // spawn the first hallway straight away at the home anchor so the player has somewhere to stand
         GameObject firstStage = Instantiate(stages[0], homeAnchor.position, homeAnchor.rotation);
         CurrentStage = firstStage.GetComponent<Stage>();
         CurrentStageIndex = 0;
-        // listen to the first hallway's doors too, in case its exit door is the one that locks
         CurrentStage.DoorLocked += HandleDoorLocked;
         Debug.Log($"loaded first stage '{stages[0].name}' at the home anchor.", this);
 
@@ -55,18 +50,14 @@ public class StageManager : MonoBehaviour
             Instance = null;
     }
 
-    // any door locking in either loaded hallway means the player just crossed into the upcoming one
     private void HandleDoorLocked(Stage stage, Door door)
     {
-        // if the locked door belongs to the hallway we're about to delete, hand it over to the new hallway so it doesn't vanish behind the player
         if (stage == CurrentStage && UpcomingStage != null)
             door.transform.SetParent(UpcomingStage.transform, true);
 
         NextStage();
     }
 
-    // delete the old hallway, the one the player just walked into becomes current, then preload the next one ahead at its LoadRoot
-    // nothing gets moved or teleported, hallways just chain forward
     public void NextStage()
     {
         if (UpcomingStage == null)
@@ -90,9 +81,6 @@ public class StageManager : MonoBehaviour
         int nextIndex = CurrentStageIndex + 1;
         if (nextIndex >= stages.Count)
         {
-            // if (!loopStages)
-            //     return;
-
             nextIndex = 0;
         }
 
@@ -102,7 +90,6 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        // the next hallway spawns at the current hallway's LoadRoot (position and rotation), so turns and different lengths just line up
         Transform loadRoot = CurrentStage.LoadRoot.transform;
         upcomingIndex = nextIndex;
 
@@ -127,7 +114,6 @@ public class StageManager : MonoBehaviour
         }
 
         UpcomingStage = instance.GetComponent<Stage>();
-        // when any door in this hallway locks, cue to clean up the old hallway and preload the next
         UpcomingStage.DoorLocked += HandleDoorLocked;
         Debug.Log($"preloaded stage {upcomingIndex} '{instance.name}'", this);
     }

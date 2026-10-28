@@ -5499,6 +5499,13 @@ MonoBehaviour:
   moveOffset: {x: 1, y: 0, z: 0}
   moveSpace: 1
   moveSpeed: 0.7
+  discoverySound:
+    Guid:
+      Data1: -82321805
+      Data2: 1235758577
+      Data3: 2064909972
+      Data4: 1572560861
+    Path: event:/SFX/NPC/Other/Ghost_Gurgling
 --- !u!1 &6576239356079586543
 GameObject:
   m_ObjectHideFlags: 0
