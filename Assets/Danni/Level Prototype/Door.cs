@@ -27,7 +27,7 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private SoundLabel closeStyle = new SoundLabel("HardSoft", "Hard");
     [SerializeField] private SoundLabel squeakStyle = new SoundLabel("FastMedSlow", "Fast");
     [SerializeField] private EventReference rattleSound;
-    [SerializeField] private SoundLabel rattleStyle = new SoundLabel("Type", "Rattling");
+    [SerializeField] private SoundLabel rattleStyle = new SoundLabel("NoiseType", "Rattling");
     [SerializeField] private SoundLabel unlockSqueakStyle = new SoundLabel("FastMedSlow", "Slow");
 
     [Header("Minigames")]

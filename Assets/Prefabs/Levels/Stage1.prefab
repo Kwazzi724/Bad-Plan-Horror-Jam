@@ -8256,6 +8256,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 4966169871665403653, guid: cc13ae94dc727a94db52c4c5dfbedf70, type: 3}
+      propertyPath: rattleStyle.parameter
+      value: NoiseType
+      objectReference: {fileID: 0}
     - target: {fileID: 5984679069552473639, guid: cc13ae94dc727a94db52c4c5dfbedf70, type: 3}
       propertyPath: m_Name
       value: FrontDoor
