@@ -7,6 +7,7 @@ public class StageManager : MonoBehaviour
 {
     public static StageManager Instance { get; private set; }
     public event Action<Stage> StageEntered;
+    public event Action<Stage> StageReset;
     
     [SerializeField] private List<GameObject> stages;
     [SerializeField] private Transform homeAnchor; 
@@ -16,6 +17,7 @@ public class StageManager : MonoBehaviour
     public int CurrentStageIndex { get; private set; }
     
     private int upcomingIndex = -1;
+    private int loadVersion;
 
     private void Awake()
     {
@@ -76,6 +78,66 @@ public class StageManager : MonoBehaviour
         PreloadNextStage();
     }
 
+    public Stage ResetStages()
+    {
+        if (CurrentStage == null) return null;
+
+        Stage oldStage = CurrentStage;
+        Vector3 position = oldStage.transform.position;
+        Quaternion rotation = oldStage.transform.rotation;
+
+        List<int> lockedDoorIndices = new List<int>();
+        List<Door> inheritedDoors = new List<Door>();
+
+        foreach (Door door in oldStage.GetComponentsInChildren<Door>(true))
+        {
+            if (!door.WasCrossed) continue;
+
+            int index = oldStage.IndexOfDoor(door);
+
+            if (index >= 0)
+            {
+                lockedDoorIndices.Add(index);
+            }
+            else
+            {
+                door.transform.SetParent(null, true);
+                inheritedDoors.Add(door);
+            }
+        }
+
+        oldStage.DoorLocked -= HandleDoorLocked;
+        Destroy(oldStage.gameObject);
+
+        if (UpcomingStage != null)
+        {
+            UpcomingStage.DoorLocked -= HandleDoorLocked;
+            Destroy(UpcomingStage.gameObject);
+            UpcomingStage = null;
+        }
+
+        loadVersion++;
+
+        GameObject freshStage = Instantiate(stages[CurrentStageIndex], position, rotation);
+        CurrentStage = freshStage.GetComponent<Stage>();
+        CurrentStage.DoorLocked += HandleDoorLocked;
+
+        foreach (int index in lockedDoorIndices)
+        {
+            Door door = CurrentStage.DoorAt(index);
+            if (door != null)
+                door.ForceLock();
+        }
+
+        foreach (Door door in inheritedDoors)
+            door.transform.SetParent(CurrentStage.transform, true);
+
+        Debug.Log($"reset stage {CurrentStageIndex} '{CurrentStage.name}'", this);
+        PreloadNextStage();
+        StageReset?.Invoke(CurrentStage);
+        return CurrentStage;
+    }
+
     private void PreloadNextStage()
     {
         int nextIndex = CurrentStageIndex + 1;
@@ -98,16 +160,16 @@ public class StageManager : MonoBehaviour
             worldSpace = true
         };
         AsyncInstantiateOperation<GameObject> instantiateOperation = InstantiateAsync(stages[nextIndex], 1, loadRoot.position, loadRoot.rotation, parameters, CancellationToken.None);
-        instantiateOperation.completed += OnUpcomingStageLoaded;
+        int version = loadVersion;
+        instantiateOperation.completed += operation => OnUpcomingStageLoaded(operation, version);
     }
 
-    private void OnUpcomingStageLoaded(AsyncOperation operation)
+    private void OnUpcomingStageLoaded(AsyncOperation operation, int version)
     {
         AsyncInstantiateOperation<GameObject> instantiateOperation = (AsyncInstantiateOperation<GameObject>)operation;
-        instantiateOperation.completed -= OnUpcomingStageLoaded;
 
         GameObject instance = instantiateOperation.Result[0];
-        if (this == null)
+        if (this == null || version != loadVersion)
         {
             Destroy(instance);
             return;

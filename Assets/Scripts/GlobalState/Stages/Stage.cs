@@ -31,6 +31,16 @@ public class Stage : MonoBehaviour
         SetReadyForCleanup();
     }
 
+    public int IndexOfDoor(Door door)
+    {
+        return doors != null ? System.Array.IndexOf(doors, door) : -1;
+    }
+
+    public Door DoorAt(int index)
+    {
+        return doors != null && index >= 0 && index < doors.Length ? doors[index] : null;
+    }
+
     public void SetReadyForCleanup()
     {
         CleanupReady?.Invoke();

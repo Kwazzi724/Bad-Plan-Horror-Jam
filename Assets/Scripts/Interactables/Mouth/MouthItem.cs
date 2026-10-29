@@ -4,12 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Pickup))]
 public class MouthItem : MonoBehaviour
 {
-    [SerializeField] private bool isCorrect;
     [SerializeField] private EventReference grabSound;
 
     private Pickup pickup;
 
-    public bool IsCorrect => isCorrect;
     public Pickup Pickup => pickup != null ? pickup : pickup = GetComponent<Pickup>();
 
     private void Awake()
