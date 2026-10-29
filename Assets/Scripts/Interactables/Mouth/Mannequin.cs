@@ -12,6 +12,8 @@ public class Mannequin : MonoBehaviour, IEnemy
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float turnSpeed = 540f;
     [SerializeField] private float catchDistance = 1.2f;
+    [SerializeField] private float movingGrace = 0.2f;
+    [SerializeField] private float minTravelToCatch = 0.3f;
     [SerializeField] private float gravity = -20f;
 
     [Header("Pathing")]
@@ -50,6 +52,8 @@ public class Mannequin : MonoBehaviour, IEnemy
     private float verticalVelocity;
     private Vector3 currentTarget;
     private float nextRepathTime;
+    private float lastMovedTime = float.NegativeInfinity;
+    private float travelSinceFrozen;
 
     public bool IsSeen { get; private set; }
 
@@ -147,12 +151,14 @@ public class Mannequin : MonoBehaviour, IEnemy
         if (IsSeen)
         {
             distanceSinceSound = 0f;
+            travelSinceFrozen = 0f;
             return;
         }
 
         Move();
 
-        bool inRange = FlatDistance(transform.position, player.position) <= catchDistance;
+        bool isMoving = Time.time - lastMovedTime <= movingGrace && travelSinceFrozen >= minTravelToCatch;
+        bool inRange = isMoving && FlatDistance(transform.position, player.position) <= catchDistance;
 
         if (inRange && !isInCatchRange)
             Caught();
@@ -187,7 +193,15 @@ public class Mannequin : MonoBehaviour, IEnemy
             transform.position += step;
         }
 
-        distanceSinceSound += FlatDistance(before, transform.position);
+        float moved = FlatDistance(before, transform.position);
+
+        if (moved > 0.001f)
+        {
+            lastMovedTime = Time.time;
+            travelSinceFrozen += moved;
+        }
+
+        distanceSinceSound += moved;
 
         if (distanceSinceSound >= moveSoundDistance)
         {

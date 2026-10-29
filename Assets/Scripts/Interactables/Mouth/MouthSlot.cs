@@ -34,7 +34,9 @@ public class MouthSlot : MonoBehaviour, IInteractable, IItemReceiver
         if (point == null)
             point = transform;
 
-        attached.Add(item.GetComponent<MouthItem>());
+        MouthItem mouth = item.GetComponent<MouthItem>();
+        attached.Add(mouth);
+        mouth.FadeOutVoice();
         item.PlaceInto(point);
         item.Locked = true;
 
