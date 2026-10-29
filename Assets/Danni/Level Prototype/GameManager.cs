@@ -20,20 +20,41 @@ public class GameManager : MonoBehaviour
     [Header("Fade")]
     [SerializeField] private float fadeInDuration = 1f;
 
-    // NEW: text (or any UI object) that appears when the player goes insane
     [Header("Sanity")]
     [SerializeField] private GameObject insaneText;
 
+    [Header("Fall Safety")]
+    [SerializeField] private float fallDistance = 10f;
+    [SerializeField] private float fallFadeOutDuration = 0.5f;
+    [SerializeField] private float fallFadeInDuration = 1f;
+
+    [Header("Death")]
+    [SerializeField] private DeathSequence deathSequence;
+
+    public bool isDeathActivated;
+
     [Header("Interaction")]
     [SerializeField] private TMP_Text holdPromptText;
+
+    [Header("Messages")]
+    [SerializeField] private TMP_Text messageText;
+    [SerializeField] private float messageDuration = 1.5f;
 
     public int CurrentStageNumber { get; private set; }
     public int NextStageNumber => CurrentStageNumber + 1;
     public Stage CurrentStage => stageManager != null ? stageManager.CurrentStage : null;
 
     public event Action<Stage, int> StageEntered;
+    public event Action<Stage, int> StageReset;
+
+    public GameObject CurrentPlayer => currentPlayer;
+    public bool IsDying => deathSequence != null && deathSequence.IsDying;
 
     private GameObject currentPlayer;
+    private bool isRecoveringFromFall;
+    private Stage heightStage;
+    private float stageHeight;
+    private Coroutine messageRoutine;
 
     private void Awake()
     {
@@ -51,7 +72,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // NEW: make sure the insane text starts hidden
         if (insaneText != null)
             insaneText.SetActive(false);
 
@@ -63,8 +83,9 @@ public class GameManager : MonoBehaviour
         
         if (stageManager == null)
             return;
-
         HideHoldPrompt();
+        if (messageText != null)
+            messageText.gameObject.SetActive(false);
         stageManager.StageEntered += HandleStageEntered;
         CurrentStageNumber = 1;
         StageEntered?.Invoke(stageManager.CurrentStage, CurrentStageNumber);
@@ -78,11 +99,93 @@ public class GameManager : MonoBehaviour
         SpawnPlayer();
     }
 
-    // NEW: called by SanityVoices when the player has been in the dark too long
     public void Insane()
     {
         if (insaneText != null)
             insaneText.SetActive(true);
+    }
+
+    public void Sane()
+    {
+        if (insaneText != null)
+            insaneText.SetActive(false);
+    }
+
+    public void GameOver()
+    {
+        if (!isDeathActivated) return;
+        if (deathSequence == null)
+            deathSequence = FindAnyObjectByType<DeathSequence>();
+
+        if (deathSequence == null)
+        {
+            Debug.LogWarning("GameManager: GameOver called but there's no DeathSequence in the scene.", this);
+            return;
+        }
+
+        deathSequence.Begin();
+    }
+
+    private void Update()
+    {
+        if (isRecoveringFromFall || IsDying || currentPlayer == null) return;
+
+        Stage stage = CurrentStage;
+        if (stage == null) return;
+
+        if (currentPlayer.transform.position.y < GetStageHeight(stage) - fallDistance)
+            StartCoroutine(RecoverFromFall());
+    }
+
+    private float GetStageHeight(Stage stage)
+    {
+        if (stage == heightStage) return stageHeight;
+
+        heightStage = stage;
+        PlayerSpawnPoint stageSpawn = stage.GetComponentInChildren<PlayerSpawnPoint>(true);
+        stageHeight = stageSpawn != null ? stageSpawn.transform.position.y : stage.transform.position.y;
+        return stageHeight;
+    }
+
+    private IEnumerator RecoverFromFall()
+    {
+        isRecoveringFromFall = true;
+        Debug.Log($"GameManager: player fell more than {fallDistance} below '{CurrentStage.name}', resetting.", this);
+
+        if (ScreenFadeManager.Instance != null)
+        {
+            ScreenFadeManager.Instance.FadeOut(fallFadeOutDuration);
+            yield return new WaitForSeconds(fallFadeOutDuration);
+        }
+
+        ResetCurrentStage();
+
+        if (ScreenFadeManager.Instance != null)
+            ScreenFadeManager.Instance.FadeIn(fallFadeInDuration);
+
+        isRecoveringFromFall = false;
+    }
+
+    public void ResetCurrentStage()
+    {
+        if (stageManager == null) return;
+
+        Sane();
+        HideHoldPrompt();
+
+        if (messageText != null)
+            messageText.gameObject.SetActive(false);
+
+        Stage freshStage = stageManager.ResetStages();
+        if (freshStage == null) return;
+
+        PlayerSpawnPoint stageSpawn = freshStage.GetComponentInChildren<PlayerSpawnPoint>(true);
+
+        if (stageSpawn == null)
+            Debug.LogWarning($"GameManager: '{freshStage.name}' has no PlayerSpawnPoint, using the default spawn.", freshStage);
+
+        SpawnPlayerAt(stageSpawn != null ? stageSpawn.transform : spawnPoint);
+        StageReset?.Invoke(freshStage, CurrentStageNumber);
     }
 
     private void HandleStageEntered(Stage stage)
@@ -105,6 +208,25 @@ public class GameManager : MonoBehaviour
         holdPromptText.gameObject.SetActive(true);
     }
 
+    public void ShowMessage(string message)
+    {
+        if (messageText == null || string.IsNullOrEmpty(message)) return;
+
+        if (messageRoutine != null)
+            StopCoroutine(messageRoutine);
+
+        messageRoutine = StartCoroutine(MessageRoutine(message));
+    }
+
+    private IEnumerator MessageRoutine(string message)
+    {
+        messageText.text = message;
+        messageText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(messageDuration);
+        messageText.gameObject.SetActive(false);
+        messageRoutine = null;
+    }
+
     public void HideHoldPrompt()
     {
         if (holdPromptText != null)
@@ -113,14 +235,23 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
+        SpawnPlayerAt(spawnPoint);
+    }
+
+    public void SpawnPlayerAt(Transform point)
+    {
         if (playerPrefab == null)
             return;
-        if (currentPlayer != null)
-            Destroy(currentPlayer);
 
-        Vector3 position = spawnPoint != null ? spawnPoint.position : fallbackSpawnPosition;
-        Quaternion rotation = spawnPoint != null
-            ? Quaternion.Euler(0f, spawnPoint.eulerAngles.y, 0f)
+        if (currentPlayer != null)
+        {
+            currentPlayer.SetActive(false);
+            Destroy(currentPlayer);
+        }
+
+        Vector3 position = point != null ? point.position : fallbackSpawnPosition;
+        Quaternion rotation = point != null
+            ? Quaternion.Euler(0f, point.eulerAngles.y, 0f)
             : Quaternion.identity;
         currentPlayer = Instantiate(playerPrefab, position, rotation);
         if (overviewCamera != null)

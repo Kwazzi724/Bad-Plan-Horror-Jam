@@ -27,6 +27,7 @@ public class EnemyManager : MonoBehaviour
         if (gameManager == null) return;
 
         gameManager.StageEntered += HandleStageEntered;
+        gameManager.StageReset += HandleStageEntered;
 
         if (gameManager.CurrentStageNumber > 0)
             HandleStageEntered(gameManager.CurrentStage, gameManager.CurrentStageNumber);
@@ -35,7 +36,10 @@ public class EnemyManager : MonoBehaviour
     private void OnDestroy()
     {
         if (gameManager != null)
+        {
             gameManager.StageEntered -= HandleStageEntered;
+            gameManager.StageReset -= HandleStageEntered;
+        }
     }
 
     private void HandleStageEntered(Stage stage, int stageNumber)

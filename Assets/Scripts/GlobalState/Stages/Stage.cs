@@ -4,15 +4,12 @@ using UnityEngine;
 public class Stage : MonoBehaviour
 {
     public event Action CleanupReady;
-    // fires with this stage and the door that just locked, so the manager knows what happened and where
     public event Action<Stage, Door> DoorLocked;
 
     public GameObject LoadRoot => loadRoot;
 
-    // Where the next hallway gets spawned, so stick it at this hallway's exit
     [SerializeField] private GameObject loadRoot;
 
-    // grabs every door inside this hallway automatically, so it doesn't matter if a door is set up as an entry or an exit
     private Door[] doors;
 
     private void Awake()
@@ -32,6 +29,16 @@ public class Stage : MonoBehaviour
         Debug.Log($"{name}: door '{door.name}' locked.", this);
         DoorLocked?.Invoke(this, door);
         SetReadyForCleanup();
+    }
+
+    public int IndexOfDoor(Door door)
+    {
+        return doors != null ? System.Array.IndexOf(doors, door) : -1;
+    }
+
+    public Door DoorAt(int index)
+    {
+        return doors != null && index >= 0 && index < doors.Length ? doors[index] : null;
     }
 
     public void SetReadyForCleanup()

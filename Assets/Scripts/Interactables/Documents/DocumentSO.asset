@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b063f02741a5e7147b68cc1929306413, type: 3}
+  m_Name: DocumentSO
+  m_EditorClassIdentifier: Assembly-CSharp::ImageLibrary
+  images:
+  - id: 1
+    sprite: {fileID: 21300000, guid: 40ec3dd23d6fceb45a8e67f7242b8679, type: 3}
+  - id: 2
+    sprite: {fileID: 21300000, guid: 273feffa2a3911f4a9f2481302ec189a, type: 3}
+  - id: 3
+    sprite: {fileID: 21300000, guid: 96fe5eaa72c7e924c9653896c1ef154d, type: 3}

@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using UnityEngine;
 
 public class Clock : MonoBehaviour, IHoldInteractable
@@ -14,9 +15,16 @@ public class Clock : MonoBehaviour, IHoldInteractable
     [SerializeField] private string correctTime = "21:00";
     [SerializeField] private string startTime = "00:00";
 
+    [Header("Sounds")]
+    [SerializeField] private EventReference alarmSound;
+
     private bool isOpen;
+    private bool solved;
 
     public event Action Finished;
+    public event Action Solved;
+
+    public bool IsSolved => solved;
 
     public bool CanInteract => !isOpen && minigame != null;
     public Transform FocusPoint => focusPoint != null ? focusPoint : transform;
@@ -66,10 +74,16 @@ public class Clock : MonoBehaviour, IHoldInteractable
 
     public void ClockTuneSuccessful()
     {
+        if (solved) return;
+        solved = true;
+        SoundPlayer.PlayOneShot(alarmSound, transform.position);
+        Solved?.Invoke();
     }
 
     public void ClockTuneFail()
     {
+        if (GameManager.Instance != null)
+            GameManager.Instance.GameOver();
     }
 
     private static bool TryParseTime(string time, out int hour, out int minute)

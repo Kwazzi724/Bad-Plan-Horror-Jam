@@ -1,4 +1,5 @@
 using System.Collections;
+using FMODUnity;
 using UnityEngine;
 
 public class TriggeredMoveSequence : MonoBehaviour
@@ -12,6 +13,9 @@ public class TriggeredMoveSequence : MonoBehaviour
     [SerializeField] private Vector3 moveOffset = new Vector3(2f, 0f, 0f);
     [SerializeField] private Space moveSpace = Space.Self;
     [SerializeField] private float moveSpeed = 1f;
+
+    [Header("Sounds")]
+    [SerializeField] private EventReference discoverySound;
 
     private bool isActivated;
     private bool isMoving;
@@ -59,6 +63,7 @@ public class TriggeredMoveSequence : MonoBehaviour
         if (isMoving) return;
 
         isMoving = true;
+        SoundPlayer.PlayOneShot(discoverySound, target.transform.position);
         StartCoroutine(MoveRoutine());
     }
 

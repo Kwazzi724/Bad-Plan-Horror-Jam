@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DAWAsset" id="{38f1ae0b-a7a4-4bcb-8755-b0ac57e409e2}">
+		<property name="assetPath">
+			<value>BadPlanGJ_SFX.RPP.link/Chloe_Laughing_01.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>4.8125</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{db9613a3-c35d-48eb-a22c-3b3c0dc0d07c}</destination>
+		</relationship>
+		<relationship name="project">
+			<destination>{6fa79762-5ff1-4b18-92b1-1000487312a3}</destination>
+		</relationship>
+	</object>
+</objects>

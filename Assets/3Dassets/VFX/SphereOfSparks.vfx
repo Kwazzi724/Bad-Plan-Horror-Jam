@@ -246,8 +246,8 @@ MonoBehaviour:
   - title: Gets tail start from end of particle life?
     position:
       serializedVersion: 2
-      x: 1272
-      y: 780
+      x: 1209
+      y: 835
       width: 1100
       height: 1874
     contents: I'm not quite sure what is happening here, more research needed.

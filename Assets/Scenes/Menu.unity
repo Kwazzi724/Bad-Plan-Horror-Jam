@@ -1717,7 +1717,7 @@ MonoBehaviour:
       Data2: 1235753250
       Data3: -2011732584
       Data4: 531272037
-    Path: event:/Music/PsychadelicTrack_01
+    Path: event:/Music/LevelMusic
   restartWhenFinished: 1
   fadeOutOnStop: 1
 --- !u!4 &1024413735
@@ -2123,7 +2123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
