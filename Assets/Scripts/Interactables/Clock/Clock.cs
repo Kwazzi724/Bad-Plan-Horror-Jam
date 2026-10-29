@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using UnityEngine;
 
 public class Clock : MonoBehaviour, IHoldInteractable
@@ -13,6 +14,9 @@ public class Clock : MonoBehaviour, IHoldInteractable
     [Header("Time (HH:mm, 24 hour)")]
     [SerializeField] private string correctTime = "21:00";
     [SerializeField] private string startTime = "00:00";
+
+    [Header("Sounds")]
+    [SerializeField] private EventReference alarmSound;
 
     private bool isOpen;
     private bool solved;
@@ -72,6 +76,7 @@ public class Clock : MonoBehaviour, IHoldInteractable
     {
         if (solved) return;
         solved = true;
+        SoundPlayer.PlayOneShot(alarmSound, transform.position);
         Solved?.Invoke();
     }
 

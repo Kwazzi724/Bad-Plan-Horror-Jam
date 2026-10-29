@@ -108,6 +108,13 @@ MonoBehaviour:
   holdPrompt: Right click to close
   correctTime: 05:30
   startTime: 00:00
+  alarmSound:
+    Guid:
+      Data1: 682575714
+      Data2: 1282249619
+      Data3: 1137089423
+      Data4: 123586884
+    Path: event:/SFX/Objects/AlarmClock
 --- !u!1001 &3051309940966042848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -331,6 +338,46 @@ PrefabInstance:
     - target: {fileID: 6259110212046242636, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: dialSound.Path
+      value: event:/SFX/Objects/AlarmClock_DialTime
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: applySound.Path
+      value: event:/SFX/Objects/AlarmClock_Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: dialSound.Guid.Data1
+      value: 498880057
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: dialSound.Guid.Data2
+      value: 1283220324
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: dialSound.Guid.Data3
+      value: 292178314
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: dialSound.Guid.Data4
+      value: 1264868285
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: applySound.Guid.Data1
+      value: -1439594096
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: applySound.Guid.Data2
+      value: 1163130451
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: applySound.Guid.Data3
+      value: -1025088096
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440593337907129994, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
+      propertyPath: applySound.Guid.Data4
+      value: 1550643762
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

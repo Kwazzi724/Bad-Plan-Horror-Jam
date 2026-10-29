@@ -485,8 +485,8 @@ Camera:
   m_GameObject: {fileID: 6120129282509271998}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -919,7 +919,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -1011,6 +1011,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Look
       m_Flags: 0
+    - m_Name: 
+      m_Id: 60223a6b-4fc2-4b37-bd95-8979ae4490c4
+      m_Path: <Gamepad>/rightStick
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Look
+      m_Flags: 0
     m_Flags: 0
     m_Priority: 0
   interactAction:
@@ -1024,6 +1032,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 23bd385f-b29b-4808-9071-50021e2ab063
       m_Path: <Keyboard>/e
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Interact
+      m_Flags: 0
+    - m_Name: 
+      m_Id: eba199d6-563f-4cec-9b1d-a84b1be7dc9c
+      m_Path: <Gamepad>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -1047,6 +1063,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Pause
       m_Flags: 0
+    - m_Name: 
+      m_Id: b2ea076d-bf03-458f-a52b-0561bfaf5ee9
+      m_Path: <Gamepad>/start
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Pause
+      m_Flags: 0
     m_Flags: 0
     m_Priority: 0
   torchAction:
@@ -1060,6 +1084,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: d22948e9-6633-4fb2-b2b0-89355a419225
       m_Path: <Keyboard>/q
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Torch
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 59eaf4f0-125b-46bb-9f63-bea7d967fe57
+      m_Path: <Gamepad>/buttonWest
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -1083,6 +1115,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Release
       m_Flags: 0
+    - m_Name: 
+      m_Id: 0fc923b3-adc6-44b5-944c-bce9903d77f1
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Release
+      m_Flags: 0
     m_Flags: 0
     m_Priority: 0
 --- !u!114 &221675877458983472
@@ -1097,7 +1137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e724df8a05b2e24ca2740990b87948f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 5
+  moveSpeed: 2.09
   gravity: -20
   groundedStickForce: -2
   footstepEvent:
@@ -1124,7 +1164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
   cameraPos: {fileID: 3581553927621029909}
-  lookSensitivity: 0.1
+  lookSensitivity: 0.4
   minPitch: -85
   maxPitch: 85
   invertY: 0
