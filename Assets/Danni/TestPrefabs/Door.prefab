@@ -205,7 +205,7 @@ MonoBehaviour:
       Data4: -338964303
     Path: event:/SFX/Env/Door_Noises
   rattleStyle:
-    parameter: Type
+    parameter: NoiseType
     label: Rattling
   unlockSqueakStyle:
     parameter: FastMedSlow
