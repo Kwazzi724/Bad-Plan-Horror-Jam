@@ -1,18 +1,19 @@
 using System;
+using System.Collections.Generic;
 using FMODUnity;
 using UnityEngine;
 
 public class MouthSlot : MonoBehaviour, IInteractable, IItemReceiver
 {
-    [SerializeField] private Transform slotPoint;
+    [SerializeField] private Transform[] snapPoints = new Transform[3];
     [SerializeField] private EventReference slotSound;
 
-    private MouthItem slotted;
-    private bool solved;
+    private readonly List<MouthItem> attached = new List<MouthItem>();
 
     public bool CanInteract => false;
-    public MouthItem Slotted => slotted;
-    public bool IsSolved => solved;
+    public int AttachedCount => attached.Count;
+    public int Capacity => snapPoints != null ? snapPoints.Length : 0;
+    public bool IsSolved => Capacity > 0 && attached.Count >= Capacity;
 
     public event Action Solved;
 
@@ -22,41 +23,24 @@ public class MouthSlot : MonoBehaviour, IInteractable, IItemReceiver
 
     public bool CanReceive(Pickup item)
     {
-        return slotted == null && item != null && item.GetComponent<MouthItem>() != null;
+        return !IsSolved && item != null && item.GetComponent<MouthItem>() != null;
     }
 
     public void Receive(Pickup item)
     {
         if (!CanReceive(item)) return;
 
-        slotted = item.GetComponent<MouthItem>();
-        item.PlaceInto(slotPoint != null ? slotPoint : transform);
-        item.PickedUp += HandlePickedOut;
+        Transform point = snapPoints[attached.Count];
+        if (point == null)
+            point = transform;
 
-        SoundPlayer.PlayOneShot(slotSound, transform.position);
+        attached.Add(item.GetComponent<MouthItem>());
+        item.PlaceInto(point);
+        item.Locked = true;
 
-        if (slotted.IsCorrect)
-            Correct();
-        else
-            Incorrect();
-    }
+        SoundPlayer.PlayOneShot(slotSound, point.position);
 
-    private void HandlePickedOut(Pickup item)
-    {
-        item.PickedUp -= HandlePickedOut;
-        slotted = null;
-    }
-
-    public void Correct()
-    {
-        if (solved) return;
-        solved = true;
-        Solved?.Invoke();
-    }
-
-    public void Incorrect()
-    {
-        if (GameManager.Instance != null)
-            GameManager.Instance.GameOver();
+        if (IsSolved)
+            Solved?.Invoke();
     }
 }

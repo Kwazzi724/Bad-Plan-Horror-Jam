@@ -60,6 +60,7 @@ public class Door : MonoBehaviour, IInteractable
     private Quaternion closedHingeRotation;
     private float ajarSign = 1f;
     private float nextRattleTime;
+    private bool silentLock;
     private readonly List<Clock> clocks = new List<Clock>();
     private readonly List<MouthSlot> mouthSlots = new List<MouthSlot>();
     private readonly List<StainManager> stainManagers = new List<StainManager>();
@@ -68,6 +69,7 @@ public class Door : MonoBehaviour, IInteractable
     private Transform ReferenceSpace => referenceSpace;
 
     public bool IsLocked => state == DoorState.Locked;
+    public bool WasCrossed { get; private set; }
     public bool IsStartLocked => state == DoorState.LockedShut;
     public bool NeedsMinigame => isClock || isMouth || isCleaning || isTidying || isFinal;
     public bool CanInteract => state == DoorState.Closed || state == DoorState.LockedShut || state == DoorState.Ajar;
@@ -283,6 +285,45 @@ public class Door : MonoBehaviour, IInteractable
         return FindEntrySide(player.transform) > 0f ? 1f : -1f;
     }
 
+    public void ForceLock()
+    {
+        if (swingRoutine != null)
+        {
+            StopCoroutine(swingRoutine);
+            swingRoutine = null;
+        }
+
+        passer = null;
+        silentLock = false;
+        hinge.localRotation = closedHingeRotation;
+        SetPanelSolid(true);
+        state = DoorState.Locked;
+        WasCrossed = true;
+    }
+
+    public void SlamShut()
+    {
+        if (state == DoorState.Locked || state == DoorState.Closing) return;
+
+        passer = null;
+
+        if (state == DoorState.Closed || state == DoorState.LockedShut)
+        {
+            if (swingRoutine != null)
+            {
+                StopCoroutine(swingRoutine);
+                swingRoutine = null;
+            }
+
+            state = DoorState.Locked;
+            return;
+        }
+
+        silentLock = true;
+        PlaySound(squeakSound, squeakStyle);
+        Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
+    }
+
     public void MenuSwingOpen()
     {
         MenuSwingOpen(null);
@@ -314,6 +355,7 @@ public class Door : MonoBehaviour, IInteractable
         {
             Debug.Log($"Door: '{name}' passed by '{passer.name}' ({side:F2} from the door), closing.", this);
             passer = null;
+            WasCrossed = true;
             PlaySound(squeakSound, squeakStyle);
             Swing(0f, closeSpeed, DoorState.Closing, DoorState.Locked);
         }
@@ -477,7 +519,11 @@ public class Door : MonoBehaviour, IInteractable
         if (state == DoorState.Locked)
         {
             PlaySound(closeSound, closeStyle);
-            Locked?.Invoke();
+
+            if (silentLock)
+                silentLock = false;
+            else
+                Locked?.Invoke();
         }
     }
 }

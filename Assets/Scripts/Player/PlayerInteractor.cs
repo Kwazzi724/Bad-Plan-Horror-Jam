@@ -306,8 +306,14 @@ public class PlayerInteractor : MonoBehaviour
             currentIndicator.Hide();
         }
 
+        if (currentTarget is IHighlightable oldHighlight && currentTarget as Object != null)
+            oldHighlight.SetHighlighted(false);
+
         currentTarget = target;
         currentIndicator = null;
+
+        if (currentTarget is IHighlightable newHighlight)
+            newHighlight.SetHighlighted(true);
 
         if (currentTarget is Component component && component != null)
         {
