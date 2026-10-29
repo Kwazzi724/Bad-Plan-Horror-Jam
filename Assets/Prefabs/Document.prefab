@@ -127,6 +127,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ImageInteractable
   imageId: 1
+  openSound:
+    Guid:
+      Data1: -2033400003
+      Data2: 1171353409
+      Data3: 1065698988
+      Data4: -2019873888
+    Path: event:/SFX/Player/PaperRustle
 --- !u!1001 &7451436032357297499
 PrefabInstance:
   m_ObjectHideFlags: 0

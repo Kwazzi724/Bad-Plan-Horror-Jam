@@ -1,8 +1,10 @@
+using FMODUnity;
 using UnityEngine;
 
 public class ImageInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private string imageId;
+    [SerializeField] private EventReference openSound;
 
     public bool CanInteract => ImagePanel.Instance != null && !ImagePanel.Instance.IsOpen;
 
@@ -16,5 +18,8 @@ public class ImageInteractable : MonoBehaviour, IInteractable
             reader = interactor.transform.root.GetComponentInChildren<PlayerInputReader>();
 
         ImagePanel.Instance.Open(imageId, reader);
+
+        if (ImagePanel.Instance.IsOpen)
+            SoundPlayer.PlayOneShot(openSound, transform.position);
     }
 }

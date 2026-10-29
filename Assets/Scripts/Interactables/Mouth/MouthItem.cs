@@ -9,13 +9,14 @@ public class MouthItem : MonoBehaviour
     [SerializeField] private int id = 1;
     [SerializeField] private EventReference grabSound;
     [SerializeField] private string voicePathFormat = "event:/SFX/Objects/Mouth_{0:00}";
-    [SerializeField] private float voiceFadeOutDuration = 1f;
+    [SerializeField, Range(0f, 1f)] private float slottedVolume = 0.3f;
+    [SerializeField] private float volumeChangeDuration = 1f;
+    [SerializeField] private float voiceFadeOutDuration = 2f;
 
     private Pickup pickup;
     private EventInstance voice;
-    private bool isSpeaking;
-    private bool isFading;
-    private float fadeTimer;
+    private float volume = 1f;
+    private float targetVolume = 1f;
 
     public int Id => id;
     public Pickup Pickup => pickup != null ? pickup : pickup = GetComponent<Pickup>();
@@ -38,11 +39,6 @@ public class MouthItem : MonoBehaviour
             GameManager.Instance.StageEntered -= HandleStageEntered;
     }
 
-    private void HandleStageEntered(Stage stage, int stageNumber)
-    {
-        FadeOutVoice();
-    }
-
     private void OnEnable()
     {
         pickup.PickedUp += HandlePickedUp;
@@ -51,7 +47,7 @@ public class MouthItem : MonoBehaviour
     private void OnDisable()
     {
         pickup.PickedUp -= HandlePickedUp;
-        ReleaseVoice();
+        FadeOutVoice();
     }
 
     private void Update()
@@ -60,23 +56,21 @@ public class MouthItem : MonoBehaviour
 
         voice.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
-        if (isFading)
+        if (!Mathf.Approximately(volume, targetVolume))
         {
-            fadeTimer += Time.deltaTime;
-            float t = voiceFadeOutDuration > 0f ? Mathf.Clamp01(fadeTimer / voiceFadeOutDuration) : 1f;
-            voice.setVolume(1f - t);
-
-            if (t >= 1f)
-                ReleaseVoice();
-
-            return;
+            float step = volumeChangeDuration > 0f ? Time.deltaTime / volumeChangeDuration : 1f;
+            volume = Mathf.MoveTowards(volume, targetVolume, step);
+            voice.setVolume(volume);
         }
-
-        if (!isSpeaking) return;
 
         voice.getPlaybackState(out PLAYBACK_STATE state);
         if (state == PLAYBACK_STATE.STOPPED)
             voice.start();
+    }
+
+    private void HandleStageEntered(Stage stage, int stageNumber)
+    {
+        FadeOutVoice();
     }
 
     private void HandlePickedUp(Pickup item)
@@ -89,9 +83,10 @@ public class MouthItem : MonoBehaviour
 
     public void StartVoice()
     {
-        if (isSpeaking && !isFading) return;
+        targetVolume = 1f;
 
-        ReleaseVoice();
+        if (voice.isValid())
+            return;
 
         string path = string.Format(voicePathFormat, id);
 
@@ -105,25 +100,27 @@ public class MouthItem : MonoBehaviour
             return;
         }
 
+        volume = targetVolume;
+        voice.setVolume(volume);
         voice.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
         voice.start();
-        isSpeaking = true;
+    }
+
+    public void Quieten()
+    {
+        targetVolume = slottedVolume;
     }
 
     public void FadeOutVoice()
     {
-        if (!voice.isValid() || isFading) return;
+        if (!voice.isValid()) return;
 
-        isSpeaking = false;
-        isFading = true;
-        fadeTimer = 0f;
+        SoundFader.FadeOutAndRelease(voice, voiceFadeOutDuration);
+        voice.clearHandle();
     }
 
-    private void ReleaseVoice()
+    public void StopVoice()
     {
-        isSpeaking = false;
-        isFading = false;
-
         if (!voice.isValid()) return;
 
         voice.stop(STOP_MODE.IMMEDIATE);

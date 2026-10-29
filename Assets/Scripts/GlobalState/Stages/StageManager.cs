@@ -41,7 +41,7 @@ public class StageManager : MonoBehaviour
         CurrentStage = firstStage.GetComponent<Stage>();
         CurrentStageIndex = 0;
         CurrentStage.DoorLocked += HandleDoorLocked;
-        Debug.Log($"loaded first stage '{stages[0].name}' at the home anchor.", this);
+        // Debug.Log($"loaded first stage '{stages[0].name}' at the home anchor.", this);
 
         PreloadNextStage();
     }
@@ -73,7 +73,7 @@ public class StageManager : MonoBehaviour
         CurrentStage = UpcomingStage;
         CurrentStageIndex = upcomingIndex;
         UpcomingStage = null;
-        Debug.Log($"now in stage {CurrentStageIndex} '{CurrentStage.name}'", this);
+        // Debug.Log($"now in stage {CurrentStageIndex} '{CurrentStage.name}'", this);
         StageEntered?.Invoke(CurrentStage);
         PreloadNextStage();
     }
@@ -132,7 +132,7 @@ public class StageManager : MonoBehaviour
         foreach (Door door in inheritedDoors)
             door.transform.SetParent(CurrentStage.transform, true);
 
-        Debug.Log($"reset stage {CurrentStageIndex} '{CurrentStage.name}'", this);
+        // Debug.Log($"reset stage {CurrentStageIndex} '{CurrentStage.name}'", this);
         PreloadNextStage();
         StageReset?.Invoke(CurrentStage);
         return CurrentStage;
@@ -177,7 +177,7 @@ public class StageManager : MonoBehaviour
 
         UpcomingStage = instance.GetComponent<Stage>();
         UpcomingStage.DoorLocked += HandleDoorLocked;
-        Debug.Log($"preloaded stage {upcomingIndex} '{instance.name}'", this);
+        // Debug.Log($"preloaded stage {upcomingIndex} '{instance.name}'", this);
     }
 
     private void OnValidate()
