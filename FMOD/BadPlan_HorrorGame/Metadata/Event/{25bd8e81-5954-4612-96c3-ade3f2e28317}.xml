@@ -158,6 +158,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{f12aa289-dd8a-4341-9113-f28df049669f}">
+		<property name="volume">
+			<value>-15</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -318,14 +321,23 @@
 		<property name="filterTypeA">
 			<value>7</value>
 		</property>
+		<property name="filterTypeB">
+			<value>8</value>
+		</property>
 		<property name="frequencyA">
-			<value>7039.16846</value>
+			<value>5721.8877</value>
+		</property>
+		<property name="frequencyB">
+			<value>11573.8594</value>
 		</property>
 		<property name="qualityA">
 			<value>0.655046582</value>
 		</property>
 		<property name="gainA">
-			<value>-16.8038998</value>
+			<value>-30</value>
+		</property>
+		<property name="gainB">
+			<value>12.8385687</value>
 		</property>
 	</object>
 	<object class="Plugin" id="{c529541a-a77a-4aa1-b0e3-2380a6609417}">
