@@ -91,7 +91,7 @@ public class StageManager : MonoBehaviour
 
         foreach (Door door in oldStage.GetComponentsInChildren<Door>(true))
         {
-            if (!door.IsLocked) continue;
+            if (!door.WasCrossed) continue;
 
             int index = oldStage.IndexOfDoor(door);
 

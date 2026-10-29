@@ -113,11 +113,11 @@ MonoBehaviour:
   isCorrect: 0
   grabSound:
     Guid:
-      Data1: 254810437
-      Data2: 1140515480
-      Data3: -1189367361
-      Data4: 1596679781
-    Path: event:/SFX/Objects/Mouth
+      Data1: 625789750
+      Data2: 1166469527
+      Data3: -1444769658
+      Data4: -1083316714
+    Path: event:/SFX/Objects/Mouth_01
 --- !u!1001 &1192436436540177569
 PrefabInstance:
   m_ObjectHideFlags: 0

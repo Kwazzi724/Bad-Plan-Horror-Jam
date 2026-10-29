@@ -30,6 +30,7 @@ public class DeathSequence : MonoBehaviour
         GameManager gameManager = GameManager.Instance;
         GameObject player = gameManager != null ? gameManager.CurrentPlayer : null;
         LockInteraction(player);
+        LockAllDoors();
 
         Stage stage = gameManager != null ? gameManager.CurrentStage : null;
 
@@ -53,6 +54,12 @@ public class DeathSequence : MonoBehaviour
             ScreenFadeManager.Instance.FadeIn(fadeInDuration);
 
         IsDying = false;
+    }
+
+    private void LockAllDoors()
+    {
+        foreach (Door door in FindObjectsByType<Door>(FindObjectsSortMode.None))
+            door.SlamShut();
     }
 
     private void LockInteraction(GameObject player)

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4792623584529754515}
   - component: {fileID: 5546470833774035762}
   m_Layer: 0
-  m_Name: AutopsyReport
+  m_Name: Document
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

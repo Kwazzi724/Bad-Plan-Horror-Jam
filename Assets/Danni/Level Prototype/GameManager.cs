@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     [Header("Death")]
     [SerializeField] private DeathSequence deathSequence;
 
+    public bool isDeathActivated;
+
     [Header("Interaction")]
     [SerializeField] private TMP_Text holdPromptText;
 
@@ -111,6 +113,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (!isDeathActivated) return;
         if (deathSequence == null)
             deathSequence = FindAnyObjectByType<DeathSequence>();
 

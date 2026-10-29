@@ -49,13 +49,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Mannequin
   visual: {fileID: 0}
   mouth: {fileID: 5184544329424100934}
-  moveSpeed: 2.5
-  turnSpeed: 300
+  moveSpeed: 0.5
+  turnSpeed: 200
   catchDistance: 1
   gravity: -20
   obstacles:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   cellSize: 0.5
   searchPadding: 6
   maxSearchNodes: 4000
@@ -64,15 +64,15 @@ MonoBehaviour:
   screenMargin: 0.05
   sightBlockers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8
   debugLogs: 0
   moveSound:
     Guid:
-      Data1: -576419971
-      Data2: 1338956157
-      Data3: -1635326292
-      Data4: 205240205
-    Path: event:/SFX/Player/Steps
+      Data1: 159016573
+      Data2: 1201427760
+      Data3: 1299600040
+      Data4: 1701942403
+    Path: event:/SFX/NPC/Other/Mannequin_Steps
   moveSoundDistance: 1.2
 --- !u!143 &883725142374164027
 CharacterController:

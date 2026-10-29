@@ -16,7 +16,8 @@ public class Pickup : MonoBehaviour, IInteractable
     public event Action<Pickup> PickedUp;
 
     public bool IsHeld { get; private set; }
-    public bool CanInteract => !IsHeld;
+    public bool Locked { get; set; }
+    public bool CanInteract => !IsHeld && !Locked;
 
     private void Awake()
     {

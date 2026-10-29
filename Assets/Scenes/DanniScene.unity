@@ -1424,7 +1424,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &969850603
 MonoBehaviour:
@@ -1631,7 +1631,7 @@ MonoBehaviour:
   surfaceOffset: 0.1
   maxFlames: 60
   flameSpacing: 1.2
-  burnDuration: 10
+  burnDuration: 6
   holdDuration: 1.5
   originCount: 3
   spreadExponent: 1
@@ -2510,7 +2510,7 @@ PrefabInstance:
       objectReference: {fileID: 1730482257}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: stages.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[0]'
@@ -2532,6 +2532,10 @@ PrefabInstance:
       propertyPath: 'stages.Array.data[4]'
       value: 
       objectReference: {fileID: 5397638655512368556, guid: 0a141a7abe76b1942a565fa19052bcdb, type: 3}
+    - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
+      propertyPath: 'stages.Array.data[5]'
+      value: 
+      objectReference: {fileID: 5397638655512368556, guid: 67f607d0cad349044b343253a3c062cb, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2836,7 +2840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7768378757121314357, guid: 492d97ee0d4a56c459cc2fdb66e21aa6, type: 3}
       propertyPath: isDeathActivated
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
