@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,10 @@ public class ClockMinigame : MonoBehaviour
     [SerializeField] private Button minuteUpButton;
     [SerializeField] private Button minuteDownButton;
     [SerializeField] private Button applyButton;
+
+    [Header("Sounds")]
+    [SerializeField] private EventReference dialSound;
+    [SerializeField] private EventReference applySound;
 
     private Transform targetCamera;
     private Action<int, int> onApplied;
@@ -106,6 +111,7 @@ public class ClockMinigame : MonoBehaviour
     private void ChangeHour(int delta)
     {
         hour = Wrap(hour + delta, 24);
+        SoundPlayer.PlayOneShot(dialSound, transform.position);
         UpdateText();
         TurnDial(hourDial, hourDialRest, hour * 360f / 24f, ref hourTween, false);
     }
@@ -113,6 +119,7 @@ public class ClockMinigame : MonoBehaviour
     private void ChangeMinute(int delta)
     {
         minute = Wrap(minute + delta, 60);
+        SoundPlayer.PlayOneShot(dialSound, transform.position);
         UpdateText();
         TurnDial(minuteDial, minuteDialRest, minute * 360f / 60f, ref minuteTween, false);
     }
@@ -120,6 +127,8 @@ public class ClockMinigame : MonoBehaviour
     private void Apply()
     {
         if (!IsOpen) return;
+
+        SoundPlayer.PlayOneShot(applySound, transform.position);
 
         Action<int, int> applied = onApplied;
         int appliedHour = hour;

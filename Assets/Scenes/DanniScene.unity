@@ -2436,6 +2436,7 @@ MonoBehaviour:
   imageDelay: 5
   imageFadeDuration: 3
   imageHoldDuration: 2
+  imageRecoverDuration: 1
   gameManager: {fileID: 7364191606689702325}
 --- !u!4 &1576513652
 Transform:
@@ -2515,27 +2516,27 @@ PrefabInstance:
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[0]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: 0a141a7abe76b1942a565fa19052bcdb, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: b48fac25383f378429804384bd4e2bfc, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[1]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: b48fac25383f378429804384bd4e2bfc, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: 4ed16418fd4a73444b741ba1b0402332, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[2]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: 7138e2d5cab795246b43dfbf6832ebbd, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: be1c46c629b4dd64bb85a8e78b2d0608, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[3]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: be1c46c629b4dd64bb85a8e78b2d0608, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: ba99bb1caee2c6b4588f785d20981ce1, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[4]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: 6ed213310eff90947b3c61c95a0080d2, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: c0774a5d6491cf94b9b67921a0f7e6af, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[5]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: 67f607d0cad349044b343253a3c062cb, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: c7a031de55660664d902f4c22463f8c9, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
