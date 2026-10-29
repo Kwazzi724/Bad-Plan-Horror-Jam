@@ -4555,10 +4555,10 @@
 	</object>
 	<object class="TransitionRegion" id="{498bf88b-dc1d-4d24-98a3-1d757a66054c}">
 		<property name="position">
-			<value>5.333333333333333</value>
+			<value>0</value>
 		</property>
 		<property name="length">
-			<value>122.66666666666667</value>
+			<value>128</value>
 		</property>
 		<property name="transitionOffset">
 			<value>1</value>
@@ -4647,10 +4647,10 @@
 	</object>
 	<object class="TransitionRegion" id="{b9585949-0a98-44a7-bbe3-574773529775}">
 		<property name="position">
-			<value>5.333333333333333</value>
+			<value>0</value>
 		</property>
 		<property name="length">
-			<value>122.66666666666667</value>
+			<value>128</value>
 		</property>
 		<property name="transitionOffset">
 			<value>1</value>
@@ -4673,10 +4673,10 @@
 	</object>
 	<object class="TransitionRegion" id="{3db748f6-481f-4aab-80c2-d0cbeb75c90a}">
 		<property name="position">
-			<value>5.333333333333333</value>
+			<value>0</value>
 		</property>
 		<property name="length">
-			<value>122.66666666666667</value>
+			<value>128</value>
 		</property>
 		<property name="transitionOffset">
 			<value>1</value>
@@ -5135,10 +5135,10 @@
 	</object>
 	<object class="TransitionRegion" id="{af150e26-19a2-4b80-990c-95aee590c1f4}">
 		<property name="position">
-			<value>5.333333333333333</value>
+			<value>0</value>
 		</property>
 		<property name="length">
-			<value>122.66666666666666</value>
+			<value>127.99999999999999</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{7ff1d904-68c7-44c0-8818-390a9837800d}</destination>
@@ -5330,10 +5330,10 @@
 	</object>
 	<object class="TransitionRegion" id="{5f7a0bb0-c61a-4a71-bf1a-c512a4130cac}">
 		<property name="position">
-			<value>5.3333333333333321</value>
+			<value>0</value>
 		</property>
 		<property name="length">
-			<value>122.66666666666666</value>
+			<value>127.99999999999999</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{7ff1d904-68c7-44c0-8818-390a9837800d}</destination>

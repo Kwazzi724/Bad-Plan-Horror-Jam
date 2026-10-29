@@ -5326,7 +5326,7 @@ MonoBehaviour:
       Data2: 1329971953
       Data3: 1114102689
       Data4: -614035400
-    Path: event:/SFX/Env/Radio
+    Path: event:/SFX/Objects/Radio
   voiceLabel:
     parameter: RadioSetting
     label: News

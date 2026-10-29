@@ -252,7 +252,7 @@ MonoBehaviour:
   torchLight: {fileID: 4822048550499727524}
   aimSource: {fileID: 551844532549567061}
   aimFollowSpeed: 0
-  batteryLifeSeconds: 30
+  batteryLifeSeconds: 120
   dimStartPercent: 0.1
   startOn: 1
   toggleSound:
@@ -719,8 +719,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.9433962, g: 0.874714, b: 0.6808473, a: 1}
-  m_Intensity: 1.19
-  m_Range: 59.53
+  m_Intensity: 5
+  m_Range: 60
   m_SpotAngle: 66.48998
   m_InnerSpotAngle: 39.218296
   m_CookieSize2D: {x: 0.5, y: 0.5}
