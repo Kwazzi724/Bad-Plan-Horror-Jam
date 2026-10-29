@@ -453,6 +453,7 @@ GameObject:
   - component: {fileID: 1806475165337817224}
   - component: {fileID: 4517261569726496159}
   - component: {fileID: 4866546152432118744}
+  - component: {fileID: 6340333541577206200}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -485,8 +486,8 @@ Camera:
   m_GameObject: {fileID: 6120129282509271998}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -585,6 +586,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
   nonRigidbodyVelocity: 0
   attenuationObject: {fileID: 0}
+--- !u!95 &6340333541577206200
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120129282509271998}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a8403bcd1646f4ae595d621dc82483ec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6371372148745795345
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,7 +725,7 @@ Transform:
   m_GameObject: {fileID: 7151725912336330167}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.12}
+  m_LocalPosition: {x: 0, y: 0, z: 0.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -720,7 +743,7 @@ Light:
   m_Type: 0
   m_Color: {r: 0.9433962, g: 0.874714, b: 0.6808473, a: 1}
   m_Intensity: 5
-  m_Range: 60
+  m_Range: 64.44
   m_SpotAngle: 66.48998
   m_InnerSpotAngle: 39.218296
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -919,7 +942,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -1011,6 +1034,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Look
       m_Flags: 0
+    - m_Name: 
+      m_Id: 60223a6b-4fc2-4b37-bd95-8979ae4490c4
+      m_Path: <Gamepad>/rightStick
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Look
+      m_Flags: 0
     m_Flags: 0
     m_Priority: 0
   interactAction:
@@ -1024,6 +1055,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 23bd385f-b29b-4808-9071-50021e2ab063
       m_Path: <Keyboard>/e
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Interact
+      m_Flags: 0
+    - m_Name: 
+      m_Id: eba199d6-563f-4cec-9b1d-a84b1be7dc9c
+      m_Path: <Gamepad>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -1047,6 +1086,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Pause
       m_Flags: 0
+    - m_Name: 
+      m_Id: b2ea076d-bf03-458f-a52b-0561bfaf5ee9
+      m_Path: <Gamepad>/start
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Pause
+      m_Flags: 0
     m_Flags: 0
     m_Priority: 0
   torchAction:
@@ -1060,6 +1107,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: d22948e9-6633-4fb2-b2b0-89355a419225
       m_Path: <Keyboard>/q
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Torch
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 59eaf4f0-125b-46bb-9f63-bea7d967fe57
+      m_Path: <Gamepad>/buttonWest
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -1083,6 +1138,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Release
       m_Flags: 0
+    - m_Name: 
+      m_Id: 0fc923b3-adc6-44b5-944c-bce9903d77f1
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Release
+      m_Flags: 0
     m_Flags: 0
     m_Priority: 0
 --- !u!114 &221675877458983472
@@ -1097,7 +1160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e724df8a05b2e24ca2740990b87948f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 5
+  animator: {fileID: 6340333541577206200}
+  moveSpeed: 2.09
   gravity: -20
   groundedStickForce: -2
   footstepEvent:
@@ -1124,7 +1188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
   cameraPos: {fileID: 3581553927621029909}
-  lookSensitivity: 0.1
+  lookSensitivity: 0.4
   minPitch: -85
   maxPitch: 85
   invertY: 0

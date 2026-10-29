@@ -139,7 +139,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{00c4745f-8006-47e8-97fa-4815472fc3a8}">
 		<property name="volume">
-			<value>-8</value>
+			<value>-0.5</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -334,7 +334,7 @@
 			<value>MaxDistance</value>
 		</property>
 		<property name="value">
-			<value>20</value>
+			<value>200</value>
 		</property>
 		<property name="curve">
 			<value>{(0.000000,0.000000)(2.000000,1.000000)(5.000000,5.000000)(10.000000,10.000000)(15.000000,100.000000)(20.000000,1000.000000)(27.000000,10000.000000)}</value>
