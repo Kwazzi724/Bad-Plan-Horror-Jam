@@ -23,10 +23,13 @@ public class GameManager : MonoBehaviour
     [Header("Sanity")]
     [SerializeField] private GameObject insaneText;
 
+    [Header("Fall Safety")]
+    [SerializeField] private float fallDistance = 10f;
+    [SerializeField] private float fallFadeOutDuration = 0.5f;
+    [SerializeField] private float fallFadeInDuration = 1f;
+
     [Header("Death")]
     [SerializeField] private DeathSequence deathSequence;
-
-    public bool isDeathActivated;
 
     [Header("Interaction")]
     [SerializeField] private TMP_Text holdPromptText;
@@ -46,6 +49,9 @@ public class GameManager : MonoBehaviour
     public bool IsDying => deathSequence != null && deathSequence.IsDying;
 
     private GameObject currentPlayer;
+    private bool isRecoveringFromFall;
+    private Stage heightStage;
+    private float stageHeight;
     private Coroutine messageRoutine;
 
     private void Awake()
@@ -75,7 +81,6 @@ public class GameManager : MonoBehaviour
         
         if (stageManager == null)
             return;
-
         HideHoldPrompt();
         if (messageText != null)
             messageText.gameObject.SetActive(false);
@@ -106,7 +111,6 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        if (!isDeathActivated) return;
         if (deathSequence == null)
             deathSequence = FindAnyObjectByType<DeathSequence>();
 
@@ -117,6 +121,46 @@ public class GameManager : MonoBehaviour
         }
 
         deathSequence.Begin();
+    }
+
+    private void Update()
+    {
+        if (isRecoveringFromFall || IsDying || currentPlayer == null) return;
+
+        Stage stage = CurrentStage;
+        if (stage == null) return;
+
+        if (currentPlayer.transform.position.y < GetStageHeight(stage) - fallDistance)
+            StartCoroutine(RecoverFromFall());
+    }
+
+    private float GetStageHeight(Stage stage)
+    {
+        if (stage == heightStage) return stageHeight;
+
+        heightStage = stage;
+        PlayerSpawnPoint stageSpawn = stage.GetComponentInChildren<PlayerSpawnPoint>(true);
+        stageHeight = stageSpawn != null ? stageSpawn.transform.position.y : stage.transform.position.y;
+        return stageHeight;
+    }
+
+    private IEnumerator RecoverFromFall()
+    {
+        isRecoveringFromFall = true;
+        Debug.Log($"GameManager: player fell more than {fallDistance} below '{CurrentStage.name}', resetting.", this);
+
+        if (ScreenFadeManager.Instance != null)
+        {
+            ScreenFadeManager.Instance.FadeOut(fallFadeOutDuration);
+            yield return new WaitForSeconds(fallFadeOutDuration);
+        }
+
+        ResetCurrentStage();
+
+        if (ScreenFadeManager.Instance != null)
+            ScreenFadeManager.Instance.FadeIn(fallFadeInDuration);
+
+        isRecoveringFromFall = false;
     }
 
     public void ResetCurrentStage()
