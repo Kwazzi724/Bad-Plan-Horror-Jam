@@ -2,9 +2,11 @@ using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
+using UnityEngine.Animations;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private Animator animator;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float gravity = -20f;
     [SerializeField] private float groundedStickForce = -2f;
@@ -70,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
         {
             distanceSinceStep = stepDistance * 0.5f;
             StopStep();
+            animator.SetBool("isMoving", false);
             return;
         }
 
@@ -80,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!stepInstance.isValid())
                 StartStep();
+            animator.SetBool("isMoving", true);
             return;
         }
 

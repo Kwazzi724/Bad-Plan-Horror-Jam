@@ -5571,11 +5571,11 @@ MonoBehaviour:
   sourceEffect: {fileID: 0}
   floodLoop:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -467603537
+      Data2: 1323444100
+      Data3: 921180079
+      Data4: 540610661
+    Path: event:/SFX/Env/Blood
 --- !u!1 &8757077061797662631
 GameObject:
   m_ObjectHideFlags: 0
@@ -11277,6 +11277,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8803451985899975643}
     m_Modifications:
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: loopValue
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: chloeValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[0].stage
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[0].ringDelay
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 756583766225853425, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05

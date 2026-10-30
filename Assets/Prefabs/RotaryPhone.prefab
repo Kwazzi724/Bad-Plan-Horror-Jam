@@ -169,6 +169,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
       insertIndex: -1
       addedObject: {fileID: -2102475860883971488}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1245368873288336811}
   m_SourcePrefab: {fileID: 100100000, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
 --- !u!1 &5008364904270839176 stripped
 GameObject:
@@ -193,36 +196,21 @@ MonoBehaviour:
   pickUpState: PickUp
   hangUpState: HangUp
   holdPrompt: Click left mouse to hang up
-  telephoneSound:
-    Guid:
-      Data1: 2142913504
-      Data2: 1188734694
-      Data3: 46613919
-      Data4: 1853035543
-    Path: event:/SFX/Objects/Telephone
+  emitter: {fileID: 1245368873288336811}
   phoneActionParameter: PhoneAction
+  loopParameter: Loop
   ringLabel: Ring
   pickUpLabel: PickUp
   hangUpLabel: PutDown
   staticSoundLabel: HungUp
-  staticSound:
-    Guid:
-      Data1: 2142913504
-      Data2: 1188734694
-      Data3: 46613919
-      Data4: 1853035543
-    Path: event:/SFX/Objects/Telephone
+  loopValue: 0
+  chloeParameter: Chloe
+  chloeValue: 0
+  heldRingDuration: 2
   stageBehaviours:
   - stage: 2
     rings: 1
     ringDelay: 5
-    voiceLine:
-      Guid:
-        Data1: -2033400003
-        Data2: 1171353409
-        Data3: 1065698988
-        Data4: -2019873888
-      Path: event:/SFX/Player/PaperRustle
 --- !u!65 &-2102475860883971488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -244,6 +232,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2, y: 0.2, z: 0.2}
   m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!114 &1245368873288336811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5008364904270839176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 2142913504
+      Data2: 1188734694
+      Data3: 46613919
+      Data4: 1853035543
+    Path: event:/SFX/Objects/Telephone
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &5677519556896679730 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}

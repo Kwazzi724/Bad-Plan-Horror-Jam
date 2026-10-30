@@ -453,6 +453,7 @@ GameObject:
   - component: {fileID: 1806475165337817224}
   - component: {fileID: 4517261569726496159}
   - component: {fileID: 4866546152432118744}
+  - component: {fileID: 6340333541577206200}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -585,6 +586,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
   nonRigidbodyVelocity: 0
   attenuationObject: {fileID: 0}
+--- !u!95 &6340333541577206200
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120129282509271998}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a8403bcd1646f4ae595d621dc82483ec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6371372148745795345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,6 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e724df8a05b2e24ca2740990b87948f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  animator: {fileID: 6340333541577206200}
   moveSpeed: 2.09
   gravity: -20
   groundedStickForce: -2

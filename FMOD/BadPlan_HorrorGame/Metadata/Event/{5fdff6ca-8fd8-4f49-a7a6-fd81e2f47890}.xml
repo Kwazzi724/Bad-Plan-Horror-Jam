@@ -135,6 +135,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{0df32025-4d18-4844-8170-0a568e070e7e}">
+		<property name="volume">
+			<value>-12.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -198,6 +201,7 @@
 	<object class="MixerBusEffectChain" id="{c75d3ba5-1397-4650-b215-fc3ee020a04c}">
 		<relationship name="effects">
 			<destination>{c3287de0-c5a4-437a-a8e6-182dfc7a4775}</destination>
+			<destination>{d9f3cfe9-ce50-43be-8f93-8e68e2ad0049}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8f4f10ff-cc1c-4a2f-a0b8-f6ee8e0df4ff}" />
@@ -257,6 +261,14 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{c3287de0-c5a4-437a-a8e6-182dfc7a4775}" />
+	<object class="MultibandEqEffect" id="{d9f3cfe9-ce50-43be-8f93-8e68e2ad0049}">
+		<property name="frequencyA">
+			<value>126.435799</value>
+		</property>
+		<property name="qualityA">
+			<value>0.676091015</value>
+		</property>
+	</object>
 	<object class="Plugin" id="{56a95c19-6702-4f6b-ab08-a5ffac7a36d2}">
 		<property name="identifier">
 			<value>atmoky Renderer</value>
