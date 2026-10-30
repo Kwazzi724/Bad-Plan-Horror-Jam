@@ -2474,6 +2474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1469897609}
   - component: {fileID: 1469897610}
+  - component: {fileID: 1469897611}
   m_Layer: 0
   m_Name: 'Ambience '
   m_TagString: Untagged
@@ -2516,9 +2517,40 @@ MonoBehaviour:
       Data4: 531272037
     Path: event:/Music/LevelMusic
   loopParameter: Loop
-  loopPerStage: 0000000001000000020000000300000004000000
+  loopPerStage: 060000000100000002000000030000000600000005000000
   restartWhenFinished: 1
   fadeOutOnStop: 1
+--- !u!114 &1469897611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469897607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1608513226
+      Data2: 1330221016
+      Data3: -2114083161
+      Data4: -1871121182
+    Path: event:/Ambience/Ambience
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1576513650
 GameObject:
   m_ObjectHideFlags: 0

@@ -9467,6 +9467,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8803451985899975643}
     m_Modifications:
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: emitter
+      value: 
+      objectReference: {fileID: 4784211530011572406}
     - target: {fileID: 756583766225853425, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05
@@ -9681,6 +9685,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5677519556896679730, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
   m_PrefabInstance: {fileID: 5993340497610210589}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4784211530011572406 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1245368873288336811, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+  m_PrefabInstance: {fileID: 5993340497610210589}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
 --- !u!1001 &6128570608292005941
 PrefabInstance:
   m_ObjectHideFlags: 0

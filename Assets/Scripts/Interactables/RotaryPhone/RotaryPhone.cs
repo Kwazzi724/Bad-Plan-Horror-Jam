@@ -12,7 +12,7 @@ public class PhoneStageBehaviour
     public int stage = 2;
     public bool rings = true;
     public float ringDelay = 5f;
-    public EventReference voiceLine;
+    //public EventReference voiceLine;
 }
 
 public class RotaryPhone : MonoBehaviour, IHoldInteractable
@@ -30,13 +30,24 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [SerializeField] private string holdPrompt = "Right click to hang up";
 
     [Header("Sounds")]
-    [SerializeField] private EventReference telephoneSound;
+    [SerializeField] private StudioEventEmitter emitter;
+    [Header("Parameters")]
     [SerializeField] private string phoneActionParameter = "PhoneAction";
+    [SerializeField] private string loopParameter = "Loop";
+    
     [SerializeField] private string ringLabel = "Ring";
     [SerializeField] private string pickUpLabel = "PickUp";
     [SerializeField] private string hangUpLabel = "PutDown";
     [SerializeField] private string staticSoundLabel = "HangUp";
-    [SerializeField] private EventReference staticSound;
+    [SerializeField] private int loopValue;
+
+    [Header("Global Parameter")]
+    [SerializeField] private string chloeParameter = "Chloe";
+    [SerializeField] private int chloeValue = 0;
+    
+    
+   
+    //[SerializeField] private EventReference staticSound;
 
     [Header("Ringing")]
     [SerializeField] private float heldRingDuration = 2f;
@@ -74,6 +85,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
         stage = GetComponentInParent<Stage>();
         PlayAnimation(idleState);
+
     }
 
     private void Start()
@@ -85,37 +97,99 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
         if (gameManager.CurrentStageNumber > 0 && (stage == null || gameManager.CurrentStage == stage))
             Activate(gameManager.CurrentStageNumber);
+
+        EventInstance instance = emitter.EventInstance;
+
+        instance.getDescription(out EventDescription description);
+        description.getPath(out string eventPath);
+
+        instance.getParameterByName(
+            phoneActionParameter,
+            out float actionValue
+        );
+
+        instance.getParameterByName(
+            loopParameter,
+            out float currentLoopValue
+        );
+
+        Debug.Log(
+            $"FMOD Event: {eventPath} | " +
+            $"Instance Handle: {instance.handle} | " +
+            $"PhoneAction: {actionValue} | " +
+            $"Loop: {currentLoopValue}"
+);
+        
     }
 
     private void OnDestroy()
     {
         if (GameManager.Instance != null)
             GameManager.Instance.StageEntered -= HandleStageEntered;
-
-        StopRinging();
-        StopInstance(ref voiceInstance);
-        StopInstance(ref staticInstance);
     }
 
     private void Update()
     {
-        if (isRinging && IsStopped(ringInstance))
-            ringInstance.start();
+       
+    }
 
-        if (!isHeld) return;
+private void SetPhoneSound(string action, int loop)
+{
+    if (emitter == null || !emitter.EventInstance.isValid())
+        return;
 
-        if (voiceInstance.isValid())
-        {
-            if (IsStopped(voiceInstance))
-            {
-                StopInstance(ref voiceInstance);
-                StartStatic();
-            }
-        }
-        else if (IsStopped(staticInstance))
-        {
-            staticInstance.start();
-        }
+    EventInstance instance = emitter.EventInstance;
+
+    instance.getParameterByName(loopParameter, out float before);
+
+    FMOD.RESULT result = instance.setParameterByName(
+        loopParameter,
+        loop,
+        true
+    );
+
+    instance.getParameterByName(
+        loopParameter,
+        out float after,
+        out float finalValue
+    );
+
+    Debug.Log(
+        $"[{gameObject.name} | {GetInstanceID()}] " +
+        $"Requested: {loop} | Before: {before} | " +
+        $"After: {after} | Final: {finalValue} | " +
+        $"Result: {result}",
+        this
+    );
+
+    instance.setParameterByNameWithLabel(
+        phoneActionParameter,
+        action
+    );
+}
+
+
+
+        private void StartRinging()
+    {
+        if(!isActive || isHeld|| emitter == null)
+            return;
+
+            hasRung = true;
+            isRinging = true;
+
+            if (!emitter.IsPlaying())
+                emitter.Play();
+            
+            SetPhoneSound(ringLabel, loopValue);
+
+    }
+
+     private IEnumerator RingAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ringRoutine = null;
+        StartRinging();
     }
 
     public void OnInteract(GameObject interactor)
@@ -125,33 +199,64 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         isHeld = true;
 
         PlayAnimation(pickUpState);
-        SoundPlayer.PlayOneShot(telephoneSound, transform.position, new SoundLabel(phoneActionParameter, pickUpLabel));
 
-        if (isRinging)
-        {
-            AnswerRing();
+        FMOD.RESULT result = RuntimeManager.StudioSystem.setParameterByName(chloeParameter, chloeValue);
+
+        if (emitter == null || !emitter.IsPlaying())
             return;
-        }
 
-        if (hasRung)
-            StartListening();
-        else
-            StartStatic();
+        if (!emitter.IsPlaying())
+            emitter.Play();
+
+        Debug.Log(
+                    $"Phone: {gameObject.name} | " +
+                    $"Object ID: {GetInstanceID()} | " +
+                    $"Inspector Loop: {loopValue} | " +
+                    $"PickUp Label: {pickUpLabel}",
+                    this
+                );
+
+        SetPhoneSound(pickUpLabel, loopValue);
+
+        EventInstance instance = emitter.EventInstance;
+
+        instance.getParameterByName(
+            loopParameter,
+            out float actualLoop
+        );
+
+        instance.getParameterByName(
+            phoneActionParameter,
+            out float actualAction
+        );
+
+        Debug.Log(
+            $"Phone: {gameObject.name} | " +
+            $"Object ID: {GetInstanceID()} | " +
+            $"Emitter: {emitter.gameObject.name} | " +
+            $"Emitter ID: {emitter.GetInstanceID()} | " +
+            $"FMOD Handle: {instance.handle} | " +
+            $"Loop Inspector: {loopValue} | " +
+            $"Loop FMOD: {actualLoop} | " +
+            $"Action FMOD: {actualAction}",
+            this
+        );
+
+        emitter.EventInstance.getParameterByName(phoneActionParameter, out float actonValue);
+        emitter.EventInstance.getParameterByName(loopParameter, out float loopValueDebug);
+
+        Debug.Log($"Action Value: {actonValue}, Loop Value: {loopValueDebug}");
+   
     }
 
     public void EndInteract()
     {
-        if (!isHeld) return;
+
         isHeld = false;
-        StopHeldRing();
-
-        StopInstance(ref voiceInstance);
-        StopInstance(ref staticInstance);
-
+        SetPhoneSound(hangUpLabel, loopValue);
         if (!PlayAnimation(hangUpState))
             PlayAnimation(idleState);
-
-        SoundPlayer.PlayOneShot(telephoneSound, transform.position, new SoundLabel(phoneActionParameter, hangUpLabel));
+        
     }
 
     private void HandleStageEntered(Stage enteredStage, int stageNumber)
@@ -164,9 +269,14 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
     private void Activate(int stageNumber)
     {
+        if(emitter != null && emitter.IsPlaying())
+            return;
+
+        if(ringRoutine != null)
+            return;
+
         isActive = true;
         hasRung = false;
-        StopRinging();
 
         currentBehaviour = stageBehaviours.Find(behaviour => behaviour.stage == stageNumber);
 
@@ -177,101 +287,84 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private void Deactivate()
     {
         isActive = false;
-        StopRinging();
+        isHeld = false;
+        if (emitter != null && emitter.IsPlaying())
+            emitter.Stop();        
     }
 
-    private IEnumerator RingAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ringRoutine = null;
-        StartRinging();
-    }
+   
 
-    private void StartRinging()
-    {
-        hasRung = true;
-        isRinging = true;
 
-        StopInstance(ref ringInstance);
-        ringInstance = CreateInstance(telephoneSound, ringLabel);
-        if (ringInstance.isValid())
-            ringInstance.start();
 
-        if (isHeld)
-        {
-            StopInstance(ref voiceInstance);
-            StopInstance(ref staticInstance);
-            StopHeldRing();
-            heldRingRoutine = StartCoroutine(HeldRing());
-        }
-    }
-
-    private IEnumerator HeldRing()
+   /*  private IEnumerator HeldRing()
     {
         yield return new WaitForSeconds(heldRingDuration);
         heldRingRoutine = null;
 
         if (isHeld && isRinging)
             AnswerRing();
-    }
+    } */
 
-    private void AnswerRing()
+    /* private void AnswerRing()
     {
-        StopHeldRing();
-        isRinging = false;
-        StopInstance(ref ringInstance);
-        StopInstance(ref staticInstance);
-        StartListening();
-    }
+        //StopHeldRing();
+        //isRinging = false;
+        //StopInstance(ref ringInstance);
+        //StopInstance(ref staticInstance);
+        
+        //StartListening();
+    } */
 
-    private void StopHeldRing()
+   /*  private void StopHeldRing()
     {
         if (heldRingRoutine == null) return;
 
         StopCoroutine(heldRingRoutine);
         heldRingRoutine = null;
-    }
+    } */
 
-    private void StopRinging()
-    {
-        if (ringRoutine != null)
-        {
-            StopCoroutine(ringRoutine);
-            ringRoutine = null;
-        }
+    //private void StopRinging()
+    //{
+       // if (ringRoutine != null)
+      //  {
+      //      StopCoroutine(ringRoutine);
+     //       ringRoutine = null;
+     //   }
+//
+    //    StopHeldRing();
+    //    isRinging = false;
+    //    StopInstance(ref ringInstance);
+    //}
 
-        StopHeldRing();
-        isRinging = false;
-        StopInstance(ref ringInstance);
-    }
+    //private void StartListening()
+    //{
+        //StopInstance(ref voiceInstance);
+        //StopInstance(ref staticInstance);
 
-    private void StartListening()
-    {
-        StopInstance(ref voiceInstance);
-        StopInstance(ref staticInstance);
+        //if (currentBehaviour != null && !currentBehaviour.voiceLine.IsNull)
+        //{
+        //    voiceInstance = CreateInstance(currentBehaviour.voiceLine, null);
+        //    if (voiceInstance.isValid())
+        //    {
+        //        voiceInstance.start();
+        //        return;
+        //    }
+        //}
 
-        if (currentBehaviour != null && !currentBehaviour.voiceLine.IsNull)
-        {
-            voiceInstance = CreateInstance(currentBehaviour.voiceLine, null);
-            if (voiceInstance.isValid())
-            {
-                voiceInstance.start();
-                return;
-            }
-        }
+        //ringInstance.setParameterByName("Loop", Loop);
 
-        StartStatic();
-    }
+        //StartStatic();
+    //}
 
-    private void StartStatic()
-    {
-        StopInstance(ref staticInstance);
-        staticInstance = CreateInstance(staticSound, staticSoundLabel);
-        if (staticInstance.isValid())
-            staticInstance.start();
-    }
+   // private void StartStatic()
+   // {
+  //      StopInstance(ref staticInstance);
+   //     staticInstance = CreateInstance(staticSound, staticSoundLabel);
+   //     if (staticInstance.isValid())
+   //         staticInstance.start();
+   // }
 
-    private EventInstance CreateInstance(EventReference sound, string label)
+  /*   private EventInstance CreateInstance(EventReference sound, string label)
     {
         if (sound.IsNull) return default;
 
@@ -282,24 +375,24 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             instance.setParameterByNameWithLabel(phoneActionParameter, label);
 
         return instance;
-    }
+    } */
 
-    private static bool IsStopped(EventInstance instance)
+    /* private static bool IsStopped(EventInstance instance)
     {
         if (!instance.isValid()) return false;
 
         instance.getPlaybackState(out PLAYBACK_STATE playbackState);
         return playbackState == PLAYBACK_STATE.STOPPED;
-    }
+    } */
 
-    private static void StopInstance(ref EventInstance instance)
+    /* private static void StopInstance(ref EventInstance instance)
     {
         if (!instance.isValid()) return;
 
         instance.stop(STOP_MODE.IMMEDIATE);
         instance.release();
         instance.clearHandle();
-    }
+    } */
 
     private bool PlayAnimation(string stateName)
     {
