@@ -3912,7 +3912,7 @@ GameObject:
   - component: {fileID: 3185818973033224545}
   - component: {fileID: 3156857969430424048}
   m_Layer: 0
-  m_Name: BloodFloor
+  m_Name: BloodFlood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3956,7 +3956,7 @@ MonoBehaviour:
   maxStepHeight: 0.3
   minFloorNormal: 0.7
   cloth: {fileID: 7286100078319341789}
-  startDelay: 40
+  startDelay: 30
   overflowDuration: 40
   spreadPortion: 0.392
   spreadExponent: 1.3

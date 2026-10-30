@@ -27,7 +27,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
     [Header("Animation States")]
     [SerializeField] private string idleState = "Idle";
-    [SerializeField] private string pickUpState = "PickUp";
+    [SerializeField] private string pickUpState = "PickUp_Fixed";
     [SerializeField] private string hangUpState = "HangUp";
     [SerializeField] private string dialOneState = "Dial1";
     [SerializeField] private string dialOtherState = "Dial2Through9";

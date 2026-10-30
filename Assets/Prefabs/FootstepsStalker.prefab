@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5864975504276764547}
   - component: {fileID: 1924343144489146537}
   - component: {fileID: 291536710386738362}
-  - component: {fileID: 5909375202505205014}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -28,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 673257037626356887}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5741, y: 3.249985, z: 0.693}
+  m_LocalPosition: {x: 0.0227, y: 0, z: 0}
+  m_LocalScale: {x: 3.3274426, y: 3.249985, z: 0.693}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9179330779919278650}
@@ -67,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a9fc2b6e4d5e636489ad5bd20b414fdd, type: 2}
+  - {fileID: 2100000, guid: 050061a85c020b2428ba40a9e87f4df0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,27 +90,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5909375202505205014
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 673257037626356887}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8347951012143195454
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Stalker
   visual: {fileID: 673257037626356887}
   lookTarget: {fileID: 0}
-  followDistance: 4
+  followDistance: 3
   reactionDelay: 0.4
   maxSpeed: 6
   footstepEvent:
