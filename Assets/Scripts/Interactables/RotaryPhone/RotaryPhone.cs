@@ -80,6 +80,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private float voiceStartTime;
     private PLAYBACK_STATE lastVoiceState = PLAYBACK_STATE.STOPPED;
     private float voiceSilentTime;
+    private readonly List<EventInstance> dialTones = new List<EventInstance>();
     private bool isDialing;
     private bool correctCallActive;
     private bool dialSolved;
@@ -138,6 +139,8 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
         if (dialPad != null && dialPad.IsOpen)
             dialPad.Close();
+
+        StopDialTones();
     }
 
     private void Update()
@@ -207,6 +210,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             isDialing = false;
             isHeld = false;
             dialPad.Close();
+            StopDialTones();
             return;
         }
 
@@ -270,11 +274,23 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             tone.setParameterByName(dialNumberParameter, digit);
 
         tone.start();
-        tone.release();
+        dialTones.Add(tone);
+    }
+
+    private void StopDialTones()
+    {
+        for (int i = 0; i < dialTones.Count; i++)
+        {
+            EventInstance tone = dialTones[i];
+            StopInstance(ref tone);
+        }
+
+        dialTones.Clear();
     }
 
     private void HandleCall(string number)
     {
+        StopDialTones();
         isDialing = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
