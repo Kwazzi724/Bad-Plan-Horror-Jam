@@ -10,6 +10,7 @@ public class Pickup : MonoBehaviour, IInteractable
     private Collider[] colliders;
     private bool originalKinematic;
     private Transform originalParent;
+    private Vector3 originalWorldScale;
     private Tween moveTween;
     private Tween rotateTween;
 
@@ -24,6 +25,7 @@ public class Pickup : MonoBehaviour, IInteractable
         body = GetComponent<Rigidbody>();
         colliders = Array.FindAll(GetComponentsInChildren<Collider>(), itemCollider => !itemCollider.isTrigger);
         originalParent = transform.parent;
+        originalWorldScale = transform.lossyScale;
 
         if (body != null)
             originalKinematic = body.isKinematic;
@@ -63,6 +65,7 @@ public class Pickup : MonoBehaviour, IInteractable
             dropParent = originalParent;
 
         transform.SetParent(dropParent, true);
+        RestoreWorldScale();
         SetCollidersEnabled(true);
 
         if (body != null)
@@ -93,6 +96,7 @@ public class Pickup : MonoBehaviour, IInteractable
     private void SnapTo(Transform point)
     {
         transform.SetParent(point, true);
+        RestoreWorldScale();
         KillTweens();
 
         if (snapDuration <= 0f)
@@ -104,6 +108,21 @@ public class Pickup : MonoBehaviour, IInteractable
 
         moveTween = transform.DOLocalMove(Vector3.zero, snapDuration).SetEase(Ease.OutQuad).SetLink(gameObject);
         rotateTween = transform.DOLocalRotateQuaternion(Quaternion.identity, snapDuration).SetEase(Ease.OutQuad).SetLink(gameObject);
+    }
+
+    private void RestoreWorldScale()
+    {
+        Vector3 parentScale = transform.parent != null ? transform.parent.lossyScale : Vector3.one;
+
+        transform.localScale = new Vector3(
+            originalWorldScale.x / NonZero(parentScale.x),
+            originalWorldScale.y / NonZero(parentScale.y),
+            originalWorldScale.z / NonZero(parentScale.z));
+    }
+
+    private static float NonZero(float value)
+    {
+        return Mathf.Abs(value) < 0.0001f ? 0.0001f : value;
     }
 
     private void SetCollidersEnabled(bool enabled)

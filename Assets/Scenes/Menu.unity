@@ -2607,11 +2607,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoopingSound
   soundEvent:
     Guid:
-      Data1: 1977592354
-      Data2: 1235753250
-      Data3: -2011732584
-      Data4: 531272037
-    Path: event:/Music/LevelMusic
+      Data1: 415493816
+      Data2: 1105429077
+      Data3: -707260520
+      Data4: 15665935
+    Path: event:/Music/TitleScreen
   restartWhenFinished: 1
   fadeOutOnStop: 1
 --- !u!4 &1024413735
