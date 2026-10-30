@@ -9,6 +9,9 @@ public class Cloth : MonoBehaviour
     [Header("Detection")]
     [SerializeField] private Collider detectionZone;
 
+    [Header("Held")]
+    [SerializeField] private Vector3 heldRotation = new Vector3(90f, 0f, 0f);
+
     [Header("Wipe")]
     [SerializeField] private float wipeDuration = 2f;
     [SerializeField] private float wipeSpeed = 2.5f;
@@ -26,6 +29,8 @@ public class Cloth : MonoBehaviour
 
     public Stain Target => target;
     public bool IsWiping => wipeRoutine != null;
+
+    private Quaternion HeldRotation => Quaternion.Euler(heldRotation);
 
     private void Awake()
     {
@@ -59,6 +64,13 @@ public class Cloth : MonoBehaviour
         if (IsWiping) return;
 
         SetTarget(pickup.IsHeld ? FindStain() : null);
+    }
+
+    private void LateUpdate()
+    {
+        if (IsWiping || !pickup.IsHeld) return;
+
+        transform.localRotation = HeldRotation;
     }
 
     public bool Wipe(Action onComplete)
@@ -127,12 +139,12 @@ public class Cloth : MonoBehaviour
             float wave = Mathf.Sin(elapsed * wipeSpeed * Mathf.PI * 2f);
 
             transform.localPosition = new Vector3(wave * wipeDistance, 0f, wipeReach) * weight;
-            transform.localRotation = Quaternion.Euler(0f, 0f, -wave * wipeAngle * weight);
+            transform.localRotation = Quaternion.Euler(0f, 0f, -wave * wipeAngle * weight) * HeldRotation;
             yield return null;
         }
 
         transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        transform.localRotation = HeldRotation;
 
         stain.Clean();
         target = null;

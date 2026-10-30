@@ -3776,7 +3776,7 @@ PrefabInstance:
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[1]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: 4ed16418fd4a73444b741ba1b0402332, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: 1508e2fe219b0bb478608cbee0a41308, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[2]'
       value: 
@@ -3788,11 +3788,11 @@ PrefabInstance:
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[4]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: c0774a5d6491cf94b9b67921a0f7e6af, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: 397bf12b6c99cb648b09390246bc7566, type: 3}
     - target: {fileID: 6542328918478538301, guid: 38c11aa1f7bf0db48a2d9391ac8c8d64, type: 3}
       propertyPath: 'stages.Array.data[5]'
       value: 
-      objectReference: {fileID: 5397638655512368556, guid: c7a031de55660664d902f4c22463f8c9, type: 3}
+      objectReference: {fileID: 5397638655512368556, guid: 12210d21d79dff5499927662b5413e7a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

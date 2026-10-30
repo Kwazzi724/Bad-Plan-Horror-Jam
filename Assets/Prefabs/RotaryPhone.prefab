@@ -215,6 +215,7 @@ MonoBehaviour:
   loopParameter: Loop
   chloeGlobalParameter: Chloe
   heldRingDuration: 2
+  debugLogs: 0
   stageBehaviours:
   - stage: 2
     rings: 1
@@ -222,30 +223,35 @@ MonoBehaviour:
     playsVoice: 1
     voiceLoop: 1
     holdUntilVoiceEnds: 1
+    voiceLength: 0
   - stage: 3
     rings: 1
     ringDelay: 2
     playsVoice: 1
     voiceLoop: 2
     holdUntilVoiceEnds: 0
+    voiceLength: 0
   - stage: 4
     rings: 1
     ringDelay: 2
     playsVoice: 1
     voiceLoop: 3
     holdUntilVoiceEnds: 1
+    voiceLength: 0
   - stage: 5
     rings: 1
     ringDelay: 2
     playsVoice: 1
     voiceLoop: 4
     holdUntilVoiceEnds: 1
+    voiceLength: 0
   - stage: 6
     rings: 1
     ringDelay: 10
     playsVoice: 1
     voiceLoop: 5
     holdUntilVoiceEnds: 0
+    voiceLength: 0
 --- !u!65 &-2102475860883971488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -324,6 +330,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RotaryPhoneAsset
       objectReference: {fileID: 0}
+    - target: {fileID: 7364684311294529611, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c825f953caf1e3846b5586db1641bc6a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
