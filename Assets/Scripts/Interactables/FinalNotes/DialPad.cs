@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 public class DialPad : MonoBehaviour
 {
     [Header("Placement")]
+    [SerializeField] private bool followCamera = true;
     [SerializeField] private float distanceFromCamera = 0.6f;
     [SerializeField] private Vector3 rotationOffset;
     [SerializeField] private Canvas canvas;
@@ -19,8 +21,12 @@ public class DialPad : MonoBehaviour
     [SerializeField] private TMP_Text display;
     [SerializeField] private int maxDigits = 10;
 
+    [Header("Sounds")]
+    [SerializeField] private EventReference buttonSound;
+
     private Transform targetCamera;
     private Action<int> onDigit;
+    private Action onClear;
     private Action<string> onCall;
     private string number = "";
     private bool initialised;
@@ -45,13 +51,17 @@ public class DialPad : MonoBehaviour
         AddListener(callButton, Call);
     }
 
-    public void Open(Camera viewer, Action<int> digitPressed, Action<string> called)
+    public void Open(Camera viewer, Action<int> digitPressed, Action cleared, Action<string> called)
     {
         gameObject.SetActive(true);
         Initialise();
 
+        if (!gameObject.activeInHierarchy)
+            Debug.LogWarning($"DialPad '{name}': opened but a parent object is inactive, so it can't be seen.", this);
+
         targetCamera = viewer.transform;
         onDigit = digitPressed;
+        onClear = cleared;
         onCall = called;
 
         if (canvas != null)
@@ -66,6 +76,7 @@ public class DialPad : MonoBehaviour
     {
         targetCamera = null;
         onDigit = null;
+        onClear = null;
         onCall = null;
         gameObject.SetActive(false);
     }
@@ -77,7 +88,7 @@ public class DialPad : MonoBehaviour
 
     private void FollowCamera()
     {
-        if (targetCamera == null) return;
+        if (targetCamera == null || !followCamera) return;
 
         transform.position = targetCamera.position + targetCamera.forward * distanceFromCamera;
         transform.rotation = targetCamera.rotation * Quaternion.Euler(rotationOffset);
@@ -89,6 +100,7 @@ public class DialPad : MonoBehaviour
 
         number += digit.ToString();
         UpdateDisplay();
+        SoundPlayer.PlayOneShot(buttonSound, transform.position);
         onDigit?.Invoke(digit);
     }
 
@@ -98,6 +110,8 @@ public class DialPad : MonoBehaviour
 
         number = "";
         UpdateDisplay();
+        SoundPlayer.PlayOneShot(buttonSound, transform.position);
+        onClear?.Invoke();
     }
 
     private void Call()

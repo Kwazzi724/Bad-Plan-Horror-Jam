@@ -14,8 +14,6 @@ public class PhoneStageBehaviour
     public float ringDelay = 5f;
     public bool playsVoice = true;
     public int voiceLoop = 0;
-    public bool holdUntilVoiceEnds;
-    public float voiceLength = 0f;
     public bool usesDialPad;
     public string correctNumber = "";
     public int correctVoiceLoop = 5;
@@ -31,6 +29,9 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [SerializeField] private string idleState = "Idle";
     [SerializeField] private string pickUpState = "PickUp";
     [SerializeField] private string hangUpState = "HangUp";
+    [SerializeField] private string dialOneState = "Dial1";
+    [SerializeField] private string dialOtherState = "Dial2Through9";
+    [SerializeField] private string clearState = "Dial2Through9";
 
     [Header("Prompt")]
     [SerializeField] private string holdPrompt = "Right Click mouse / press [B] on controller\n to hang up phone";
@@ -56,6 +57,9 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [Header("Ringing")]
     [SerializeField] private float heldRingDuration = 2f;
 
+    [Header("Voice End")]
+    [SerializeField] private float voiceEndSilence = 0.4f;
+
     [Header("Debug")]
     [SerializeField] private bool debugLogs;
 
@@ -75,23 +79,18 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private EventInstance staticInstance;
     private float voiceStartTime;
     private PLAYBACK_STATE lastVoiceState = PLAYBACK_STATE.STOPPED;
+    private float voiceSilentTime;
     private bool isDialing;
     private bool correctCallActive;
     private bool dialSolved;
 
     public bool CanInteract => isActive && !isHeld && !dialSolved;
-    public Transform FocusPoint => focusPoint != null ? focusPoint : transform;
+    public Transform FocusPoint => isDialing && dialPad != null ? dialPad.transform : focusPoint != null ? focusPoint : transform;
     public string HoldPrompt => isDialing ? dialPrompt : holdPrompt;
     public bool UsesCursor => UsesDialPad;
-    public bool CanRelease => !MustKeepListening;
+    public bool CanRelease => true;
 
     private bool UsesDialPad => currentBehaviour != null && currentBehaviour.usesDialPad && dialPad != null;
-
-    private bool MustKeepListening =>
-        isHeld
-        && !isDialing
-        && (voiceInstance.isValid() || isRinging)
-        && (correctCallActive || (currentBehaviour != null && currentBehaviour.holdUntilVoiceEnds));
 
     private bool HasVoice => currentBehaviour != null && currentBehaviour.playsVoice;
 
@@ -167,6 +166,12 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     {
         if (!CanInteract) return;
 
+        if (debugLogs)
+            Debug.Log($"RotaryPhone: interacted, stage entry {(currentBehaviour != null ? currentBehaviour.stage.ToString() : "none")}, uses dial pad {(currentBehaviour != null && currentBehaviour.usesDialPad)}, dial pad {(dialPad != null ? dialPad.name : "not assigned")}.", this);
+
+        if (currentBehaviour != null && currentBehaviour.usesDialPad && dialPad == null)
+            Debug.LogWarning($"RotaryPhone '{name}': this stage uses the dial pad but no Dial Pad is assigned.", this);
+
         if (UsesDialPad)
         {
             OpenDialPad();
@@ -182,7 +187,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             return;
         }
 
-        if (hasRung && HasVoice)
+        if (HasVoice && (hasRung || !currentBehaviour.rings))
         {
             StartListening();
             return;
@@ -232,15 +237,32 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private void OpenDialPad()
     {
         Camera viewer = Camera.main;
-        if (viewer == null) return;
+        if (viewer == null)
+        {
+            Debug.LogWarning("RotaryPhone: no Main Camera found, can't open the dial pad.", this);
+            return;
+        }
 
         isHeld = true;
         isDialing = true;
-        dialPad.Open(viewer, PlayDialTone, HandleCall);
+        dialPad.Open(viewer, HandleDigit, HandleClear, HandleCall);
+    }
+
+    private void HandleDigit(int digit)
+    {
+        PlayAnimation(digit == 1 ? dialOneState : dialOtherState);
+        PlayDialTone(digit);
+    }
+
+    private void HandleClear()
+    {
+        PlayAnimation(clearState);
     }
 
     private void PlayDialTone(int digit)
     {
+        if (string.IsNullOrEmpty(dialLabel)) return;
+
         EventInstance tone = CreateInstance(telephoneSound, dialLabel);
         if (!tone.isValid()) return;
 
@@ -399,10 +421,15 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
                 FMOD.RESULT result = voiceInstance.setParameterByName(loopParameter, loopValue);
                 if (result != FMOD.RESULT.OK)
                     Debug.LogWarning($"RotaryPhone: couldn't set {loopParameter} = {loopValue} ({result}).", this);
+
+                voiceInstance.getParameterByName(loopParameter, out float readBack);
+                int gameStage = GameManager.Instance != null ? GameManager.Instance.CurrentStageNumber : -1;
+                Debug.Log($"RotaryPhone '{name}' in '{(stage != null ? stage.name : "no stage")}': game stage {gameStage}, using entry for stage {(currentBehaviour != null ? currentBehaviour.stage : -1)}, sending {loopParameter} = {loopValue}, FMOD reads back {readBack}.", this);
             }
 
             voiceInstance.start();
             voiceStartTime = Time.time;
+            voiceSilentTime = 0f;
             lastVoiceState = PLAYBACK_STATE.STARTING;
             return;
         }
@@ -426,9 +453,62 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         if (state == PLAYBACK_STATE.STOPPED)
             return true;
 
-        return currentBehaviour != null
-               && currentBehaviour.voiceLength > 0f
-               && Time.time - voiceStartTime >= currentBehaviour.voiceLength;
+        if (state != PLAYBACK_STATE.SUSTAINING)
+        {
+            voiceSilentTime = 0f;
+            return false;
+        }
+
+        if (IsMakingSound(voiceInstance))
+        {
+            voiceSilentTime = 0f;
+            return false;
+        }
+
+        voiceSilentTime += Time.deltaTime;
+
+        if (voiceSilentTime < voiceEndSilence)
+            return false;
+
+        if (debugLogs)
+            Debug.Log($"RotaryPhone: voice went silent {Time.time - voiceStartTime:F1}s after answering, treating it as finished.", this);
+
+        return true;
+    }
+
+    private static bool IsMakingSound(EventInstance instance)
+    {
+        if (instance.getChannelGroup(out FMOD.ChannelGroup group) != FMOD.RESULT.OK)
+            return true;
+
+        return IsGroupPlaying(group, 0);
+    }
+
+    private static bool IsGroupPlaying(FMOD.ChannelGroup group, int depth)
+    {
+        if (depth > 8) return false;
+
+        if (group.getNumChannels(out int channelCount) == FMOD.RESULT.OK)
+        {
+            for (int i = 0; i < channelCount; i++)
+            {
+                if (group.getChannel(i, out FMOD.Channel channel) != FMOD.RESULT.OK) continue;
+
+                channel.isPlaying(out bool playing);
+                if (playing) return true;
+            }
+        }
+
+        if (group.getNumGroups(out int groupCount) == FMOD.RESULT.OK)
+        {
+            for (int i = 0; i < groupCount; i++)
+            {
+                if (group.getGroup(i, out FMOD.ChannelGroup child) != FMOD.RESULT.OK) continue;
+                if (IsGroupPlaying(child, depth + 1)) return true;
+            }
+        }
+
+        return false;
     }
 
     private void SetChloe(bool on)
