@@ -46,6 +46,13 @@ public class ImagePanel : MonoBehaviour
             return false;
         }
 
+        return Open(sprite, reader);
+    }
+
+    public bool Open(Sprite sprite, PlayerInputReader reader)
+    {
+        if (sprite == null || image == null) return false;
+
         image.sprite = sprite;
         panelRoot.SetActive(true);
 

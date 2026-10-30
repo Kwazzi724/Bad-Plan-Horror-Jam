@@ -3718,7 +3718,7 @@ MonoBehaviour:
     playsVoice: 1
     voiceLoop: 5
     usesDialPad: 1
-    correctNumber: 1234567890
+    correctNumber: 2930646817
     correctVoiceLoop: 5
 --- !u!65 &-2102475860883971488
 BoxCollider:

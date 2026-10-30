@@ -5,12 +5,19 @@ using UnityEngine;
 public class BossTrigger : MonoBehaviour
 {
     [SerializeField] private float delay = 3f;
+    [SerializeField] private GameObject boss;
 
     private Coroutine countdown;
 
     public bool IsTriggered { get; private set; }
 
     public event Action Triggered;
+
+    private void Awake()
+    {
+        if (boss != null)
+            boss.SetActive(false);
+    }
 
     public void TriggerBossAfterDelay()
     {
@@ -32,6 +39,11 @@ public class BossTrigger : MonoBehaviour
 
         IsTriggered = true;
         Debug.Log($"BossTrigger '{name}': boss triggered.", this);
+
+        if (boss != null)
+            boss.SetActive(true);
+        else
+            Debug.LogWarning($"BossTrigger '{name}': no Boss assigned to spawn.", this);
         Triggered?.Invoke();
     }
 }
