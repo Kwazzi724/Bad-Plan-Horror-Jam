@@ -30,6 +30,7 @@ public class Clock : MonoBehaviour, IHoldInteractable
     public Transform FocusPoint => focusPoint != null ? focusPoint : transform;
     public string HoldPrompt => holdPrompt;
     public bool UsesCursor => true;
+    public bool CanRelease => true;
 
     private void Awake()
     {
