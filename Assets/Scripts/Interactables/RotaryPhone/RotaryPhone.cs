@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -47,6 +49,9 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [SerializeField] private EventReference staticSound;
     [SerializeField] private string loopParameter = "Loop";
     [SerializeField] private string chloeGlobalParameter = "Chloe";
+    [SerializeField] private float pickUpSoundLength = 0.6f;
+    [SerializeField] private float hangUpSoundLength = 1.5f;
+    [SerializeField] private int silentLoop = -1;
 
     [Header("Dial Pad")]
     [SerializeField] private DialPad dialPad;
@@ -59,13 +64,25 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [SerializeField] private float heldRingDuration = 2f;
 
     [Header("Voice End")]
-    [SerializeField] private float voiceEndSilence = 0.4f;
+    [SerializeField] private string voiceEndMarker = "VoiceEnd";
+    [SerializeField] private bool useSilenceFallback = true;
+    [SerializeField] private float voiceEndSilence = 1.5f;
+    [SerializeField] private float voiceStartTimeout = 8f;
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs;
 
     [Header("Stages")]
     [SerializeField] private List<PhoneStageBehaviour> stageBehaviours = new List<PhoneStageBehaviour> { new PhoneStageBehaviour() };
+
+    private class EffectSound
+    {
+        public EventInstance sound;
+        public float length;
+        public float elapsed;
+    }
+
+    private static readonly EVENT_CALLBACK VoiceCallback = HandleVoiceCallback;
 
     private Stage stage;
     private PhoneStageBehaviour currentBehaviour;
@@ -81,11 +98,20 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private float voiceStartTime;
     private PLAYBACK_STATE lastVoiceState = PLAYBACK_STATE.STOPPED;
     private float voiceSilentTime;
+    private bool heardVoice;
+    private int playingVoiceLoop;
+    private bool logVoiceNextFrame;
     private readonly List<EventInstance> dialTones = new List<EventInstance>();
+    private readonly List<EffectSound> effects = new List<EffectSound>();
     private bool isDialing;
     private bool correctCallActive;
     private bool dialSolved;
     private bool waitingForHoldPose;
+    private bool chloeOn;
+    private GCHandle selfHandle;
+    private long markerHitInstance;
+    private EventDescription telephoneDescription;
+    private bool sampleDataLoaded;
 
     public bool CanInteract => isActive && !isHeld && !dialSolved;
     public Transform FocusPoint => isDialing && dialPad != null ? dialPad.transform : focusPoint != null ? focusPoint : transform;
@@ -135,19 +161,40 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             GameManager.Instance.StageEntered -= HandleStageEntered;
 
         StopRinging();
-        StopInstance(ref voiceInstance);
-        StopInstance(ref staticInstance);
-        SetChloe(false);
+        StopAllSound();
 
         if (dialPad != null && dialPad.IsOpen)
             dialPad.Close();
 
-        StopDialTones();
+        UnloadSampleData();
+
+        if (selfHandle.IsAllocated)
+            selfHandle.Free();
+    }
+
+    private void OnValidate()
+    {
+        if (stageBehaviours == null) return;
+
+        HashSet<int> seen = new HashSet<int>();
+
+        foreach (PhoneStageBehaviour behaviour in stageBehaviours)
+        {
+            if (behaviour != null && !seen.Add(behaviour.stage))
+                Debug.LogWarning($"RotaryPhone '{name}': more than one Stages entry uses stage {behaviour.stage}, only the first one is ever used.", this);
+        }
     }
 
     private void Update()
     {
         UpdateHoldPose();
+        UpdateEffects();
+
+        if (logVoiceNextFrame && voiceInstance.isValid())
+        {
+            logVoiceNextFrame = false;
+            LogVoice();
+        }
 
         if (isRinging && IsStopped(ringInstance))
             ringInstance.start();
@@ -158,7 +205,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         {
             if (VoiceFinished())
             {
-                StopInstance(ref voiceInstance);
+                StopVoice();
                 SetChloe(false);
                 StartStatic();
             }
@@ -200,9 +247,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             return;
         }
 
-        SetChloe(false);
-        SoundPlayer.PlayOneShot(telephoneSound, transform.position, new SoundLabel(phoneActionParameter, pickUpLabel));
-        StartStatic();
+        PlayDeadLine();
     }
 
     public void EndInteract()
@@ -222,14 +267,15 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         waitingForHoldPose = false;
         StopHeldRing();
 
-        StopInstance(ref voiceInstance);
+        StopVoice();
         StopInstance(ref staticInstance);
+        StopEffects();
         SetChloe(false);
 
         if (!PlayAnimation(hangUpState))
             PlayAnimation(idleState);
 
-        SoundPlayer.PlayOneShot(telephoneSound, transform.position, new SoundLabel(phoneActionParameter, hangUpLabel));
+        PlayEffect(hangUpLabel, hangUpSoundLength, -1);
 
         if (correctCallActive)
         {
@@ -310,9 +356,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
         if (!correct)
         {
-            SetChloe(false);
-            SoundPlayer.PlayOneShot(telephoneSound, transform.position, new SoundLabel(phoneActionParameter, pickUpLabel));
-            StartStatic();
+            PlayDeadLine();
             return;
         }
 
@@ -333,8 +377,17 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         isActive = true;
         hasRung = false;
         StopRinging();
+        LoadSampleData();
 
         currentBehaviour = stageBehaviours.Find(behaviour => behaviour.stage == stageNumber);
+
+        if (debugLogs)
+        {
+            string entry = currentBehaviour != null
+                ? "voice " + currentBehaviour.voiceLoop + ", rings " + currentBehaviour.rings + ", dial pad " + currentBehaviour.usesDialPad
+                : "none";
+            Debug.Log($"RotaryPhone '{name}': activated for stage {stageNumber}, entry: {entry}.", this);
+        }
 
         if (currentBehaviour != null && currentBehaviour.rings)
             ringRoutine = StartCoroutine(RingAfterDelay(currentBehaviour.ringDelay));
@@ -344,6 +397,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     {
         isActive = false;
         StopRinging();
+        StopAllSound();
     }
 
     private IEnumerator RingAfterDelay(float delay)
@@ -363,13 +417,14 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         if (ringInstance.isValid())
             ringInstance.start();
 
-        if (isHeld)
-        {
-            StopInstance(ref voiceInstance);
-            StopInstance(ref staticInstance);
-            StopHeldRing();
-            heldRingRoutine = StartCoroutine(HeldRing());
-        }
+        if (!isHeld) return;
+
+        StopVoice();
+        StopInstance(ref staticInstance);
+        StopEffects();
+        SetChloe(false);
+        StopHeldRing();
+        heldRingRoutine = StartCoroutine(HeldRing());
     }
 
     private IEnumerator HeldRing()
@@ -413,54 +468,105 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
     private void StartListening()
     {
-        StopInstance(ref voiceInstance);
-        StopInstance(ref staticInstance);
-
         if (!HasVoice)
         {
-            SetChloe(false);
-            SoundPlayer.PlayOneShot(telephoneSound, transform.position, new SoundLabel(phoneActionParameter, pickUpLabel));
-            StartStatic();
+            PlayDeadLine();
             return;
         }
 
         PlayVoice(currentBehaviour.voiceLoop);
     }
 
+    private void PlayDeadLine()
+    {
+        StopVoice();
+        SetChloe(false);
+        PlayEffect(pickUpLabel, pickUpSoundLength, silentLoop);
+        StartStatic();
+    }
+
     private void PlayVoice(int loopValue)
     {
-        StopInstance(ref voiceInstance);
+        StopVoice();
         StopInstance(ref staticInstance);
+        StopEffects();
 
-        SetChloe(true);
         voiceInstance = CreateInstance(telephoneSound, pickUpLabel);
 
-        if (voiceInstance.isValid())
+        if (!voiceInstance.isValid())
         {
-            if (!string.IsNullOrEmpty(loopParameter))
-            {
-                FMOD.RESULT result = voiceInstance.setParameterByName(loopParameter, loopValue);
-                if (result != FMOD.RESULT.OK)
-                    Debug.LogWarning($"RotaryPhone: couldn't set {loopParameter} = {loopValue} ({result}).", this);
-
-                voiceInstance.getParameterByName(loopParameter, out float readBack);
-                int gameStage = GameManager.Instance != null ? GameManager.Instance.CurrentStageNumber : -1;
-                Debug.Log($"RotaryPhone '{name}' in '{(stage != null ? stage.name : "no stage")}': game stage {gameStage}, using entry for stage {(currentBehaviour != null ? currentBehaviour.stage : -1)}, sending {loopParameter} = {loopValue}, FMOD reads back {readBack}.", this);
-            }
-
-            voiceInstance.start();
-            voiceStartTime = Time.time;
-            voiceSilentTime = 0f;
-            lastVoiceState = PLAYBACK_STATE.STARTING;
+            SetChloe(false);
+            StartStatic();
             return;
         }
 
-        SetChloe(false);
-        StartStatic();
+        if (!string.IsNullOrEmpty(loopParameter))
+        {
+            FMOD.RESULT result = voiceInstance.setParameterByName(loopParameter, loopValue, true);
+            if (result != FMOD.RESULT.OK)
+                Debug.LogWarning($"RotaryPhone: couldn't set {loopParameter} = {loopValue} ({result}).", this);
+        }
+
+        if (!selfHandle.IsAllocated)
+            selfHandle = GCHandle.Alloc(this);
+
+        Interlocked.Exchange(ref markerHitInstance, 0);
+        voiceInstance.setUserData(GCHandle.ToIntPtr(selfHandle));
+        voiceInstance.setCallback(VoiceCallback, EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
+
+        SetChloe(true);
+        voiceInstance.start();
+
+        playingVoiceLoop = loopValue;
+        voiceStartTime = Time.time;
+        voiceSilentTime = 0f;
+        heardVoice = false;
+        lastVoiceState = PLAYBACK_STATE.STARTING;
+        logVoiceNextFrame = debugLogs;
+    }
+
+    private void StopVoice()
+    {
+        if (voiceInstance.isValid())
+        {
+            voiceInstance.setCallback(null);
+            voiceInstance.setUserData(IntPtr.Zero);
+        }
+
+        StopInstance(ref voiceInstance);
+        Interlocked.Exchange(ref markerHitInstance, 0);
+    }
+
+    [AOT.MonoPInvokeCallback(typeof(EVENT_CALLBACK))]
+    private static FMOD.RESULT HandleVoiceCallback(EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
+    {
+        if (type != EVENT_CALLBACK_TYPE.TIMELINE_MARKER || parameterPtr == IntPtr.Zero) return FMOD.RESULT.OK;
+
+        EventInstance instance = new EventInstance(instancePtr);
+        if (instance.getUserData(out IntPtr data) != FMOD.RESULT.OK || data == IntPtr.Zero) return FMOD.RESULT.OK;
+
+        GCHandle handle = GCHandle.FromIntPtr(data);
+        if (!handle.IsAllocated || !(handle.Target is RotaryPhone phone)) return FMOD.RESULT.OK;
+
+        TIMELINE_MARKER_PROPERTIES marker = (TIMELINE_MARKER_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(TIMELINE_MARKER_PROPERTIES));
+        string markerName = marker.name;
+
+        if (string.Equals(markerName, phone.voiceEndMarker, StringComparison.OrdinalIgnoreCase))
+            Interlocked.Exchange(ref phone.markerHitInstance, instancePtr.ToInt64());
+
+        return FMOD.RESULT.OK;
     }
 
     private bool VoiceFinished()
     {
+        if (Interlocked.Read(ref markerHitInstance) == voiceInstance.handle.ToInt64())
+        {
+            if (debugLogs)
+                Debug.Log($"RotaryPhone: voice hit '{voiceEndMarker}' {Time.time - voiceStartTime:F1}s after answering.", this);
+
+            return true;
+        }
+
         voiceInstance.getPlaybackState(out PLAYBACK_STATE state);
 
         if (debugLogs && state != lastVoiceState)
@@ -474,13 +580,20 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         if (state == PLAYBACK_STATE.STOPPED)
             return true;
 
-        if (state != PLAYBACK_STATE.SUSTAINING)
+        if (!useSilenceFallback || state == PLAYBACK_STATE.STARTING)
+            return false;
+
+        if (IsMakingSound(voiceInstance))
         {
+            heardVoice = true;
             voiceSilentTime = 0f;
             return false;
         }
 
-        if (IsMakingSound(voiceInstance))
+        if (!heardVoice)
+            return Time.time - voiceStartTime >= voiceStartTimeout;
+
+        if (state != PLAYBACK_STATE.SUSTAINING)
         {
             voiceSilentTime = 0f;
             return false;
@@ -495,6 +608,22 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             Debug.Log($"RotaryPhone: voice went silent {Time.time - voiceStartTime:F1}s after answering, treating it as finished.", this);
 
         return true;
+    }
+
+    private void LogVoice()
+    {
+        float value = -1f;
+        float finalValue = -1f;
+
+        if (!string.IsNullOrEmpty(loopParameter))
+            voiceInstance.getParameterByName(loopParameter, out value, out finalValue);
+
+        int instances = -1;
+        if (voiceInstance.getDescription(out EventDescription description) == FMOD.RESULT.OK)
+            description.getInstanceCount(out instances);
+
+        int gameStage = GameManager.Instance != null ? GameManager.Instance.CurrentStageNumber : -1;
+        Debug.Log($"RotaryPhone '{name}' in '{(stage != null ? stage.name : "no stage")}': game stage {gameStage}, entry for stage {(currentBehaviour != null ? currentBehaviour.stage : -1)}, asked for {loopParameter} {playingVoiceLoop}, set {value}, final {finalValue}, live telephone instances {instances}.", this);
     }
 
     private static bool IsMakingSound(EventInstance instance)
@@ -532,9 +661,59 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         return false;
     }
 
+    private void PlayEffect(string label, float length, int loopValue)
+    {
+        EventInstance sound = CreateInstance(telephoneSound, label);
+        if (!sound.isValid()) return;
+
+        if (loopValue >= 0 && !string.IsNullOrEmpty(loopParameter))
+            sound.setParameterByName(loopParameter, loopValue, true);
+
+        sound.start();
+        effects.Add(new EffectSound { sound = sound, length = length });
+    }
+
+    private void UpdateEffects()
+    {
+        for (int i = effects.Count - 1; i >= 0; i--)
+        {
+            EffectSound effect = effects[i];
+            effect.sound.getPlaybackState(out PLAYBACK_STATE state);
+
+            if (state != PLAYBACK_STATE.STARTING)
+                effect.elapsed += Time.deltaTime;
+
+            if (state != PLAYBACK_STATE.STOPPED && state != PLAYBACK_STATE.SUSTAINING && effect.elapsed < effect.length)
+                continue;
+
+            StopInstance(ref effect.sound, STOP_MODE.ALLOWFADEOUT);
+            effects.RemoveAt(i);
+        }
+    }
+
+    private void StopEffects()
+    {
+        foreach (EffectSound effect in effects)
+            StopInstance(ref effect.sound);
+
+        effects.Clear();
+    }
+
+    private void StopAllSound()
+    {
+        StopVoice();
+        StopInstance(ref staticInstance);
+        StopEffects();
+        StopDialTones();
+        SetChloe(false);
+    }
+
     private void SetChloe(bool on)
     {
         if (string.IsNullOrEmpty(chloeGlobalParameter)) return;
+        if (!on && !chloeOn) return;
+
+        chloeOn = on;
 
         try
         {
@@ -543,6 +722,33 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         catch (Exception)
         {
         }
+    }
+
+    private void LoadSampleData()
+    {
+        if (sampleDataLoaded || telephoneSound.IsNull) return;
+
+        try
+        {
+            telephoneDescription = RuntimeManager.GetEventDescription(telephoneSound);
+        }
+        catch (EventNotFoundException)
+        {
+            return;
+        }
+
+        if (telephoneDescription.loadSampleData() == FMOD.RESULT.OK)
+            sampleDataLoaded = true;
+    }
+
+    private void UnloadSampleData()
+    {
+        if (!sampleDataLoaded) return;
+
+        sampleDataLoaded = false;
+
+        if (telephoneDescription.isValid())
+            telephoneDescription.unloadSampleData();
     }
 
     private void StartStatic()
@@ -585,11 +791,11 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         return playbackState == PLAYBACK_STATE.STOPPED;
     }
 
-    private static void StopInstance(ref EventInstance instance)
+    private static void StopInstance(ref EventInstance instance, STOP_MODE mode = STOP_MODE.IMMEDIATE)
     {
         if (!instance.isValid()) return;
 
-        instance.stop(STOP_MODE.IMMEDIATE);
+        instance.stop(mode);
         instance.release();
         instance.clearHandle();
     }

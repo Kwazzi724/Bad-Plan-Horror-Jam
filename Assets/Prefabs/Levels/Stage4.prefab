@@ -3994,7 +3994,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  bloodMaterial: {fileID: 2100000, guid: a9fc2b6e4d5e636489ad5bd20b414fdd, type: 2}
+  bloodMaterial: {fileID: 2100000, guid: a96d51d66aebee549b9b069612f2d727, type: 2}
   filmThickness: 0.03
   settleTime: 1.5
   hideDepth: 0.05

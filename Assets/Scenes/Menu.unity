@@ -3477,9 +3477,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Game Name
-
-'
+  m_text: Hell Machine
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 79b137a1de6f77344b925978f07f9c35, type: 2}
   m_sharedMaterial: {fileID: -3672138306726724351, guid: 79b137a1de6f77344b925978f07f9c35, type: 2}
@@ -4599,10 +4597,10 @@ MonoBehaviour:
   m_text: 'Special Thanks to our voice actors!
 
 
-    Phone Lines: [Insert Nico''s
-    gf name]
+    Phone Lines: Nora Eisenmeier
 
-    Rumors - [inser Nico''s friends names]
+    Rumors
+    - Julia Merk & Bennet Leitritz
 
     Radio Broadcast: Harry'
   m_isRightToLeft: 0
@@ -5389,7 +5387,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1973787083}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2075363650}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OpenCredits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1973787083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5981,6 +5991,7 @@ MonoBehaviour:
   fadeInDuration: 1
   fadeOutDuration: 1
   creditsPanel: {fileID: 2009271810}
+  quitButton: {fileID: 656614570}
 --- !u!114 &2075363651
 MonoBehaviour:
   m_ObjectHideFlags: 0
