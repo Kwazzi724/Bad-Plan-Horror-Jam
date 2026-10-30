@@ -67,6 +67,7 @@ public class Door : MonoBehaviour, IInteractable
     private readonly List<MouthSlot> mouthSlots = new List<MouthSlot>();
     private readonly List<StainManager> stainManagers = new List<StainManager>();
     private readonly List<BottleManager> bottleManagers = new List<BottleManager>();
+    private readonly List<BossTrigger> bossTriggers = new List<BossTrigger>();
     private StageManager stageManager;
 
     private Transform ReferenceSpace => referenceSpace;
@@ -180,6 +181,18 @@ public class Door : MonoBehaviour, IInteractable
                 Debug.LogWarning($"Door '{name}' needs a BottleManager but '{source.name}' has none.", this);
         }
 
+        if (isFinal)
+        {
+            foreach (BossTrigger trigger in source.GetComponentsInChildren<BossTrigger>(true))
+            {
+                bossTriggers.Add(trigger);
+                trigger.Triggered += CheckMinigames;
+            }
+
+            if (bossTriggers.Count == 0)
+                Debug.LogWarning($"Door '{name}' needs a BossTrigger but '{source.name}' has none.", this);
+        }
+
         if (debugMinigames)
             Debug.Log($"Door '{name}': found {clocks.Count} clock(s), {mouthSlots.Count} mouth slot(s), {stainManagers.Count} stain manager(s), {bottleManagers.Count} bottle manager(s).", this);
 
@@ -212,10 +225,17 @@ public class Door : MonoBehaviour, IInteractable
                 manager.Solved -= CheckMinigames;
         }
 
+        foreach (BossTrigger trigger in bossTriggers)
+        {
+            if (trigger != null)
+                trigger.Triggered -= CheckMinigames;
+        }
+
         clocks.Clear();
         mouthSlots.Clear();
         stainManagers.Clear();
         bottleManagers.Clear();
+        bossTriggers.Clear();
     }
 
     private void CheckMinigames()
@@ -229,7 +249,7 @@ public class Door : MonoBehaviour, IInteractable
         if (isMouth && !AllSolved(mouthSlots, slot => slot.IsSolved)) return;
         if (isCleaning && !AllSolved(stainManagers, manager => manager.IsSolved)) return;
         if (isTidying && !AllSolved(bottleManagers, manager => manager.IsSolved)) return;
-        if (isFinal) return;
+        if (isFinal && !AllSolved(bossTriggers, trigger => trigger.IsTriggered)) return;
 
         ClearMinigames();
         Unlock();

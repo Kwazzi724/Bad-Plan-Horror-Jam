@@ -949,6 +949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
   cameraPos: {fileID: 3581553927621029909}
   lookSensitivity: 0.3
+  controllerLookSpeed: 180
   minPitch: -85
   maxPitch: 85
   invertY: 0
