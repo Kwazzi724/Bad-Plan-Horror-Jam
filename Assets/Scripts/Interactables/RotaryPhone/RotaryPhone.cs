@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
-using STOP_MODE = FMOD.Studio.STOP_MODE;
+
 
 [Serializable]
 public class PhoneStageBehaviour
@@ -112,14 +112,6 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
             loopParameter,
             out float currentLoopValue
         );
-
-        Debug.Log(
-            $"FMOD Event: {eventPath} | " +
-            $"Instance Handle: {instance.handle} | " +
-            $"PhoneAction: {actionValue} | " +
-            $"Loop: {currentLoopValue}"
-);
-        
     }
 
     private void OnDestroy()
@@ -152,14 +144,6 @@ private void SetPhoneSound(string action, int loop)
         loopParameter,
         out float after,
         out float finalValue
-    );
-
-    Debug.Log(
-        $"[{gameObject.name} | {GetInstanceID()}] " +
-        $"Requested: {loop} | Before: {before} | " +
-        $"After: {after} | Final: {finalValue} | " +
-        $"Result: {result}",
-        this
     );
 
     instance.setParameterByNameWithLabel(
@@ -208,14 +192,6 @@ private void SetPhoneSound(string action, int loop)
         if (!emitter.IsPlaying())
             emitter.Play();
 
-        Debug.Log(
-                    $"Phone: {gameObject.name} | " +
-                    $"Object ID: {GetInstanceID()} | " +
-                    $"Inspector Loop: {loopValue} | " +
-                    $"PickUp Label: {pickUpLabel}",
-                    this
-                );
-
         SetPhoneSound(pickUpLabel, loopValue);
 
         EventInstance instance = emitter.EventInstance;
@@ -228,18 +204,6 @@ private void SetPhoneSound(string action, int loop)
         instance.getParameterByName(
             phoneActionParameter,
             out float actualAction
-        );
-
-        Debug.Log(
-            $"Phone: {gameObject.name} | " +
-            $"Object ID: {GetInstanceID()} | " +
-            $"Emitter: {emitter.gameObject.name} | " +
-            $"Emitter ID: {emitter.GetInstanceID()} | " +
-            $"FMOD Handle: {instance.handle} | " +
-            $"Loop Inspector: {loopValue} | " +
-            $"Loop FMOD: {actualLoop} | " +
-            $"Action FMOD: {actualAction}",
-            this
         );
 
         emitter.EventInstance.getParameterByName(phoneActionParameter, out float actonValue);
@@ -291,109 +255,6 @@ private void SetPhoneSound(string action, int loop)
         if (emitter != null && emitter.IsPlaying())
             emitter.Stop();        
     }
-
-   
-
-
-
-   /*  private IEnumerator HeldRing()
-    {
-        yield return new WaitForSeconds(heldRingDuration);
-        heldRingRoutine = null;
-
-        if (isHeld && isRinging)
-            AnswerRing();
-    } */
-
-    /* private void AnswerRing()
-    {
-        //StopHeldRing();
-        //isRinging = false;
-        //StopInstance(ref ringInstance);
-        //StopInstance(ref staticInstance);
-        
-        //StartListening();
-    } */
-
-   /*  private void StopHeldRing()
-    {
-        if (heldRingRoutine == null) return;
-
-        StopCoroutine(heldRingRoutine);
-        heldRingRoutine = null;
-    } */
-
-    //private void StopRinging()
-    //{
-       // if (ringRoutine != null)
-      //  {
-      //      StopCoroutine(ringRoutine);
-     //       ringRoutine = null;
-     //   }
-//
-    //    StopHeldRing();
-    //    isRinging = false;
-    //    StopInstance(ref ringInstance);
-    //}
-
-    //private void StartListening()
-    //{
-        //StopInstance(ref voiceInstance);
-        //StopInstance(ref staticInstance);
-
-        //if (currentBehaviour != null && !currentBehaviour.voiceLine.IsNull)
-        //{
-        //    voiceInstance = CreateInstance(currentBehaviour.voiceLine, null);
-        //    if (voiceInstance.isValid())
-        //    {
-        //        voiceInstance.start();
-        //        return;
-        //    }
-        //}
-
-        //ringInstance.setParameterByName("Loop", Loop);
-
-        //StartStatic();
-    //}
-
-   // private void StartStatic()
-   // {
-  //      StopInstance(ref staticInstance);
-   //     staticInstance = CreateInstance(staticSound, staticSoundLabel);
-   //     if (staticInstance.isValid())
-   //         staticInstance.start();
-   // }
-
-  /*   private EventInstance CreateInstance(EventReference sound, string label)
-    {
-        if (sound.IsNull) return default;
-
-        EventInstance instance = RuntimeManager.CreateInstance(sound);
-        instance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
-
-        if (!string.IsNullOrEmpty(label))
-            instance.setParameterByNameWithLabel(phoneActionParameter, label);
-
-        return instance;
-    } */
-
-    /* private static bool IsStopped(EventInstance instance)
-    {
-        if (!instance.isValid()) return false;
-
-        instance.getPlaybackState(out PLAYBACK_STATE playbackState);
-        return playbackState == PLAYBACK_STATE.STOPPED;
-    } */
-
-    /* private static void StopInstance(ref EventInstance instance)
-    {
-        if (!instance.isValid()) return;
-
-        instance.stop(STOP_MODE.IMMEDIATE);
-        instance.release();
-        instance.clearHandle();
-    } */
-
     private bool PlayAnimation(string stateName)
     {
         if (animator == null || string.IsNullOrEmpty(stateName)) return false;
