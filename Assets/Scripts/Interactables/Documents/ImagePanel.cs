@@ -8,7 +8,7 @@ public class ImagePanel : MonoBehaviour
     [SerializeField] private ImageLibrary library;
     [SerializeField] private GameObject panelRoot;
     [SerializeField] private Image image;
-    [SerializeField] private string closePrompt = "Right click to close";
+    [SerializeField] private string closePrompt = "Right click / press [B] on controller to close";
 
     private PlayerInputReader input;
 

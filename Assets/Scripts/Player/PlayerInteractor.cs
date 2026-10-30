@@ -8,12 +8,18 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private GameObject interactorRoot;
     [SerializeField] private Transform holdPose;
 
+    [Header("Targeting")]
+    [SerializeField] private Transform aimFrom;
+    [SerializeField] private float distanceWeight = 10f;
+    [SerializeField] private bool debugLogs;
+
     private readonly List<IInteractable> interactablesInRange = new List<IInteractable>();
     private PlayerInputReader input;
     private IInteractable currentTarget;
     private InteractIndicator currentIndicator;
     private IHoldInteractable heldInteractable;
     private bool cursorUnlocked;
+    private bool holdPromptShown;
     private PlayerMovement movement;
     private PlayerLook look;
     private Pickup carried;
@@ -30,6 +36,12 @@ public class PlayerInteractor : MonoBehaviour
         if (interactorRoot == null)
         {
             interactorRoot = input != null ? input.gameObject : transform.root.gameObject;
+        }
+
+        if (aimFrom == null)
+        {
+            Camera viewer = interactorRoot.GetComponentInChildren<Camera>();
+            aimFrom = viewer != null ? viewer.transform : null;
         }
 
         GetComponent<Collider>().isTrigger = true;
@@ -67,6 +79,8 @@ public class PlayerInteractor : MonoBehaviour
         {
             if (heldInteractable as Object == null)
                 EndHold();
+            else
+                UpdateHoldPrompt();
 
             SetTarget(null);
             return;
@@ -190,6 +204,7 @@ public class PlayerInteractor : MonoBehaviour
     private void HandleReleased()
     {
         if (heldInteractable == null) return;
+        if (!heldInteractable.CanRelease) return;
 
         IHoldInteractable released = heldInteractable;
         EndHold();
@@ -218,8 +233,23 @@ public class PlayerInteractor : MonoBehaviour
             look.FaceTowards(holdable.FocusPoint.position);
         }
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.ShowHoldPrompt(holdable.HoldPrompt);
+        holdPromptShown = false;
+        UpdateHoldPrompt();
+    }
+
+    private void UpdateHoldPrompt()
+    {
+        if (heldInteractable == null || GameManager.Instance == null) return;
+
+        bool show = heldInteractable.CanRelease;
+        if (show == holdPromptShown) return;
+
+        holdPromptShown = show;
+
+        if (show)
+            GameManager.Instance.ShowHoldPrompt(heldInteractable.HoldPrompt);
+        else
+            GameManager.Instance.HideHoldPrompt();
     }
 
     private void HandleHoldFinished()
@@ -240,6 +270,7 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         heldInteractable = null;
+        holdPromptShown = false;
 
         if (movement != null)
             movement.Frozen = false;
@@ -279,22 +310,46 @@ public class PlayerInteractor : MonoBehaviour
     {
         interactablesInRange.RemoveAll(item => item as Object == null);
 
-        IInteractable nearest = null;
-        float nearestDistance = float.MaxValue;
+        IInteractable best = null;
+        float bestScore = float.MaxValue;
 
         foreach (IInteractable interactable in interactablesInRange)
         {
             Component component = interactable as Component;
-            float distance = (component.transform.position - transform.position).sqrMagnitude;
+            if (!component.gameObject.activeInHierarchy) continue;
 
-            if (distance < nearestDistance)
+            float score = Score(component);
+
+            if (score < bestScore)
             {
-                nearestDistance = distance;
-                nearest = interactable;
+                bestScore = score;
+                best = interactable;
             }
         }
 
-        return nearest;
+        return best;
+    }
+
+    private float Score(Component component)
+    {
+        Vector3 point = TargetPoint(component);
+
+        if (aimFrom == null)
+            return (point - transform.position).sqrMagnitude;
+
+        Vector3 toTarget = point - aimFrom.position;
+        float angle = Vector3.Angle(aimFrom.forward, toTarget);
+        return angle + toTarget.magnitude * distanceWeight;
+    }
+
+    private static Vector3 TargetPoint(Component component)
+    {
+        Collider targetCollider = component.GetComponentInChildren<Collider>();
+
+        if (targetCollider != null && targetCollider.enabled)
+            return targetCollider.bounds.center;
+
+        return component.transform.position;
     }
 
     private void SetTarget(IInteractable target)
@@ -311,6 +366,9 @@ public class PlayerInteractor : MonoBehaviour
 
         currentTarget = target;
         currentIndicator = null;
+
+        if (debugLogs)
+            Debug.Log($"PlayerInteractor: {interactablesInRange.Count} in range, target = {(target is Component targetComponent && targetComponent != null ? targetComponent.name : "none")}.", this);
 
         if (currentTarget is IHighlightable newHighlight)
             newHighlight.SetHighlighted(true);

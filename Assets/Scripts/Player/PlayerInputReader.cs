@@ -14,6 +14,7 @@ public class PlayerInputReader : MonoBehaviour
 
     public Vector2 Move => moveAction.ReadValue<Vector2>();
     public Vector2 Look => lookAction.ReadValue<Vector2>();
+    public bool LookFromGamepad => lookAction.activeControl != null && lookAction.activeControl.device is Gamepad;
 
     public event Action Interacted;
     public event Action TorchToggled;

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class BottleManager : MonoBehaviour
 {
-    [SerializeField] private GameObject revealWhenCleared;
-
     private Bottle[] bottles = new Bottle[0];
     private int remaining;
 
@@ -26,9 +24,6 @@ public class BottleManager : MonoBehaviour
             bottle.Cleared += HandleCleared;
         }
 
-        if (revealWhenCleared != null)
-            revealWhenCleared.SetActive(false);
-
         if (bottles.Length == 0)
             Debug.LogWarning($"BottleManager '{name}' has no Bottle children.", this);
     }
@@ -46,11 +41,9 @@ public class BottleManager : MonoBehaviour
     {
         bottle.Cleared -= HandleCleared;
         remaining = Mathf.Max(0, remaining - 1);
+        Debug.Log($"BottleManager '{name}': {remaining} bottle(s) left, {(Solved != null ? Solved.GetInvocationList().Length : 0)} listener(s).", this);
 
         if (remaining > 0) return;
-
-        if (revealWhenCleared != null)
-            revealWhenCleared.SetActive(true);
 
         Solved?.Invoke();
     }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -25,6 +26,9 @@ public class SanityVoices : MonoBehaviour
     [SerializeField] private float imageFadeDuration = 3f;
     [SerializeField] private float imageHoldDuration = 2f;
     [SerializeField] private float imageRecoverDuration = 1f;
+
+    [Header("Ignored Stages")]
+    [SerializeField] private List<int> ignoredStages = new List<int> { 4 };
 
     [Header("Game")]
     [SerializeField] private GameManager gameManager;
@@ -77,11 +81,12 @@ public class SanityVoices : MonoBehaviour
         if (IsPaused) return;
 
         Torch torch = Torch.Active;
-        bool isDark = torch != null && !torch.IsOn;
+        bool ignored = gameManager != null && ignoredStages.Contains(gameManager.CurrentStageNumber);
+        bool isDark = !ignored && torch != null && !torch.IsOn;
 
         if (hasGoneInsane)
         {
-            if (canRecover && torch != null && torch.IsOn)
+            if (canRecover && (ignored || (torch != null && torch.IsOn)))
                 Recover();
 
             return;

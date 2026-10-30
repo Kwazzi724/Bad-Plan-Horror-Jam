@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.atmoky.truespatial-fmod": "file:/Users/nicolasmerk/Downloads/atmokyTrueSpatial_FMOD_v2.2.0/atmokyTrueSpatial_FMOD_v2.2.0_UnityIntegration/com.atmoky.truespatial-fmod-2.2.0.tgz",
+    "com.atmoky.truespatial-fmod": "file:C:/Users/User/Downloads/atmokyTrueSpatial_FMOD_v2.2.0_UnityIntegration/atmokyTrueSpatial_FMOD_v2.2.0_UnityIntegration/com.atmoky.truespatial-fmod-2.2.0/package",
     "com.unity.ai.navigation": "2.0.15",
     "com.unity.collab-proxy": "2.13.6",
     "com.unity.ide.rider": "3.0.40",

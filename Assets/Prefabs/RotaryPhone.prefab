@@ -158,10 +158,10 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5485713900738491351}
+      addedObject: {fileID: 756583766225853425}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 756583766225853425}
+      addedObject: {fileID: 5833629037308677095}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
       insertIndex: -1
@@ -169,9 +169,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
       insertIndex: -1
       addedObject: {fileID: -2102475860883971488}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1245368873288336811}
   m_SourcePrefab: {fileID: 100100000, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
 --- !u!1 &5008364904270839176 stripped
 GameObject:
@@ -190,27 +187,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50e28ad377a15624da355266480237b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RotaryPhone
-  animator: {fileID: 1927830288504547757}
-  focusPoint: {fileID: 5485713900738491351}
+  animator: {fileID: 438285568914084253}
+  focusPoint: {fileID: 5833629037308677095}
   idleState: Idle
   pickUpState: PickUp
   hangUpState: HangUp
   holdPrompt: Click left mouse to hang up
-  emitter: {fileID: 1245368873288336811}
+  telephoneSound:
+    Guid:
+      Data1: 2142913504
+      Data2: 1188734694
+      Data3: 46613919
+      Data4: 1853035543
+    Path: event:/SFX/Objects/Telephone
   phoneActionParameter: PhoneAction
-  loopParameter: Loop
   ringLabel: Ring
   pickUpLabel: PickUp
   hangUpLabel: PutDown
   staticSoundLabel: HungUp
-  loopValue: 0
-  chloeParameter: Chloe
-  chloeValue: 0
+  staticSound:
+    Guid:
+      Data1: 2142913504
+      Data2: 1188734694
+      Data3: 46613919
+      Data4: 1853035543
+    Path: event:/SFX/Objects/Telephone
+  loopParameter: Loop
+  chloeGlobalParameter: Chloe
   heldRingDuration: 2
   stageBehaviours:
   - stage: 2
     rings: 1
-    ringDelay: 5
+    ringDelay: 3
+    playsVoice: 1
+    voiceLoop: 1
+    holdUntilVoiceEnds: 1
+  - stage: 3
+    rings: 1
+    ringDelay: 2
+    playsVoice: 1
+    voiceLoop: 2
+    holdUntilVoiceEnds: 0
+  - stage: 4
+    rings: 1
+    ringDelay: 2
+    playsVoice: 1
+    voiceLoop: 3
+    holdUntilVoiceEnds: 1
+  - stage: 1
+    rings: 1
+    ringDelay: 2
+    playsVoice: 1
+    voiceLoop: 4
+    holdUntilVoiceEnds: 1
+  - stage: 6
+    rings: 1
+    ringDelay: 10
+    playsVoice: 1
+    voiceLoop: 5
+    holdUntilVoiceEnds: 0
 --- !u!65 &-2102475860883971488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -232,43 +267,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2, y: 0.2, z: 0.2}
   m_Center: {x: 0, y: 0.1, z: 0}
---- !u!114 &1245368873288336811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5008364904270839176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 2142913504
-      Data2: 1188734694
-      Data3: 46613919
-      Data4: 1853035543
-    Path: event:/SFX/Objects/Telephone
-  Event: 
-  EventPlayTrigger: 0
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!4 &5677519556896679730 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
   m_PrefabInstance: {fileID: 5278254539090526425}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &5452613157632463932
+--- !u!1001 &6926966391976722902
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -276,70 +280,62 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5677519556896679730}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.002
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.001
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0066
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9961947
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.08715578
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
+    - target: {fileID: 4296259379438014603, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
       propertyPath: m_Name
-      value: RotaryPhone
+      value: RotaryPhoneAsset
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5866666021909216657, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: c825f953caf1e3846b5586db1641bc6a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
---- !u!95 &1927830288504547757 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
+--- !u!95 &438285568914084253 stripped
 Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
-  m_PrefabInstance: {fileID: 5452613157632463932}
+  m_CorrespondingSourceObject: {fileID: 7364684311294529611, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
+  m_PrefabInstance: {fileID: 6926966391976722902}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5485713900738491351 stripped
+--- !u!4 &5833629037308677095 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ecd4da3c09a2bbd45882560185c0a81e, type: 3}
-  m_PrefabInstance: {fileID: 5452613157632463932}
+  m_CorrespondingSourceObject: {fileID: 3518632406639151665, guid: 4165727331b5f8444853ed06921e3e14, type: 3}
+  m_PrefabInstance: {fileID: 6926966391976722902}
   m_PrefabAsset: {fileID: 0}
