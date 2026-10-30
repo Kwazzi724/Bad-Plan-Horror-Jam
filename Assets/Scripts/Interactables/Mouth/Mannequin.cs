@@ -471,6 +471,13 @@ public class Mannequin : MonoBehaviour, IEnemy
         mouth = null;
         isDisarmed = true;
 
+        foreach (Collider mannequinCollider in GetComponentsInChildren<Collider>(true))
+        {
+            if (mannequinCollider.transform.IsChildOf(item.transform)) continue;
+
+            mannequinCollider.enabled = false;
+        }
+
         if (debugLogs)
             Debug.Log($"Mannequin '{name}': mouth taken, stopped for good.", this);
     }
@@ -479,9 +486,8 @@ public class Mannequin : MonoBehaviour, IEnemy
     {
         if (debugLogs)
             Debug.Log($"Mannequin '{name}': caught the player.", this);
-
-        if (GameManager.Instance != null)
-            GameManager.Instance.GameOver();
+        // if (GameManager.Instance != null)
+        //     GameManager.Instance.GameOver();
     }
 }
 
