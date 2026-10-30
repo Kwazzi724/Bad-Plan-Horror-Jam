@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{99a90796-f209-43ac-88fe-e3f12aa5d413}">
+		<property name="assetPath">
+			<value>Cloth_Wiping_01.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.6040416666666668</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{db9613a3-c35d-48eb-a22c-3b3c0dc0d07c}</destination>
+		</relationship>
+	</object>
+</objects>

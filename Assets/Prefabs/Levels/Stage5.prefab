@@ -7585,7 +7585,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55b0756d4955fe42864fa38b102c921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BottleManager
-  revealWhenCleared: {fileID: 0}
 --- !u!1 &9098183757302947155
 GameObject:
   m_ObjectHideFlags: 0
@@ -12965,6 +12964,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1184014923336223598}
     m_Modifications:
+    - target: {fileID: 1545316854243906627, guid: 2643c2c3903930d47ace43701695abdd, type: 3}
+      propertyPath: delay
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4097166426969367911, guid: 2643c2c3903930d47ace43701695abdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.043
@@ -16393,6 +16396,10 @@ PrefabInstance:
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].ringDelay
       value: 103
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[0].voiceLoop
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 756583766225853425, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_LocalScale.x
