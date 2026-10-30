@@ -234,7 +234,7 @@ MonoBehaviour:
     playsVoice: 1
     voiceLoop: 3
     holdUntilVoiceEnds: 1
-  - stage: 1
+  - stage: 5
     rings: 1
     ringDelay: 2
     playsVoice: 1
