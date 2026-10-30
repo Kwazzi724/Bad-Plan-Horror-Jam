@@ -28,6 +28,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     [Header("Animation States")]
     [SerializeField] private string idleState = "Idle";
     [SerializeField] private string pickUpState = "PickUp_Fixed";
+    [SerializeField] private string holdingState = "HoldingPhone";
     [SerializeField] private string hangUpState = "HangUp";
     [SerializeField] private string dialOneState = "Dial1";
     [SerializeField] private string dialOtherState = "Dial2Through9";
@@ -84,6 +85,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
     private bool isDialing;
     private bool correctCallActive;
     private bool dialSolved;
+    private bool waitingForHoldPose;
 
     public bool CanInteract => isActive && !isHeld && !dialSolved;
     public Transform FocusPoint => isDialing && dialPad != null ? dialPad.transform : focusPoint != null ? focusPoint : transform;
@@ -145,6 +147,8 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
 
     private void Update()
     {
+        UpdateHoldPose();
+
         if (isRinging && IsStopped(ringInstance))
             ringInstance.start();
 
@@ -182,7 +186,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         }
 
         isHeld = true;
-        PlayAnimation(pickUpState);
+        PlayPickUp();
 
         if (isRinging)
         {
@@ -215,6 +219,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         }
 
         isHeld = false;
+        waitingForHoldPose = false;
         StopHeldRing();
 
         StopInstance(ref voiceInstance);
@@ -294,7 +299,7 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         isDialing = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        PlayAnimation(pickUpState);
+        PlayPickUp();
 
         bool correct = currentBehaviour != null
                        && !string.IsNullOrEmpty(currentBehaviour.correctNumber)
@@ -587,6 +592,32 @@ public class RotaryPhone : MonoBehaviour, IHoldInteractable
         instance.stop(STOP_MODE.IMMEDIATE);
         instance.release();
         instance.clearHandle();
+    }
+
+    private void PlayPickUp()
+    {
+        waitingForHoldPose = PlayAnimation(pickUpState);
+
+        if (!waitingForHoldPose)
+            PlayAnimation(holdingState);
+    }
+
+    private void UpdateHoldPose()
+    {
+        if (!waitingForHoldPose || animator == null) return;
+
+        if (!isHeld)
+        {
+            waitingForHoldPose = false;
+            return;
+        }
+
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+        if (info.shortNameHash != Animator.StringToHash(pickUpState)) return;
+        if (info.normalizedTime < 1f) return;
+
+        waitingForHoldPose = false;
+        PlayAnimation(holdingState);
     }
 
     private bool PlayAnimation(string stateName)
