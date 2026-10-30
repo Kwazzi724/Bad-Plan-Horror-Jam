@@ -2126,10 +2126,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Danni - Producer | Game Designer | Lead Programmer | Dialogue Writer\n\nHunter
-    - 3D Artist | Level Designer | VFX Artist\n\nJD - 3D Artist\n \nKenny - Composer\n
-    \nLilith - 2D & Concept Artist | UI Artist | Narrative Designer\n\nMartin - Programmer\n\nNico
-    - Sound Designer/Engineer | Composer | Post-Processing Artist\n\nSarthak - Writer
-    | Narrative Designer\n\n\n"
+    - 3D Artist | Level Designer | VFX Artist\n\nJD - 3D Artist | Legendary Night
+    Owl\n \nKenny - Composer\n \nLilith - 2D & Concept Artist | UI Artist | Narrative
+    Designer\n\nMartin - Programmer\n\nNico - Sound Designer/Engineer | Composer
+    | Post-Processing Artist\n\nSarthak - Writer | Narrative Designer\n\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 79b137a1de6f77344b925978f07f9c35, type: 2}
   m_sharedMaterial: {fileID: -3672138306726724351, guid: 79b137a1de6f77344b925978f07f9c35, type: 2}
@@ -4853,7 +4853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 4}
+  m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 516.023, y: 403.0079}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1748192176
