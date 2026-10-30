@@ -1418,6 +1418,7 @@ Transform:
   - {fileID: 3013707430857739928}
   - {fileID: 5188430383860670986}
   - {fileID: 3259128990542713521}
+  - {fileID: 9217957884184798857}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1053884801181194304
@@ -3162,6 +3163,165 @@ Transform:
   - {fileID: 784236861250143231}
   m_Father: {fileID: 5874950937234911177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8206965198686430965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3464713230844406740}
+  - component: {fileID: 5430128651174421420}
+  - component: {fileID: 6985788328171789241}
+  - component: {fileID: 9037357416938428725}
+  m_Layer: 0
+  m_Name: TelephoneTableLighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3464713230844406740
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206965198686430965}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 2.585, y: 2.2229998, z: -1.398338}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9217957884184798857}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!108 &5430128651174421420
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206965198686430965}
+  m_Enabled: 1
+  serializedVersion: 12
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 5.83
+  m_Range: 2.42
+  m_SpotAngle: 44.804512
+  m_InnerSpotAngle: 37.952454
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!114 &6985788328171789241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206965198686430965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 1
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
+--- !u!114 &9037357416938428725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8206965198686430965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 633179777
+      Data2: 1175607636
+      Data3: -475151466
+      Data4: 394519282
+    Path: event:/SFX/Env/ElectricalStaticNoise
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 10
 --- !u!1 &8227471727520042990
 GameObject:
   m_ObjectHideFlags: 0
@@ -3432,6 +3592,38 @@ Transform:
   - {fileID: 8714723073676009097}
   - {fileID: 8234837986174796258}
   m_Father: {fileID: 2928380168523755585}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8691948401345235287
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9217957884184798857}
+  m_Layer: 0
+  m_Name: Lighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9217957884184798857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8691948401345235287}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3464713230844406740}
+  m_Father: {fileID: 877493876926364284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8954035793760452434
 GameObject:
@@ -9748,6 +9940,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8803451985899975643}
     m_Modifications:
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: Chloe
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: emitter
+      value: 
+      objectReference: {fileID: 4784211530011572406}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: loopValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: chloeValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: telephoneSound
+      value: 
+      objectReference: {fileID: 4784211530011572406}
     - target: {fileID: 756583766225853425, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05
@@ -9775,6 +9991,14 @@ PrefabInstance:
     - target: {fileID: 1232486345569414893, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245368873288336811, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: Params.Array.data[1].Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245368873288336811, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: Params.Array.data[3].Value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1676743491789351287, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -9962,6 +10186,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5677519556896679730, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
   m_PrefabInstance: {fileID: 5993340497610210589}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4784211530011572406 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1245368873288336811, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+  m_PrefabInstance: {fileID: 5993340497610210589}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
 --- !u!1001 &6128570608292005941
 PrefabInstance:
   m_ObjectHideFlags: 0

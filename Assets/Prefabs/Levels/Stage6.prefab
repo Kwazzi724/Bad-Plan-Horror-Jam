@@ -9310,6 +9310,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8803451985899975643}
     m_Modifications:
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: loopValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: chloeValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[0].stage
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[0].ringDelay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 756583766225853425, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05

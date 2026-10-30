@@ -124,6 +124,31 @@ MonoBehaviour:
   highlightsEnd:
     m_OverrideState: 0
     m_Value: 1
+--- !u!114 &-4877129892187400072
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf1aba9553839d41ae37dd52e9ebcce, type: 3}
+  m_Name: MotionBlur
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.MotionBlur
+  active: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 0
+  quality:
+    m_OverrideState: 1
+    m_Value: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.486
+  clamp:
+    m_OverrideState: 0
+    m_Value: 0.05
 --- !u!114 &-3517002906650968340
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -199,6 +224,8 @@ MonoBehaviour:
   - {fileID: 3582337930661828421}
   - {fileID: 297874569639005775}
   - {fileID: 7181164585908694191}
+  - {fileID: -4877129892187400072}
+  - {fileID: 4615358622664136724}
 --- !u!114 &297874569639005775
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -237,6 +264,52 @@ MonoBehaviour:
   intensity:
     m_OverrideState: 1
     m_Value: 0.098
+--- !u!114 &4615358622664136724
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
+  m_Name: DepthOfField
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DepthOfField
+  active: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 1
+  gaussianStart:
+    m_OverrideState: 1
+    m_Value: 1.9
+  gaussianEnd:
+    m_OverrideState: 0
+    m_Value: 98.93
+  gaussianMaxRadius:
+    m_OverrideState: 0
+    m_Value: 1
+  highQualitySampling:
+    m_OverrideState: 0
+    m_Value: 0
+  focusDistance:
+    m_OverrideState: 0
+    m_Value: 10
+  aperture:
+    m_OverrideState: 0
+    m_Value: 5.6
+  focalLength:
+    m_OverrideState: 0
+    m_Value: 50
+  bladeCount:
+    m_OverrideState: 0
+    m_Value: 5
+  bladeCurvature:
+    m_OverrideState: 0
+    m_Value: 1
+  bladeRotation:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &5246820661319973836
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -255,7 +328,7 @@ MonoBehaviour:
     m_Value: 1.67
   contrast:
     m_OverrideState: 1
-    m_Value: -11
+    m_Value: -16
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -263,8 +336,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   saturation:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: -26.4
 --- !u!114 &7181164585908694191
 MonoBehaviour:
   m_ObjectHideFlags: 3

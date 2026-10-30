@@ -2,6 +2,7 @@ using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Pickup))]
 public class MouthItem : MonoBehaviour
@@ -79,6 +80,7 @@ public class MouthItem : MonoBehaviour
             SoundPlayer.PlayOneShot(grabSound, transform.position);
 
         StartVoice();
+        SetShadows(false);
     }
 
     public void StartVoice()
@@ -109,6 +111,7 @@ public class MouthItem : MonoBehaviour
     public void Quieten()
     {
         targetVolume = slottedVolume;
+        SetShadows(true);
     }
 
     public void FadeOutVoice()
@@ -126,5 +129,16 @@ public class MouthItem : MonoBehaviour
         voice.stop(STOP_MODE.IMMEDIATE);
         voice.release();
         voice.clearHandle();
+    }
+
+    public void SetShadows(bool enabled)
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+        foreach(Renderer renderer in renderers)
+        {
+            renderer.shadowCastingMode = enabled
+                ? ShadowCastingMode.On
+                : ShadowCastingMode.Off;
+        }
     }
 }
