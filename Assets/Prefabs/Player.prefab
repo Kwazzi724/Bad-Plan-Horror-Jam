@@ -840,7 +840,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: 2e674052-e75d-4f98-8ed6-b0caa133f39c
-      m_Path: <Keyboard>/enter
+      m_Path: <Keyboard>/escape
       m_Interactions: 
       m_Processors: 
       m_Groups: 

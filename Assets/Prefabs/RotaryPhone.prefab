@@ -3682,7 +3682,7 @@ MonoBehaviour:
   stageBehaviours:
   - stage: 2
     rings: 1
-    ringDelay: 3
+    ringDelay: 1
     playsVoice: 1
     voiceLoop: 1
     usesDialPad: 0
@@ -3690,7 +3690,7 @@ MonoBehaviour:
     correctVoiceLoop: 5
   - stage: 3
     rings: 1
-    ringDelay: 2
+    ringDelay: 1
     playsVoice: 1
     voiceLoop: 2
     usesDialPad: 0
@@ -3698,7 +3698,7 @@ MonoBehaviour:
     correctVoiceLoop: 5
   - stage: 4
     rings: 1
-    ringDelay: 2
+    ringDelay: 1
     playsVoice: 1
     voiceLoop: 3
     usesDialPad: 0
@@ -3706,7 +3706,7 @@ MonoBehaviour:
     correctVoiceLoop: 5
   - stage: 5
     rings: 1
-    ringDelay: 2
+    ringDelay: 1
     playsVoice: 1
     voiceLoop: 4
     usesDialPad: 0
