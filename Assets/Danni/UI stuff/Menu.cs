@@ -8,6 +8,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private float fadeInDuration = 1f;
     [SerializeField] private float fadeOutDuration = 1f;
     [SerializeField] private GameObject creditsPanel;
+    [SerializeField] private GameObject quitButton;
 
     private bool isStarting;
 
@@ -15,6 +16,9 @@ public class Menu : MonoBehaviour
     {
         if (creditsPanel != null)
             creditsPanel.SetActive(false);
+
+        if (quitButton != null && Application.platform == RuntimePlatform.WebGLPlayer)
+            quitButton.SetActive(false);
 
         if (ScreenFadeManager.Instance != null)
         {
@@ -38,9 +42,12 @@ public class Menu : MonoBehaviour
 
     public void OpenCredits()
     {
+        Debug.Log($"Menu: OpenCredits pressed. Starting: {isStarting}, panel: {(creditsPanel != null ? creditsPanel.name : "NOT ASSIGNED")}.", this);
+
         if (isStarting || creditsPanel == null) return;
 
         creditsPanel.SetActive(true);
+        creditsPanel.transform.SetAsLastSibling();
     }
 
     public void CloseCredits()

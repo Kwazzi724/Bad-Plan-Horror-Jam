@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerInputReader : MonoBehaviour
@@ -14,7 +13,7 @@ public class PlayerInputReader : MonoBehaviour
 
     public Vector2 Move => moveAction.ReadValue<Vector2>();
     public Vector2 Look => lookAction.ReadValue<Vector2>();
-    public bool LookFromGamepad => lookAction.activeControl != null && lookAction.activeControl.device is Gamepad;
+    public bool LookFromGamepad => lookAction.activeControl != null && (lookAction.activeControl.device is Gamepad || lookAction.activeControl.device is Joystick);
 
     public event Action Interacted;
     public event Action TorchToggled;
@@ -63,9 +62,11 @@ public class PlayerInputReader : MonoBehaviour
         Released?.Invoke();
     }
 
-    private void PauseActionPerformed(InputAction.CallbackContext obj)
+    private void PauseActionPerformed(InputAction.CallbackContext context)
     {
-        if(PauseManager.Instance.IsPaused)
+        if (PauseManager.Instance == null) return;
+
+        if (PauseManager.Instance.IsPaused)
             PauseManager.Instance.Resume();
         else
             PauseManager.Instance.Pause();

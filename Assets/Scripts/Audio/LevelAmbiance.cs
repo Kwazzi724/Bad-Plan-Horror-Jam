@@ -1,14 +1,35 @@
+using System;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
+[Serializable]
+public struct StageLoop
+{
+    public int stage;
+    public int loop;
+
+    public StageLoop(int stage, int loop)
+    {
+        this.stage = stage;
+        this.loop = loop;
+    }
+}
+
 public class LevelAmbience : MonoBehaviour
 {
     [SerializeField] private EventReference levelMusic;
     [SerializeField] private string loopParameter = "Loop";
-    [SerializeField] private List<int> loopPerStage = new List<int> { 0, 1, 2, 3 };
+    [SerializeField] private List<StageLoop> stageLoops = new List<StageLoop>
+    {
+        new StageLoop(1, 0),
+        new StageLoop(2, 1),
+        new StageLoop(3, 2),
+        new StageLoop(4, 3),
+        new StageLoop(5, 6)
+    };
     [SerializeField] private bool restartWhenFinished = true;
     [SerializeField] private bool fadeOutOnStop = true;
 
@@ -16,6 +37,9 @@ public class LevelAmbience : MonoBehaviour
     [SerializeField] private EventReference endingTrack;
     [SerializeField] private int endingStage = 7;
     [SerializeField] private float endingFadeInDuration = 3f;
+
+    [Header("Debug")]
+    [SerializeField] private bool debugLogs;
 
     private EventInstance instance;
     private GameManager gameManager;
@@ -49,6 +73,19 @@ public class LevelAmbience : MonoBehaviour
 
         StopInstance(ref endingInstance);
         StopInstance(ref instance);
+    }
+
+    private void OnValidate()
+    {
+        if (stageLoops == null) return;
+
+        HashSet<int> seen = new HashSet<int>();
+
+        foreach (StageLoop stageLoop in stageLoops)
+        {
+            if (!seen.Add(stageLoop.stage))
+                Debug.LogWarning($"LevelAmbience: stage {stageLoop.stage} is listed more than once, only the first one is used.", this);
+        }
     }
 
     private void StopInstance(ref EventInstance sound)
@@ -92,7 +129,7 @@ public class LevelAmbience : MonoBehaviour
         {
             endingInstance = RuntimeManager.CreateInstance(endingTrack);
         }
-        catch (System.Exception)
+        catch (Exception)
         {
             Debug.LogWarning($"LevelAmbience: couldn't create {endingTrack}.", this);
             return;
@@ -123,16 +160,39 @@ public class LevelAmbience : MonoBehaviour
 
     private void SetLoopForStage(int stageNumber)
     {
-        if (loopPerStage.Count == 0) return;
+        if (!TryGetLoop(stageNumber, out int loop))
+        {
+            if (debugLogs)
+                Debug.Log($"LevelAmbience: no loop listed for stage {stageNumber}, keeping loop {currentLoop}.", this);
 
-        int index = Mathf.Clamp(stageNumber - 1, 0, loopPerStage.Count - 1);
-        int loop = loopPerStage[index];
+            return;
+        }
 
         if (loop == currentLoop) return;
         currentLoop = loop;
 
-        if (instance.isValid())
-            instance.setParameterByName(loopParameter, loop);
+        if (!instance.isValid()) return;
+
+        FMOD.RESULT result = instance.setParameterByName(loopParameter, loop);
+
+        if (result != FMOD.RESULT.OK)
+            Debug.LogWarning($"LevelAmbience: couldn't set {loopParameter} = {loop} ({result}).", this);
+        else if (debugLogs)
+            Debug.Log($"LevelAmbience: stage {stageNumber}, set {loopParameter} = {loop}.", this);
+    }
+
+    private bool TryGetLoop(int stageNumber, out int loop)
+    {
+        foreach (StageLoop stageLoop in stageLoops)
+        {
+            if (stageLoop.stage != stageNumber) continue;
+
+            loop = stageLoop.loop;
+            return true;
+        }
+
+        loop = currentLoop;
+        return false;
     }
 
     private void UpdatePosition()
