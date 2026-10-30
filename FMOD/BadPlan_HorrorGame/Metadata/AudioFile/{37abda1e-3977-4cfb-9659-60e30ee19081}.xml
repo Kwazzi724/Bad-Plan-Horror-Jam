@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{37abda1e-3977-4cfb-9659-60e30ee19081}">
+		<property name="assetPath">
+			<value>KennyMusic/Paradise or Hell BATLE 140 BPM [1_4]-001.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>73.99552083333333</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{db9613a3-c35d-48eb-a22c-3b3c0dc0d07c}</destination>
+		</relationship>
+	</object>
+</objects>

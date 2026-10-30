@@ -13,6 +13,8 @@ public class SanityVoices : MonoBehaviour
     [SerializeField] private string sanityParameter = "Sanity";
     [SerializeField] private float minSanity = 0f;
     [SerializeField] private float maxSanity = 10f;
+    [Header("Post Processing")]
+    [SerializeField] private PostProcessingController postProcessingController;
 
     [Header("Timing (seconds)")]
     [SerializeField] private float darkDelay = 5f;
@@ -137,6 +139,11 @@ public class SanityVoices : MonoBehaviour
 
     private void UpdateVoices()
     {
+        float progress = rampDuration > 0f ? Mathf.Clamp01((darkTime - darkDelay) / rampDuration) : 1f;
+
+        if (postProcessingController != null)
+            postProcessingController.SetIntensity(progress);
+
         if (darkTime < darkDelay)
         {
             StopVoices();
@@ -144,7 +151,6 @@ public class SanityVoices : MonoBehaviour
         }
         StartVoices();
 
-        float progress = rampDuration > 0f ? Mathf.Clamp01((darkTime - darkDelay) / rampDuration) : 1f;
         float sanity = Mathf.Lerp(minSanity, maxSanity, progress);
 
         voices.setParameterByName(sanityParameter, sanity);
@@ -152,6 +158,9 @@ public class SanityVoices : MonoBehaviour
 
         Transform listener = Camera.main != null ? Camera.main.transform : transform;
         voices.set3DAttributes(RuntimeUtils.To3DAttributes(listener));
+        
+        Debug.Log($"Progress: {progress}" + $"Controller: {postProcessingController}", this);
+
     }
 
     private void StartVoices()
@@ -282,6 +291,9 @@ public class SanityVoices : MonoBehaviour
 
         if (gameManager != null)
             gameManager.Sane();
+
+        if (postProcessingController != null)
+            postProcessingController.ResetPostProcessing();
     }
 
     private void SetImageAlpha(float alpha)
