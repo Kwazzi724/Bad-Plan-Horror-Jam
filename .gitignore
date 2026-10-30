@@ -129,3 +129,4 @@ InitTestScene*.unity*
 # Log files can be ignored.
 fmod_editor.log
 FMOD/BadPlan_HorrorGame/.cache/
+*.meta
