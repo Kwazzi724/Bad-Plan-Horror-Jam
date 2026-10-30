@@ -216,6 +216,7 @@ MonoBehaviour:
   isCleaning: 0
   isTidying: 0
   isFinal: 0
+  debugMinigames: 0
   lockedMessage: Locked
   rattleCooldown: 1
   unlockOpenAngle: 30
