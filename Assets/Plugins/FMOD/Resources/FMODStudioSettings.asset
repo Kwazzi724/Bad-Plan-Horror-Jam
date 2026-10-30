@@ -56,8 +56,7 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     Plugins:
-      Value:
-      - atmokyTrueSpatial
+      Value: []
       HasValue: 1
     StaticPlugins:
       Value: []
@@ -277,7 +276,7 @@ MonoBehaviour:
       HasValue: 0
     Plugins:
       Value: []
-      HasValue: 0
+      HasValue: 1
     StaticPlugins:
       Value: []
       HasValue: 0
@@ -422,8 +421,7 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     Plugins:
-      Value:
-      - atmokyTrueSpatial
+      Value: []
       HasValue: 1
     StaticPlugins:
       Value: []
@@ -569,8 +567,7 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     Plugins:
-      Value:
-      - atmokyTrueSpatial
+      Value: []
       HasValue: 1
     StaticPlugins:
       Value: []
@@ -789,8 +786,7 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     Plugins:
-      Value:
-      - atmokyTrueSpatial
+      Value: []
       HasValue: 1
     StaticPlugins:
       Value: []
@@ -863,8 +859,7 @@ MonoBehaviour:
       Value: 0
       HasValue: 0
     Plugins:
-      Value:
-      - atmokyTrueSpatial
+      Value: []
       HasValue: 1
     StaticPlugins:
       Value: []

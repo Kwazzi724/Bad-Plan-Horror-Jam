@@ -7212,7 +7212,6 @@
 	<object class="MixerBusEffectChain" id="{fabb4a26-c0b5-4c72-a6b5-23a424d38752}">
 		<relationship name="effects">
 			<destination>{e0ba8608-96f6-467b-9915-739717c6d832}</destination>
-			<destination>{74e8399c-5de2-414a-8513-6de7b71438e3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9feab325-6eea-4906-8bb4-f618e527a2d2}" />
@@ -10531,11 +10530,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{e0ba8608-96f6-467b-9915-739717c6d832}" />
-	<object class="PluginEffect" id="{74e8399c-5de2-414a-8513-6de7b71438e3}">
-		<relationship name="plugin">
-			<destination>{11e916bc-c1f9-49c2-aca3-4711b9237de1}</destination>
-		</relationship>
-	</object>
 	<object class="AutomationPoint" id="{e5e726d5-ad23-45cf-95d7-7a1db099c8b8}">
 		<property name="position">
 			<value>0</value>
@@ -14684,62 +14678,4 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{f3706d95-108e-4760-bded-502e85d4c414}" />
-	<object class="Plugin" id="{11e916bc-c1f9-49c2-aca3-4711b9237de1}">
-		<property name="identifier">
-			<value>atmoky Renderer</value>
-		</property>
-		<relationship name="pluginParameters">
-			<destination>{de585c90-ed6a-4618-a435-f26525ba503a}</destination>
-			<destination>{ffe05e94-d772-40de-a25f-7485085b9b4b}</destination>
-			<destination>{45e9c3db-13bb-4369-b6cc-66d582ca8823}</destination>
-			<destination>{76e25f05-95ae-475f-b154-c4d78ba999d7}</destination>
-		</relationship>
-	</object>
-	<object class="IntPluginParameter" id="{de585c90-ed6a-4618-a435-f26525ba503a}">
-		<property name="name">
-			<value>outputFormat</value>
-		</property>
-		<property name="value">
-			<value>2</value>
-		</property>
-		<property name="minimumValue">
-			<value>0</value>
-		</property>
-		<property name="maximumValue">
-			<value>7</value>
-		</property>
-	</object>
-	<object class="FloatPluginParameter" id="{ffe05e94-d772-40de-a25f-7485085b9b4b}">
-		<property name="name">
-			<value>binauralIf2ch</value>
-		</property>
-		<property name="value">
-			<value>1</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,1.000000)}</value>
-		</property>
-	</object>
-	<object class="FloatPluginParameter" id="{45e9c3db-13bb-4369-b6cc-66d582ca8823}">
-		<property name="name">
-			<value>heightFilter</value>
-		</property>
-		<property name="value">
-			<value>0.494999975</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,1.000000)}</value>
-		</property>
-	</object>
-	<object class="FloatPluginParameter" id="{76e25f05-95ae-475f-b154-c4d78ba999d7}">
-		<property name="name">
-			<value>rearFilter</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,1.000000)}</value>
-		</property>
-	</object>
 </objects>

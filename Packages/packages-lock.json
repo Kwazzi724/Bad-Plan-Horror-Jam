@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.atmoky.truespatial-fmod": {
-      "version": "file:/Users/nicolasmerk/Downloads/atmokyTrueSpatial_FMOD_v2.2.0/atmokyTrueSpatial_FMOD_v2.2.0_UnityIntegration/com.atmoky.truespatial-fmod-2.2.0.tgz",
-      "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {}
-    },
     "com.unity.ai.navigation": {
       "version": "2.0.15",
       "depth": 0,
