@@ -37,6 +37,8 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private bool isTidying;
     [SerializeField] private bool isFinal;
 
+    [SerializeField] private bool debugMinigames;
+
     [Header("Locked")]
     [SerializeField] private string lockedMessage = "Locked";
     [SerializeField] private float rattleCooldown = 1f;
@@ -64,6 +66,7 @@ public class Door : MonoBehaviour, IInteractable
     private readonly List<Clock> clocks = new List<Clock>();
     private readonly List<MouthSlot> mouthSlots = new List<MouthSlot>();
     private readonly List<StainManager> stainManagers = new List<StainManager>();
+    private readonly List<BottleManager> bottleManagers = new List<BottleManager>();
     private StageManager stageManager;
 
     private Transform ReferenceSpace => referenceSpace;
@@ -126,6 +129,9 @@ public class Door : MonoBehaviour, IInteractable
         Stage source = stageManager != null ? stageManager.CurrentStage : null;
         if (source == null) return;
 
+        if (debugMinigames)
+            Debug.Log($"Door '{name}' in '{GetComponentInParent<Stage>()?.name}': looking for minigames in '{source.name}'.", this);
+
         if (isClock)
         {
             foreach (Clock clock in source.GetComponentsInChildren<Clock>(true))
@@ -162,6 +168,21 @@ public class Door : MonoBehaviour, IInteractable
                 Debug.LogWarning($"Door '{name}' needs a StainManager but '{source.name}' has none.", this);
         }
 
+        if (isTidying)
+        {
+            foreach (BottleManager manager in source.GetComponentsInChildren<BottleManager>(true))
+            {
+                bottleManagers.Add(manager);
+                manager.Solved += CheckMinigames;
+            }
+
+            if (bottleManagers.Count == 0)
+                Debug.LogWarning($"Door '{name}' needs a BottleManager but '{source.name}' has none.", this);
+        }
+
+        if (debugMinigames)
+            Debug.Log($"Door '{name}': found {clocks.Count} clock(s), {mouthSlots.Count} mouth slot(s), {stainManagers.Count} stain manager(s), {bottleManagers.Count} bottle manager(s).", this);
+
         CheckMinigames();
     }
 
@@ -185,19 +206,30 @@ public class Door : MonoBehaviour, IInteractable
                 manager.Solved -= CheckMinigames;
         }
 
+        foreach (BottleManager manager in bottleManagers)
+        {
+            if (manager != null)
+                manager.Solved -= CheckMinigames;
+        }
+
         clocks.Clear();
         mouthSlots.Clear();
         stainManagers.Clear();
+        bottleManagers.Clear();
     }
 
     private void CheckMinigames()
     {
+        if (debugMinigames)
+            Debug.Log($"Door '{name}': checking, state {state}, bottles solved {bottleManagers.TrueForAll(manager => manager != null && manager.IsSolved) && bottleManagers.Count > 0}.", this);
+
         if (state != DoorState.LockedShut) return;
 
         if (isClock && !AllSolved(clocks, clock => clock.IsSolved)) return;
         if (isMouth && !AllSolved(mouthSlots, slot => slot.IsSolved)) return;
         if (isCleaning && !AllSolved(stainManagers, manager => manager.IsSolved)) return;
-        if (isTidying || isFinal) return;
+        if (isTidying && !AllSolved(bottleManagers, manager => manager.IsSolved)) return;
+        if (isFinal) return;
 
         ClearMinigames();
         Unlock();

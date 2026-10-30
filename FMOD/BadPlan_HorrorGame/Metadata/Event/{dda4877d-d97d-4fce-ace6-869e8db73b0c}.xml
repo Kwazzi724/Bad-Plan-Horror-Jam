@@ -117,7 +117,7 @@
 			<destination>{6dffb9d3-a35f-404d-adc9-9517df5f3269}</destination>
 		</relationship>
 		<relationship name="markers">
-			<destination>{89f0744f-fda3-4e47-a566-10438c03b75a}</destination>
+			<destination>{b6daf21b-52f7-4e07-88a9-7f018a90ea8f}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterProxy" id="{6e4af902-9734-4d15-b367-7affbe137784}">
@@ -350,12 +350,12 @@
 			<destination>{11e6cdeb-18df-4c67-a3cb-98cb4e1b7a17}</destination>
 		</relationship>
 	</object>
-	<object class="LoopRegion" id="{89f0744f-fda3-4e47-a566-10438c03b75a}">
+	<object class="LoopRegion" id="{b6daf21b-52f7-4e07-88a9-7f018a90ea8f}">
 		<property name="position">
 			<value>0</value>
 		</property>
 		<property name="length">
-			<value>0.5</value>
+			<value>0.62443238382524413</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{60b96a84-07ee-41e6-82a9-724f28ef6722}</destination>
@@ -879,7 +879,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>5.24520874e-06</value>
+			<value>-13.5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{2b0ed6c4-d7ac-4f84-bb5a-f78bb36315cf}">
@@ -887,7 +887,7 @@
 			<value>3</value>
 		</property>
 		<property name="value">
-			<value>5.24520874e-06</value>
+			<value>-13.5</value>
 		</property>
 	</object>
 	<object class="Automator" id="{e5ea1995-4ffe-4058-a1f4-3de216226958}">

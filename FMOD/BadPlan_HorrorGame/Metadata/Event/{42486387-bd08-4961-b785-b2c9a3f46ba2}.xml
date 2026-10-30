@@ -86,6 +86,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{8572902b-33f6-41ba-86ea-17de3e01bf94}">
+		<property name="volume">
+			<value>2.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{ae511149-fb9b-48e0-8067-e5b74908bda5}</destination>
 		</relationship>
@@ -112,10 +115,10 @@
 			<value>2</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>86</value>
+			<value>82</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>7500</value>
+			<value>3000</value>
 		</property>
 		<property name="spawnRate">
 			<value>265</value>
@@ -296,7 +299,7 @@
 			<value>1.3957307060755335</value>
 		</property>
 		<property name="value">
-			<value>70</value>
+			<value>0</value>
 		</property>
 		<property name="curveShape">
 			<value>-0.222078472</value>
@@ -307,7 +310,7 @@
 			<value>100</value>
 		</property>
 		<property name="value">
-			<value>500</value>
+			<value>0</value>
 		</property>
 	</object>
 	<object class="FloatPluginParameter" id="{c7846748-fbc7-40ce-823f-6e0e7a828556}">

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -24,6 +25,10 @@ public class SanityVoices : MonoBehaviour
     [SerializeField] private float imageDelay = 5f;
     [SerializeField] private float imageFadeDuration = 3f;
     [SerializeField] private float imageHoldDuration = 2f;
+    [SerializeField] private float imageRecoverDuration = 1f;
+
+    [Header("Ignored Stages")]
+    [SerializeField] private List<int> ignoredStages = new List<int> { 4 };
 
     [Header("Game")]
     [SerializeField] private GameManager gameManager;
@@ -36,6 +41,8 @@ public class SanityVoices : MonoBehaviour
     private float fadeTimer;
     private float volume = 1f;
     private Coroutine insaneRoutine;
+    private Coroutine recoverRoutine;
+    private bool canRecover;
 
     private bool IsPaused => PauseManager.Instance != null && PauseManager.Instance.IsPaused;
     private float InsaneTime => darkDelay + rampDuration + peakDuration;
@@ -62,16 +69,28 @@ public class SanityVoices : MonoBehaviour
             insaneRoutine = null;
         }
 
+        StopRecover();
+        canRecover = false;
+
         SetImageAlpha(0f);
         ResetSanity();
     }
 
     private void Update()
     {
-        if (hasGoneInsane || IsPaused) return;
+        if (IsPaused) return;
 
         Torch torch = Torch.Active;
-        bool isDark = torch != null && !torch.IsOn;
+        bool ignored = gameManager != null && ignoredStages.Contains(gameManager.CurrentStageNumber);
+        bool isDark = !ignored && torch != null && !torch.IsOn;
+
+        if (hasGoneInsane)
+        {
+            if (canRecover && (ignored || (torch != null && torch.IsOn)))
+                Recover();
+
+            return;
+        }
 
         if (isDark)
         {
@@ -163,11 +182,56 @@ public class SanityVoices : MonoBehaviour
         if (insaneRoutine != null)
             StopCoroutine(insaneRoutine);
 
+        StopRecover();
         insaneRoutine = StartCoroutine(InsaneSequence());
+    }
+
+    private void Recover()
+    {
+        canRecover = false;
+
+        if (insaneRoutine != null)
+        {
+            StopCoroutine(insaneRoutine);
+            insaneRoutine = null;
+        }
+
+        ResetSanity();
+        StopRecover();
+        recoverRoutine = StartCoroutine(FadeImageOut());
+    }
+
+    private IEnumerator FadeImageOut()
+    {
+        float startAlpha = insaneImage != null ? insaneImage.color.a : 0f;
+        float elapsed = 0f;
+
+        while (elapsed < imageRecoverDuration && startAlpha > 0f)
+        {
+            if (!IsPaused)
+            {
+                elapsed += Time.deltaTime;
+                SetImageAlpha(Mathf.Lerp(startAlpha, 0f, elapsed / imageRecoverDuration));
+            }
+
+            yield return null;
+        }
+
+        SetImageAlpha(0f);
+        recoverRoutine = null;
+    }
+
+    private void StopRecover()
+    {
+        if (recoverRoutine == null) return;
+
+        StopCoroutine(recoverRoutine);
+        recoverRoutine = null;
     }
 
     private IEnumerator InsaneSequence()
     {
+        canRecover = true;
         yield return WaitUnpaused(imageDelay);
 
         float elapsed = 0f;
@@ -183,6 +247,7 @@ public class SanityVoices : MonoBehaviour
         }
 
         SetImageAlpha(1f);
+        canRecover = false;
         yield return WaitUnpaused(imageHoldDuration);
 
         SetImageAlpha(0f);

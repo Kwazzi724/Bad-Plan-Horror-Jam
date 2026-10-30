@@ -63,12 +63,22 @@
 	</object>
 	<object class="MarkerTrack" id="{d91cdb23-ad0b-4bcb-8fb0-b8fd8f572b0b}" />
 	<object class="GroupTrack" id="{7d8f5fca-a07a-4229-a3b2-e0b18597cbc9}">
+		<relationship name="modules">
+			<destination>{30179f98-3867-4b5b-8f36-96ea37ca9f43}</destination>
+		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{3cc4f547-7987-4ad3-ae60-f08fbd03a88a}</destination>
 		</relationship>
 	</object>
-	<object class="Timeline" id="{a78e3e63-fcc4-42ae-9865-7e6084191eca}" />
+	<object class="Timeline" id="{a78e3e63-fcc4-42ae-9865-7e6084191eca}">
+		<relationship name="modules">
+			<destination>{30179f98-3867-4b5b-8f36-96ea37ca9f43}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerMaster" id="{d16264a6-3d42-4c08-9192-1e9ea937a7b6}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{fd375695-9025-49ca-867f-681d59cbc5d7}</destination>
 		</relationship>
@@ -85,6 +95,20 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6e4b33aa-a249-4ed7-9a90-0d5615dc8dfe}" />
+	<object class="SingleSound" id="{30179f98-3867-4b5b-8f36-96ea37ca9f43}">
+		<property name="length">
+			<value>41.528777412280704</value>
+		</property>
+		<property name="timelockedOffset">
+			<value>0.19736842105263158</value>
+		</property>
+		<relationship name="fadeInCurve">
+			<destination>{8ae11600-e13f-4b27-ae72-edbeec382ca7}</destination>
+		</relationship>
+		<relationship name="audioFile">
+			<destination>{492f371f-5db7-4022-99fd-916fc2c3d918}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerGroup" id="{3cc4f547-7987-4ad3-ae60-f08fbd03a88a}">
 		<property name="name">
 			<value>Audio 1</value>
@@ -107,9 +131,18 @@
 	</object>
 	<object class="MixerBusPanner" id="{691ef4ad-aedf-4662-81a2-62aa80bbd2fe}" />
 	<object class="MixerBusFader" id="{544219c8-efb6-4e3b-95a8-d74949241841}" />
+	<object class="FadeCurve" id="{8ae11600-e13f-4b27-ae72-edbeec382ca7}">
+		<relationship name="startPoint">
+			<destination>{f31c04c9-a845-4069-92bc-5f3aaef82be7}</destination>
+		</relationship>
+		<relationship name="endPoint">
+			<destination>{4ef62229-8c66-44a2-963a-075d76e66b7b}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{8f1b9b5e-6887-492d-8a59-9fcd471e0827}">
 		<relationship name="effects">
 			<destination>{c5dbbf36-579e-427e-92e7-a97060fb6e7f}</destination>
+			<destination>{3c5b41cb-b319-4e1c-bcc8-4aa315d046cc}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{5741dfac-36ba-462d-83b0-2dd9020d7409}" />
@@ -119,7 +152,37 @@
 			<destination>{6a04682b-d97b-4bf9-8a95-3bcc1ee32c1c}</destination>
 		</relationship>
 	</object>
+	<object class="AutomationPoint" id="{f31c04c9-a845-4069-92bc-5f3aaef82be7}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+		<property name="curveShape">
+			<value>-0.2547189</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{4ef62229-8c66-44a2-963a-075d76e66b7b}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>1</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{c5dbbf36-579e-427e-92e7-a97060fb6e7f}" />
+	<object class="MultibandEqEffect" id="{3c5b41cb-b319-4e1c-bcc8-4aa315d046cc}">
+		<property name="filterTypeA">
+			<value>4</value>
+		</property>
+		<property name="frequencyA">
+			<value>134.544098</value>
+		</property>
+		<property name="qualityA">
+			<value>0.528780103</value>
+		</property>
+	</object>
 	<object class="Plugin" id="{6a04682b-d97b-4bf9-8a95-3bcc1ee32c1c}">
 		<property name="identifier">
 			<value>atmoky Spatializer</value>
@@ -188,7 +251,6 @@
 		<property name="name">
 			<value>3DAttributes</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-2</value>
 		</property>
@@ -343,7 +405,6 @@
 		<property name="name">
 			<value>3DAttributesMul</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-5</value>
 		</property>
@@ -352,7 +413,6 @@
 		<property name="name">
 			<value>overallGain</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-1</value>
 		</property>
@@ -361,7 +421,6 @@
 		<property name="name">
 			<value>attenuationRang</value>
 		</property>
-		<property name="value" />
 		<property name="dataType">
 			<value>-6</value>
 		</property>

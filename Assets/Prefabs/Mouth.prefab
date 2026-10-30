@@ -110,14 +110,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14fccc64d95b36e43967201f2df2129a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouthItem
-  isCorrect: 0
   grabSound:
     Guid:
-      Data1: 625789750
-      Data2: 1166469527
-      Data3: -1444769658
-      Data4: -1083316714
-    Path: event:/SFX/Objects/Mouth_01
+      Data1: -1588622384
+      Data2: 1254453767
+      Data3: 935226043
+      Data4: -1841454706
+    Path: event:/SFX/Objects/Mouth_Interact
 --- !u!1001 &1192436436540177569
 PrefabInstance:
   m_ObjectHideFlags: 0

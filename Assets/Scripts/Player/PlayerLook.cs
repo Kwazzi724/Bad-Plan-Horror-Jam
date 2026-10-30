@@ -7,6 +7,7 @@ public class PlayerLook : MonoBehaviour
 {
     [SerializeField] private Transform cameraPos;
     [SerializeField] private float lookSensitivity = 0.1f;
+    [SerializeField] private float controllerLookSpeed = 180f;
     [SerializeField] private float minPitch = -85f;
     [SerializeField] private float maxPitch = 85f;
     [SerializeField] private bool invertY;
@@ -41,7 +42,9 @@ public class PlayerLook : MonoBehaviour
     {
         if(PauseManager.Instance.IsPaused || Frozen) 
             return;
-        Vector2 look = input.Look * lookSensitivity;
+        Vector2 look = input.LookFromGamepad
+            ? input.Look * controllerLookSpeed * Time.deltaTime
+            : input.Look * lookSensitivity;
         transform.Rotate(0f, look.x, 0f);
         pitch += invertY ? look.y : -look.y;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
