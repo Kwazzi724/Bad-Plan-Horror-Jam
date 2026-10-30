@@ -40,6 +40,9 @@ public class BloodFlood : MonoBehaviour
     [SerializeField] private float uphillCost = 4f;
     [SerializeField] private float updateInterval = 0.033f;
 
+    [Header("Debug")]
+    [SerializeField] private bool debugLogs = true;
+
     [Header("Effects")]
     [SerializeField] private ParticleSystem sourceEffect;
     [SerializeField] private EventReference floodLoop;
@@ -65,6 +68,7 @@ public class BloodFlood : MonoBehaviour
     private Mesh mesh;
     private MeshRenderer surfaceRenderer;
     private EventInstance loopInstance;
+    private readonly List<Pickup> watchedCloths = new List<Pickup>();
     private bool started;
     private bool overflowed;
 
@@ -74,20 +78,42 @@ public class BloodFlood : MonoBehaviour
     private void Start()
     {
         Bake();
+        WatchCloths();
+    }
 
-        if (cloth == null)
-            cloth = FindCloth();
+    private void WatchCloths()
+    {
+        Stage stage = GetComponentInParent<Stage>();
 
-        if (cloth != null)
-            cloth.PickedUp += HandleClothPickedUp;
-        else
-            Debug.LogWarning($"BloodFlood '{name}' couldn't find a cloth to wait for.", this);
+        if (cloth != null && (stage == null || cloth.transform.IsChildOf(stage.transform)))
+            watchedCloths.Add(cloth);
+        else if (cloth != null)
+            Debug.LogWarning($"BloodFlood '{name}': the Cloth field points at '{cloth.name}', which isn't inside this hallway. Ignoring it.", this);
+
+        Cloth[] found = stage != null ? stage.GetComponentsInChildren<Cloth>(true) : FindObjectsByType<Cloth>(FindObjectsSortMode.None);
+        foreach (Cloth clothItem in found)
+        {
+            Pickup clothPickup = clothItem.GetComponent<Pickup>();
+            if (clothPickup != null && !watchedCloths.Contains(clothPickup))
+                watchedCloths.Add(clothPickup);
+        }
+
+        foreach (Pickup watched in watchedCloths)
+            watched.PickedUp += HandleClothPickedUp;
+
+        if (watchedCloths.Count == 0)
+            Debug.LogWarning($"BloodFlood '{name}' couldn't find a cloth in its hallway to wait for.", this);
+        else if (debugLogs)
+            Debug.Log($"BloodFlood '{name}': waiting for {watchedCloths.Count} cloth(s): {string.Join(", ", watchedCloths.ConvertAll(watched => watched.name))}.", this);
     }
 
     private void OnDestroy()
     {
-        if (cloth != null)
-            cloth.PickedUp -= HandleClothPickedUp;
+        foreach (Pickup watched in watchedCloths)
+        {
+            if (watched != null)
+                watched.PickedUp -= HandleClothPickedUp;
+        }
 
         StopLoop();
 
@@ -95,22 +121,29 @@ public class BloodFlood : MonoBehaviour
             Destroy(mesh);
     }
 
-    private Pickup FindCloth()
-    {
-        Stage stage = GetComponentInParent<Stage>();
-        Cloth found = stage != null ? stage.GetComponentInChildren<Cloth>(true) : FindAnyObjectByType<Cloth>();
-        return found != null ? found.GetComponent<Pickup>() : null;
-    }
-
     private void HandleClothPickedUp(Pickup item)
     {
-        item.PickedUp -= HandleClothPickedUp;
+        foreach (Pickup watched in watchedCloths)
+        {
+            if (watched != null)
+                watched.PickedUp -= HandleClothPickedUp;
+        }
+
+        if (debugLogs)
+            Debug.Log($"BloodFlood '{name}': cloth picked up, flooding in {startDelay}s.", this);
+
         StartFlood();
     }
 
     public void StartFlood()
     {
-        if (started || !baked) return;
+        if (started) return;
+
+        if (!baked)
+        {
+            Debug.LogWarning($"BloodFlood '{name}': can't flood, the floor was never mapped. Check the earlier BloodFlood warnings.", this);
+            return;
+        }
 
         started = true;
         StartCoroutine(FloodRoutine());
@@ -123,6 +156,9 @@ public class BloodFlood : MonoBehaviour
         IsFlooding = true;
         Elapsed = 0f;
         surfaceRenderer.enabled = true;
+
+        if (debugLogs)
+            Debug.Log($"BloodFlood '{name}': flooding now, material {(bloodMaterial != null ? bloodMaterial.name : "NONE")}.", this);
 
         if (sourceEffect != null)
             sourceEffect.Play();
@@ -220,6 +256,19 @@ public class BloodFlood : MonoBehaviour
         BuildMesh();
         UpdateSurface(-1f);
         baked = true;
+
+        if (debugLogs)
+        {
+            int floorCells = 0;
+            int reachable = 0;
+            for (int i = 0; i < count; i++)
+            {
+                if (walkable[i]) floorCells++;
+                if (!float.IsPositiveInfinity(arrival[i])) reachable++;
+            }
+
+            Debug.Log($"BloodFlood '{name}': mapped {floorCells} floor cells of {count}, blood can reach {reachable}.", this);
+        }
     }
 
     private void SampleFloor()

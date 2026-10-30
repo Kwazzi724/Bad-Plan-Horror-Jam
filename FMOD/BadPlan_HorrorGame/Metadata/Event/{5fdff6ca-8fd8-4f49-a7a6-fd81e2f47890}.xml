@@ -5,7 +5,7 @@
 			<value>Ambience</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{1c4eb71c-69f2-4515-99ea-20d2f51cd51b}</destination>
@@ -171,7 +171,7 @@
 	<object class="MixerBusEffectChain" id="{529008c3-d2eb-4141-b4a1-d5efc18378a6}">
 		<relationship name="effects">
 			<destination>{2fef25a6-44f5-41de-9536-1cd1acd9b5fa}</destination>
-			<destination>{bb54c179-4c11-455c-8908-d07e5af5a96a}</destination>
+			<destination>{fb9f996b-acbe-4733-8bab-3f2e67aeadd2}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{deca112a-e1a5-48e3-8902-d4b539652163}" />
@@ -217,11 +217,7 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{2fef25a6-44f5-41de-9536-1cd1acd9b5fa}" />
-	<object class="PluginEffect" id="{bb54c179-4c11-455c-8908-d07e5af5a96a}">
-		<relationship name="plugin">
-			<destination>{56a95c19-6702-4f6b-ab08-a5ffac7a36d2}</destination>
-		</relationship>
-	</object>
+	<object class="SpatialiserEffect" id="{fb9f996b-acbe-4733-8bab-3f2e67aeadd2}" />
 	<object class="AutomationPoint" id="{db58435f-c42d-45fb-b08f-1915fa141d14}">
 		<property name="position">
 			<value>0</value>
@@ -267,64 +263,6 @@
 		</property>
 		<property name="qualityA">
 			<value>0.676091015</value>
-		</property>
-	</object>
-	<object class="Plugin" id="{56a95c19-6702-4f6b-ab08-a5ffac7a36d2}">
-		<property name="identifier">
-			<value>atmoky Renderer</value>
-		</property>
-		<relationship name="pluginParameters">
-			<destination>{d9457be7-4685-4143-8be8-b08a4baa5f8c}</destination>
-			<destination>{de147b10-4581-41e9-bfcb-da40606ba435}</destination>
-			<destination>{488b7fa3-1956-40b5-b5ac-560cfe605a7d}</destination>
-			<destination>{17ea1e6d-aa03-4d8c-9dc2-84d272a9783b}</destination>
-		</relationship>
-	</object>
-	<object class="IntPluginParameter" id="{d9457be7-4685-4143-8be8-b08a4baa5f8c}">
-		<property name="name">
-			<value>outputFormat</value>
-		</property>
-		<property name="value">
-			<value>2</value>
-		</property>
-		<property name="minimumValue">
-			<value>0</value>
-		</property>
-		<property name="maximumValue">
-			<value>7</value>
-		</property>
-	</object>
-	<object class="FloatPluginParameter" id="{de147b10-4581-41e9-bfcb-da40606ba435}">
-		<property name="name">
-			<value>binauralIf2ch</value>
-		</property>
-		<property name="value">
-			<value>1</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,1.000000)}</value>
-		</property>
-	</object>
-	<object class="FloatPluginParameter" id="{488b7fa3-1956-40b5-b5ac-560cfe605a7d}">
-		<property name="name">
-			<value>heightFilter</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,1.000000)}</value>
-		</property>
-	</object>
-	<object class="FloatPluginParameter" id="{17ea1e6d-aa03-4d8c-9dc2-84d272a9783b}">
-		<property name="name">
-			<value>rearFilter</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,1.000000)}</value>
 		</property>
 	</object>
 </objects>

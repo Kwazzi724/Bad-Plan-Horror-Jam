@@ -235,7 +235,6 @@
 	<object class="MixerBusEffectChain" id="{ed77ef04-9dfe-40dd-8e3e-358ac54e6bcf}">
 		<relationship name="effects">
 			<destination>{2ffc9bf1-e21e-497d-9787-ce1c52244548}</destination>
-			<destination>{651d0af8-97be-4519-953c-58e38567c59d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{99579f88-4bd2-44a3-bf72-a69a5199c06d}" />
@@ -282,11 +281,6 @@
 	</object>
 	<object class="MixerBusFader" id="{1299bc6a-1854-41ae-a6ad-e0d0fb0d2839}" />
 	<object class="MixerBusFader" id="{2ffc9bf1-e21e-497d-9787-ce1c52244548}" />
-	<object class="PluginEffect" id="{651d0af8-97be-4519-953c-58e38567c59d}">
-		<relationship name="plugin">
-			<destination>{659f5e5a-ce26-46f2-a340-27371e54f19d}</destination>
-		</relationship>
-	</object>
 	<object class="AutomationPoint" id="{320b0b9f-4bf9-4580-ab87-7f6c3c373bbd}">
 		<property name="position">
 			<value>0</value>
@@ -326,35 +320,4 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{cb5b394e-2d67-4a8b-a117-9d8ddb671046}" />
-	<object class="Plugin" id="{659f5e5a-ce26-46f2-a340-27371e54f19d}">
-		<property name="identifier">
-			<value>atmoky Externalizer</value>
-		</property>
-		<relationship name="pluginParameters">
-			<destination>{5927578e-99af-4c4a-9855-2838cf669885}</destination>
-			<destination>{da21c0c6-c904-48b5-90fe-e296744dae3e}</destination>
-		</relationship>
-	</object>
-	<object class="FloatPluginParameter" id="{5927578e-99af-4c4a-9855-2838cf669885}">
-		<property name="name">
-			<value>amount</value>
-		</property>
-		<property name="value">
-			<value>83.5</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,100.000000)}</value>
-		</property>
-	</object>
-	<object class="FloatPluginParameter" id="{da21c0c6-c904-48b5-90fe-e296744dae3e}">
-		<property name="name">
-			<value>character</value>
-		</property>
-		<property name="value">
-			<value>50</value>
-		</property>
-		<property name="curve">
-			<value>{(0.000000,0.000000)(1.000000,100.000000)}</value>
-		</property>
-	</object>
 </objects>

@@ -20,10 +20,12 @@ public class PlayerInteractor : MonoBehaviour
     private IHoldInteractable heldInteractable;
     private bool cursorUnlocked;
     private bool holdPromptShown;
+    private string shownPrompt;
     private PlayerMovement movement;
     private PlayerLook look;
     private Pickup carried;
     private Cloth carriedCloth;
+    private Note carriedNote;
 
     public Pickup Carried => carried;
 
@@ -92,6 +94,12 @@ public class PlayerInteractor : MonoBehaviour
             return;
         }
 
+        if (carriedNote != null && carriedNote.Target != null)
+        {
+            SetTarget(null);
+            return;
+        }
+
         if (carried != null)
         {
             SetTarget(FindNearestReceiver() as IInteractable);
@@ -132,6 +140,17 @@ public class PlayerInteractor : MonoBehaviour
             return;
         }
 
+        if (carriedNote != null && carriedNote.Target != null)
+        {
+            if (carriedNote.PlaceOnTarget())
+            {
+                carried = null;
+                carriedNote = null;
+                SetTarget(FindNearest());
+            }
+            return;
+        }
+
         if (carried != null)
         {
             IItemReceiver receiver = FindNearestReceiver();
@@ -143,6 +162,7 @@ public class PlayerInteractor : MonoBehaviour
 
             carried = null;
             carriedCloth = null;
+            carriedNote = null;
             SetTarget(FindNearest());
             return;
         }
@@ -160,6 +180,7 @@ public class PlayerInteractor : MonoBehaviour
 
             carried = pickup;
             carriedCloth = pickup.GetComponent<Cloth>();
+            carriedNote = pickup.GetComponent<Note>();
             pickup.PickUp(holdPose);
             SetTarget(null);
             return;
@@ -242,12 +263,15 @@ public class PlayerInteractor : MonoBehaviour
         if (heldInteractable == null || GameManager.Instance == null) return;
 
         bool show = heldInteractable.CanRelease;
-        if (show == holdPromptShown) return;
+        string prompt = heldInteractable.HoldPrompt;
+
+        if (show == holdPromptShown && (!show || prompt == shownPrompt)) return;
 
         holdPromptShown = show;
+        shownPrompt = show ? prompt : null;
 
         if (show)
-            GameManager.Instance.ShowHoldPrompt(heldInteractable.HoldPrompt);
+            GameManager.Instance.ShowHoldPrompt(prompt);
         else
             GameManager.Instance.HideHoldPrompt();
     }

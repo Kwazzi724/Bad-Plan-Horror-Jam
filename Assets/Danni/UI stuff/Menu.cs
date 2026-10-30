@@ -7,11 +7,15 @@ public class Menu : MonoBehaviour
     [SerializeField] private Door menuDoor;
     [SerializeField] private float fadeInDuration = 1f;
     [SerializeField] private float fadeOutDuration = 1f;
+    [SerializeField] private GameObject creditsPanel;
 
     private bool isStarting;
 
     private void Start()
     {
+        if (creditsPanel != null)
+            creditsPanel.SetActive(false);
+
         if (ScreenFadeManager.Instance != null)
         {
             ScreenFadeManager.Instance.FadeIn(fadeInDuration);
@@ -30,6 +34,19 @@ public class Menu : MonoBehaviour
         }
 
         menuDoor.MenuSwingOpen(FadeOutThenLoad);
+    }
+
+    public void OpenCredits()
+    {
+        if (isStarting || creditsPanel == null) return;
+
+        creditsPanel.SetActive(true);
+    }
+
+    public void CloseCredits()
+    {
+        if (creditsPanel != null)
+            creditsPanel.SetActive(false);
     }
 
     public void QuitGame()

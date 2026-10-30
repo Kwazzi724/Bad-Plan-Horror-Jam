@@ -269,7 +269,7 @@ Transform:
   m_GameObject: {fileID: 5017465728291172011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.16, y: -0.147, z: 2.28}
+  m_LocalPosition: {x: -0.6, y: -0.147, z: 2.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -840,7 +840,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: 2e674052-e75d-4f98-8ed6-b0caa133f39c
-      m_Path: <Keyboard>/enter
+      m_Path: <Keyboard>/escape
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -949,6 +949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
   cameraPos: {fileID: 3581553927621029909}
   lookSensitivity: 0.3
+  controllerLookSpeed: 180
   minPitch: -85
   maxPitch: 85
   invertY: 0
