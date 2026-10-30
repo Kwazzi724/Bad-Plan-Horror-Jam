@@ -3712,7 +3712,7 @@ MonoBehaviour:
     usesDialPad: 0
     correctNumber: 
     correctVoiceLoop: 5
-  - stage: 1
+  - stage: 6
     rings: 0
     ringDelay: 0
     playsVoice: 1
