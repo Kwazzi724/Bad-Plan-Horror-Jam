@@ -88,7 +88,7 @@ Transform:
   m_Children:
   - {fileID: 997447577668530780}
   - {fileID: 6095424881476221779}
-  - {fileID: 6935723996494038432}
+  - {fileID: 2499684202019735889}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &7422521568884543622
@@ -153,11 +153,11 @@ MonoBehaviour:
   easeDuration: 0.2
   wipeSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -823258916
+      Data2: 1182728178
+      Data3: 887724703
+      Data4: 462804692
+    Path: event:/SFX/Player/Cloth_Wiping
 --- !u!65 &9221247872566397640
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -272,9 +272,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e40325c718802740afa70beb31a2f80, type: 3}
---- !u!4 &6935723996494038432 stripped
+--- !u!4 &2499684202019735889 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 6e40325c718802740afa70beb31a2f80, type: 3}
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6e40325c718802740afa70beb31a2f80, type: 3}
   m_PrefabInstance: {fileID: 2682475171678760634}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9206859708929653728
