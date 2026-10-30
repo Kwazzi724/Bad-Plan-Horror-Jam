@@ -423,7 +423,7 @@ MonoBehaviour:
       HasValue: 0
     Plugins:
       Value:
-      - 
+      - atmokyTrueSpatial
       HasValue: 1
     StaticPlugins:
       Value: []
