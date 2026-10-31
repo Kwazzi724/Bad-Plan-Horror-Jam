@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+  <title>{{{ PRODUCT_NAME }}}</title>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    #frame { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #000; }
+    #unity-canvas { display: block; background: #000; outline: none; }
+    #loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 40%; max-width: 360px; height: 4px; background: #222; }
+    #loading-bar { width: 0; height: 100%; background: #ddd; transition: width 0.2s; }
+    #fullscreen { position: absolute; right: 12px; bottom: 12px; width: 36px; height: 36px; border: 0; border-radius: 6px; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 18px; line-height: 36px; cursor: pointer; opacity: 0.5; }
+    #fullscreen:hover { opacity: 1; }
+    #error { position: absolute; left: 16px; right: 16px; top: 16px; color: #f99; font: 14px/1.4 sans-serif; white-space: pre-wrap; display: none; }
+  </style>
+</head>
+<body>
+  <div id="frame">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="loading"><div id="loading-bar"></div></div>
+    <button id="fullscreen" title="Fullscreen" aria-label="Fullscreen">&#x26F6;</button>
+    <div id="error"></div>
+  </div>
+  <script>
+    var frame = document.getElementById("frame");
+    var canvas = document.getElementById("unity-canvas");
+    var loading = document.getElementById("loading");
+    var loadingBar = document.getElementById("loading-bar");
+    var fullscreenButton = document.getElementById("fullscreen");
+    var errorBox = document.getElementById("error");
+    var aspect = 16 / 9;
+
+    function fit() {
+      var width = frame.clientWidth;
+      var height = frame.clientHeight;
+      if (width / height > aspect) width = Math.round(height * aspect);
+      else height = Math.round(width / aspect);
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+    }
+
+    function isFullscreen() {
+      return document.fullscreenElement || document.webkitFullscreenElement;
+    }
+
+    function toggleFullscreen() {
+      if (isFullscreen()) {
+        var exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) exit.call(document);
+        return;
+      }
+
+      var request = frame.requestFullscreen || frame.webkitRequestFullscreen;
+      if (request) {
+        var result = request.call(frame);
+        if (result && result.catch) result.catch(function () {});
+      }
+      canvas.focus();
+    }
+
+    function showError(message) {
+      errorBox.textContent = "The game failed to start in this browser.\n\n" + message;
+      errorBox.style.display = "block";
+      loading.style.display = "none";
+    }
+
+    function showBanner(message, type) {
+      if (type === "error") showError(message);
+      else console.warn(message);
+    }
+
+    window.addEventListener("resize", fit);
+    document.addEventListener("fullscreenchange", fit);
+    document.addEventListener("webkitfullscreenchange", fit);
+    fullscreenButton.addEventListener("click", toggleFullscreen);
+    canvas.addEventListener("pointerdown", function () { canvas.focus(); });
+    fit();
+
+    var buildUrl = "Build";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
+      frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+      workerUrl: buildUrl + "/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+      codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+#endif
+#if MEMORY_FILENAME
+      memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+      symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
+#endif
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+      productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+      productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+      matchWebGLToCanvasSize: true,
+      showBanner: showBanner
+    };
+
+    var script = document.createElement("script");
+    script.src = buildUrl + "/{{{ LOADER_FILENAME }}}";
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) {
+        loadingBar.style.width = (100 * progress) + "%";
+      }).then(function () {
+        loading.style.display = "none";
+      }).catch(function (message) {
+        showError(String(message));
+      });
+    };
+    script.onerror = function () {
+      showError("Couldn't load " + script.src);
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

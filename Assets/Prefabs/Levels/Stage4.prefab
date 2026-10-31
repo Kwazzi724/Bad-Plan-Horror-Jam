@@ -1316,7 +1316,7 @@ Transform:
   m_GameObject: {fileID: 2527527184598263011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 10.906, y: 1.394, z: -9.31}
+  m_LocalPosition: {x: 10.906, y: 1.394, z: -9.311}
   m_LocalScale: {x: 0.57025903, y: 0.36525512, z: 0.015088}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3958,7 +3958,7 @@ MonoBehaviour:
   minFloorNormal: 0.7
   cloth: {fileID: 7286100078319341789}
   startDelay: 30
-  overflowDuration: 40
+  overflowDuration: 30
   spreadPortion: 0.392
   spreadExponent: 1.3
   drownHeight: 2

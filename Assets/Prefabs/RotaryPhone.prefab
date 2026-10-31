@@ -3763,6 +3763,14 @@ MonoBehaviour:
   voiceStartTimeout: 8
   debugLogs: 1
   stageBehaviours:
+  - stage: 1
+    rings: 0
+    ringDelay: 0
+    playsVoice: 1
+    voiceLoop: 0
+    usesDialPad: 0
+    correctNumber: 
+    correctVoiceLoop: 5
   - stage: 2
     rings: 1
     ringDelay: 1
