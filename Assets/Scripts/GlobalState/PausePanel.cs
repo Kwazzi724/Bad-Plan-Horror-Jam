@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class PausePanel : MonoBehaviour
     [FormerlySerializedAs("tutorialCloseButton")]
     [FormerlySerializedAs("resumeButton")]
     [SerializeField] private Button startButton;
+    [SerializeField] private Button resumeGameButton;
     [SerializeField] private bool showOnStart = true;
 
     [Header("Main Menu")]
@@ -43,6 +45,9 @@ public class PausePanel : MonoBehaviour
     {
         if (startButton != null)
             startButton.onClick.AddListener(Resume);
+
+        if (resumeGameButton != null)
+            resumeGameButton.onClick.AddListener(Resume);
 
         if (hintButton != null)
             hintButton.onClick.AddListener(ToggleHint);
@@ -71,6 +76,9 @@ public class PausePanel : MonoBehaviour
     {
         if (startButton != null)
             startButton.onClick.RemoveListener(Resume);
+
+        if (resumeGameButton != null)
+            resumeGameButton.onClick.RemoveListener(Resume);
 
         if (hintButton != null)
             hintButton.onClick.RemoveListener(ToggleHint);
@@ -196,8 +204,16 @@ public class PausePanel : MonoBehaviour
         if (startButton != null)
             startButton.gameObject.SetActive(!hasClosedOnce);
 
+        if (resumeGameButton != null)
+            resumeGameButton.gameObject.SetActive(hasClosedOnce);
+
         if (hintText != null)
             hintText.gameObject.SetActive(false);
+
+        Button selected = hasClosedOnce ? resumeGameButton : startButton;
+
+        if (selected != null && EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(selected.gameObject);
     }
 
     private void Hide()

@@ -5,19 +5,6 @@ using FMODUnity;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-[Serializable]
-public struct StageLoop
-{
-    public int stage;
-    public int loop;
-
-    public StageLoop(int stage, int loop)
-    {
-        this.stage = stage;
-        this.loop = loop;
-    }
-}
-
 public class LevelAmbience : MonoBehaviour
 {
     [SerializeField] private EventReference levelMusic;

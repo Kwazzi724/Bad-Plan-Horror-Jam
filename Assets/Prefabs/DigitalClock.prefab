@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3452968279956621466}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.11, y: -0.15, z: 0}
+  m_LocalPosition: {x: 1.79, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -115,6 +115,7 @@ MonoBehaviour:
       Data3: 1137089423
       Data4: 123586884
     Path: event:/SFX/Objects/AlarmClock
+  alarmDuration: 0
 --- !u!1001 &3051309940966042848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -301,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6259110212046242636, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.75
+      value: 2.48
       objectReference: {fileID: 0}
     - target: {fileID: 6259110212046242636, guid: 7d4fe8002c89df74baac14a7498a80ca, type: 3}
       propertyPath: m_LocalPosition.y
