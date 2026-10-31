@@ -3654,7 +3654,7 @@ Transform:
   m_GameObject: {fileID: 6576239356079586543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 13.3, y: 0, z: -10.221}
+  m_LocalPosition: {x: 13.21, y: 0, z: -10.221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4346,8 +4346,8 @@ Transform:
   m_GameObject: {fileID: 8410687571825060548}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.3338401, y: -6.23492, z: -4.14}
-  m_LocalScale: {x: 15.524045, y: 0.20392, z: 14.38261}
+  m_LocalPosition: {x: 3.184, y: -6.23492, z: -4.14}
+  m_LocalScale: {x: 15.224431, y: 0.20392, z: 14.38261}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2093885779735510090}
@@ -6580,7 +6580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].stage
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].ringDelay
@@ -6588,7 +6588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].voiceLoop
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 756583766225853425, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_LocalScale.x

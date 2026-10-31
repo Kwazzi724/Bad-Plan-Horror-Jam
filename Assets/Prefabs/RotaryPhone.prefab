@@ -137,6 +137,82 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &246250589966917701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 140071712576834658}
+  - component: {fileID: 3051934344690687067}
+  - component: {fileID: 5869553641875676064}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &140071712576834658
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246250589966917701}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8171899764818754417}
+  m_Father: {fileID: 7708751119010969431}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 55.32}
+  m_SizeDelta: {x: 151.27, y: 26.78}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3051934344690687067
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246250589966917701}
+  m_CullTransparentMesh: 1
+--- !u!114 &5869553641875676064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246250589966917701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 93fd8c0cbb24d2d438137e75db8ab8f8, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &389396216122799893
 GameObject:
   m_ObjectHideFlags: 0
@@ -2036,7 +2112,7 @@ RectTransform:
   - {fileID: 2697300409558739149}
   - {fileID: 7715966193007049778}
   - {fileID: 458902027845101832}
-  - {fileID: 8171899764818754417}
+  - {fileID: 140071712576834658}
   m_Father: {fileID: 5677519556896679730}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2670,16 +2746,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8002616167256515520}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7708751119010969431}
+  m_Father: {fileID: 140071712576834658}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2, y: 55.4}
+  m_AnchoredPosition: {x: 1.2000002, y: 0.07999039}
   m_SizeDelta: {x: 135.79, y: 15.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &652659909516055864
@@ -2719,8 +2795,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4278727011
+  m_fontColor: {r: 0.38679248, g: 0.19088496, b: 0.031016383, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3645,6 +3721,7 @@ MonoBehaviour:
   focusPoint: {fileID: 5833629037308677095}
   idleState: Idle
   pickUpState: PickUp_Fixed
+  holdingState: HoldingPhone
   hangUpState: HangUp_Fixed
   dialOneState: Dial1
   dialOtherState: Dial2Through9
@@ -3671,15 +3748,29 @@ MonoBehaviour:
     Path: event:/SFX/Env/ElectricalStaticNoise
   loopParameter: Loop
   chloeGlobalParameter: Chloe
+  pickUpSoundLength: 0.6
+  hangUpSoundLength: 1.5
+  silentLoop: -1
   dialPad: {fileID: 2989293224596692244}
   bossTrigger: {fileID: 0}
   dialPrompt: "Right Click mouse / press [B] on controller\n to put the phone down"
   dialLabel: Dial
   dialNumberParameter: DialNumber
   heldRingDuration: 2
+  voiceEndMarker: VoiceEnd
+  useSilenceFallback: 1
   voiceEndSilence: 0.4
+  voiceStartTimeout: 8
   debugLogs: 1
   stageBehaviours:
+  - stage: 1
+    rings: 0
+    ringDelay: 0
+    playsVoice: 1
+    voiceLoop: 0
+    usesDialPad: 0
+    correctNumber: 
+    correctVoiceLoop: 5
   - stage: 2
     rings: 1
     ringDelay: 1

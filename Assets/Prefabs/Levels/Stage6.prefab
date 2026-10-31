@@ -2969,7 +2969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e8ba5e5db8ad3c47bd9e27e45043540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossTrigger
-  delay: 3
+  delay: 5
   boss: {fileID: 7968031457405665115}
 --- !u!1 &6534020306891660367
 GameObject:
@@ -8479,7 +8479,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 60, y: 18, z: 25}
+  m_Size: {x: 60, y: 18, z: 20}
   m_Center: {x: 0, y: -8, z: 0}
 --- !u!1001 &3548819827581224679
 PrefabInstance:
@@ -10996,75 +10996,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].rings
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].stage
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[1].stage
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[2].stage
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[3].stage
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[4].rings
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[4].stage
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].ringDelay
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].voiceLoop
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[1].voiceLoop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
-      propertyPath: stageBehaviours.Array.data[2].voiceLoop
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
-      propertyPath: stageBehaviours.Array.data[3].voiceLoop
+      propertyPath: stageBehaviours.Array.data[2].voiceLoop
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
-      propertyPath: stageBehaviours.Array.data[4].ringDelay
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
-      propertyPath: stageBehaviours.Array.data[4].voiceLoop
+      propertyPath: stageBehaviours.Array.data[3].voiceLoop
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
-      propertyPath: stageBehaviours.Array.data[0].usesDialPad
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
-      propertyPath: stageBehaviours.Array.data[4].usesDialPad
+      propertyPath: stageBehaviours.Array.data[4].ringDelay
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[4].voiceLoop
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[0].usesDialPad
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
+      propertyPath: stageBehaviours.Array.data[4].usesDialPad
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[0].correctNumber
-      value: 2930646817
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: -2170247196397725994, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: stageBehaviours.Array.data[4].correctNumber
-      value: 
+      value: 2930646817
       objectReference: {fileID: 0}
     - target: {fileID: 756583766225853425, guid: 83dbc192de43b4e48a96bd92561ff5d7, type: 3}
       propertyPath: m_LocalScale.x

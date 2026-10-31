@@ -188,6 +188,9 @@ public class SanityVoices : MonoBehaviour
         if (gameManager != null)
             gameManager.Insane();
 
+        if (postProcessingController != null)
+            postProcessingController.SetIntensity(1f);
+
         if (insaneRoutine != null)
             StopCoroutine(insaneRoutine);
 
