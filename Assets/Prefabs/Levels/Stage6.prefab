@@ -2969,7 +2969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e8ba5e5db8ad3c47bd9e27e45043540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossTrigger
-  delay: 3
+  delay: 5
   boss: {fileID: 7968031457405665115}
 --- !u!1 &6534020306891660367
 GameObject:

@@ -2894,7 +2894,7 @@ MonoBehaviour:
   priority: 10
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 30045ca4bc8ad4d6489e285d9a4de9dc, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 7b35ae0ff5bce694294fd569397fd6b4, type: 2}
 --- !u!4 &1152633481
 Transform:
   m_ObjectHideFlags: 0
@@ -4098,7 +4098,7 @@ GameObject:
   - component: {fileID: 1469897611}
   - component: {fileID: 1469897612}
   m_Layer: 0
-  m_Name: 'Ambience '
+  m_Name: LevelAudioController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4262,7 +4262,7 @@ MonoBehaviour:
   peakDuration: 5
   fadeOutDuration: 3
   insaneImage: {fileID: 1091300094}
-  imageDelay: 5
+  imageDelay: 6
   imageFadeDuration: 3
   imageHoldDuration: 2
   imageRecoverDuration: 1
@@ -5000,7 +5000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7768378757121314357, guid: 492d97ee0d4a56c459cc2fdb66e21aa6, type: 3}
       propertyPath: isDeathActivated
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5034,7 +5034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndingSequence
   endingStage: 7
-  delay: 5
+  delay: 8
   fadeToBlackDuration: 3
   panelDelay: 1
   panelFadeDuration: 2
