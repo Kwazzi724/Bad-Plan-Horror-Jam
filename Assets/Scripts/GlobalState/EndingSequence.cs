@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -62,6 +63,10 @@ public class EndingSequence : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        if (panel != null && panel.interactable && menuButton != null && EventSystem.current != null
+            && EventSystem.current.currentSelectedGameObject == null)
+            EventSystem.current.SetSelectedGameObject(menuButton.gameObject);
     }
 
     private void HandleStageEntered(Stage stage, int stageNumber)
@@ -107,6 +112,9 @@ public class EndingSequence : MonoBehaviour
         panel.alpha = 1f;
         panel.interactable = true;
         panel.blocksRaycasts = true;
+
+        if (menuButton != null && EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(menuButton.gameObject);
     }
 
     private void LockPlayer()

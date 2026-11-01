@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using FMODUnity;
 using TMPro;
 using UnityEngine;
@@ -72,7 +73,7 @@ public class DialPad : MonoBehaviour
         number = "";
         UpdateDisplay();
         FollowCamera();
-        SelectFirst();
+        StartCoroutine(SelectFirstNextFrame());
     }
 
     public void Close()
@@ -133,6 +134,18 @@ public class DialPad : MonoBehaviour
     {
         if (display != null)
             display.text = number;
+    }
+
+    private IEnumerator SelectFirstNextFrame()
+    {
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+
+        yield return null;
+        yield return null;
+
+        if (IsOpen)
+            SelectFirst();
     }
 
     private void SelectFirst()

@@ -2213,7 +2213,7 @@ MonoBehaviour:
   - {fileID: 6518399399560367812}
   clearButton: {fileID: 5263260952674700787}
   callButton: {fileID: 7552901443508856226}
-  firstSelected: {fileID: 0}
+  firstSelected: {fileID: 6881653255273028229}
   display: {fileID: 7156713160190147227}
   maxDigits: 10
   buttonSound:
