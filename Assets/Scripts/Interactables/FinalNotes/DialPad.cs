@@ -2,6 +2,7 @@ using System;
 using FMODUnity;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DialPad : MonoBehaviour
@@ -16,6 +17,7 @@ public class DialPad : MonoBehaviour
     [SerializeField] private Button[] digitButtons = new Button[10];
     [SerializeField] private Button clearButton;
     [SerializeField] private Button callButton;
+    [SerializeField] private Selectable firstSelected;
 
     [Header("Display")]
     [SerializeField] private TMP_Text display;
@@ -70,10 +72,12 @@ public class DialPad : MonoBehaviour
         number = "";
         UpdateDisplay();
         FollowCamera();
+        SelectFirst();
     }
 
     public void Close()
     {
+        ClearSelection();
         targetCamera = null;
         onDigit = null;
         onClear = null;
@@ -129,6 +133,29 @@ public class DialPad : MonoBehaviour
     {
         if (display != null)
             display.text = number;
+    }
+
+    private void SelectFirst()
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null) return;
+
+        Selectable first = firstSelected;
+        if (first == null || !first.gameObject.activeInHierarchy || !first.IsInteractable())
+            first = GetComponentInChildren<Selectable>();
+
+        if (first != null)
+            eventSystem.SetSelectedGameObject(first.gameObject);
+    }
+
+    private void ClearSelection()
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null) return;
+
+        GameObject selected = eventSystem.currentSelectedGameObject;
+        if (selected != null && selected.transform.IsChildOf(transform))
+            eventSystem.SetSelectedGameObject(null);
     }
 
     private static void AddListener(Button button, UnityEngine.Events.UnityAction action)

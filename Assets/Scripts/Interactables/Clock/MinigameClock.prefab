@@ -282,6 +282,7 @@ MonoBehaviour:
   minuteUpButton: {fileID: 1923518169243974907}
   minuteDownButton: {fileID: 3766416371564513565}
   applyButton: {fileID: 4831635424969688840}
+  firstSelected: {fileID: 0}
   dialSound:
     Guid:
       Data1: 0
@@ -803,6 +804,7 @@ GameObject:
   - component: {fileID: 9142948147035357500}
   - component: {fileID: 4516653836713423085}
   - component: {fileID: 1913138894480025084}
+  - component: {fileID: 4364870272941671136}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -900,6 +902,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4364870272941671136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686866967027892397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18048f04ba8874647a81787f931ff892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverAll
 --- !u!1 &5149227178149410588
 GameObject:
   m_ObjectHideFlags: 0

@@ -2089,6 +2089,7 @@ GameObject:
   - component: {fileID: 245231262023909948}
   - component: {fileID: 2044597211291602032}
   - component: {fileID: 2989293224596692244}
+  - component: {fileID: 971275458020124786}
   m_Layer: 5
   m_Name: DIalPadCanvas
   m_TagString: Untagged
@@ -2212,6 +2213,7 @@ MonoBehaviour:
   - {fileID: 6518399399560367812}
   clearButton: {fileID: 5263260952674700787}
   callButton: {fileID: 7552901443508856226}
+  firstSelected: {fileID: 0}
   display: {fileID: 7156713160190147227}
   maxDigits: 10
   buttonSound:
@@ -2221,6 +2223,18 @@ MonoBehaviour:
       Data3: -1025088096
       Data4: 1550643762
     Path: event:/SFX/Objects/AlarmClock_Button
+--- !u!114 &971275458020124786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7323944529188048540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18048f04ba8874647a81787f931ff892, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverAll
 --- !u!1 &7598321787767278433
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using DG.Tweening;
 using FMODUnity;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ClockMinigame : MonoBehaviour
@@ -28,6 +29,7 @@ public class ClockMinigame : MonoBehaviour
     [SerializeField] private Button minuteUpButton;
     [SerializeField] private Button minuteDownButton;
     [SerializeField] private Button applyButton;
+    [SerializeField] private Selectable firstSelected;
 
     [Header("Sounds")]
     [SerializeField] private EventReference dialSound;
@@ -84,12 +86,14 @@ public class ClockMinigame : MonoBehaviour
         TurnDial(minuteDial, minuteDialRest, minute * 360f / 60f, ref minuteTween, true);
 
         FollowCamera();
+        SelectFirst();
     }
 
     public void Close()
     {
         hourTween?.Kill();
         minuteTween?.Kill();
+        ClearSelection();
         targetCamera = null;
         onApplied = null;
         gameObject.SetActive(false);
@@ -162,6 +166,29 @@ public class ClockMinigame : MonoBehaviour
         }
 
         tween = dial.DOLocalRotateQuaternion(target, dialTurnDuration).SetEase(Ease.OutBack).SetLink(dial.gameObject);
+    }
+
+    private void SelectFirst()
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null) return;
+
+        Selectable first = firstSelected;
+        if (first == null || !first.gameObject.activeInHierarchy || !first.IsInteractable())
+            first = GetComponentInChildren<Selectable>();
+
+        if (first != null)
+            eventSystem.SetSelectedGameObject(first.gameObject);
+    }
+
+    private void ClearSelection()
+    {
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null) return;
+
+        GameObject selected = eventSystem.currentSelectedGameObject;
+        if (selected != null && selected.transform.IsChildOf(transform))
+            eventSystem.SetSelectedGameObject(null);
     }
 
     private static void AddListener(Button button, UnityEngine.Events.UnityAction action)

@@ -48,6 +48,7 @@ public class HallwayFire : MonoBehaviour
     [Header("Sound")]
     [SerializeField] private EventReference fireLoop;
     [SerializeField, Range(0f, 1f)] private float startVolume = 0.3f;
+    [SerializeField] private float loopFadeOutDuration = 0.75f;
 
     private static readonly Vector2Int[] Neighbours =
     {
@@ -81,6 +82,11 @@ public class HallwayFire : MonoBehaviour
     {
         spawnRateId = Shader.PropertyToID(spawnRateProperty);
         sizeId = Shader.PropertyToID(sizeProperty);
+    }
+
+    private void OnDisable()
+    {
+        Stop();
     }
 
     private void OnDestroy()
@@ -144,8 +150,7 @@ public class HallwayFire : MonoBehaviour
     {
         if (!loopInstance.isValid()) return;
 
-        loopInstance.stop(STOP_MODE.ALLOWFADEOUT);
-        loopInstance.release();
+        SoundFader.FadeOutAndRelease(loopInstance, loopFadeOutDuration);
         loopInstance.clearHandle();
     }
 
