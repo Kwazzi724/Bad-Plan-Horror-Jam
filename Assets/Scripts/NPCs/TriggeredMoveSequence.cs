@@ -8,6 +8,7 @@ public class TriggeredMoveSequence : MonoBehaviour
     [SerializeField] private GameObject target;
     [SerializeField] private PlayerTrigger activateTrigger;
     [SerializeField] private PlayerTrigger moveTrigger;
+    [SerializeField] private PlayerTrigger soundTrigger;
 
     [Header("Move")]
     [SerializeField] private Vector3 moveOffset = new Vector3(2f, 0f, 0f);
@@ -19,11 +20,15 @@ public class TriggeredMoveSequence : MonoBehaviour
 
     private bool isActivated;
     private bool isMoving;
+    private bool soundPlayed;
 
     private void Awake()
     {
         if (target != null)
             target.SetActive(false);
+
+        if (soundTrigger != null)
+            soundTrigger.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -33,6 +38,9 @@ public class TriggeredMoveSequence : MonoBehaviour
 
         if (moveTrigger != null)
             moveTrigger.Entered += HandleMoveEntered;
+
+        if (soundTrigger != null)
+            soundTrigger.Entered += HandleSoundEntered;
     }
 
     private void OnDisable()
@@ -42,6 +50,9 @@ public class TriggeredMoveSequence : MonoBehaviour
 
         if (moveTrigger != null)
             moveTrigger.Entered -= HandleMoveEntered;
+
+        if (soundTrigger != null)
+            soundTrigger.Entered -= HandleSoundEntered;
     }
 
     private void HandleActivateEntered()
@@ -50,6 +61,13 @@ public class TriggeredMoveSequence : MonoBehaviour
 
         isActivated = true;
         target.SetActive(true);
+
+        if (soundTrigger != null && !soundPlayed)
+        {
+            soundTrigger.gameObject.SetActive(true);
+            soundTrigger.Entered -= HandleSoundEntered;
+            soundTrigger.Entered += HandleSoundEntered;
+        }
     }
 
     private void HandleMoveEntered()
@@ -63,8 +81,20 @@ public class TriggeredMoveSequence : MonoBehaviour
         if (isMoving) return;
 
         isMoving = true;
-        SoundPlayer.PlayOneShot(discoverySound, target.transform.position);
         StartCoroutine(MoveRoutine());
+    }
+
+    private void HandleSoundEntered()
+    {
+        if (soundPlayed) return;
+
+        soundPlayed = true;
+
+        Vector3 position = target != null ? target.transform.position : soundTrigger.transform.position;
+        SoundPlayer.PlayOneShot(discoverySound, position);
+
+        if (soundTrigger != null)
+            soundTrigger.gameObject.SetActive(false);
     }
 
     private IEnumerator MoveRoutine()

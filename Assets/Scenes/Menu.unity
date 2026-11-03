@@ -6094,6 +6094,15 @@ MonoBehaviour:
   fadeOutDuration: 1
   creditsPanel: {fileID: 2009271810}
   quitButton: {fileID: 656614570}
+  creditsTrack:
+    Guid:
+      Data1: 511212331
+      Data2: 1152381281
+      Data3: -938725215
+      Data4: 2070464580
+    Path: event:/Music/CreditsMusic
+  creditsFadeInDuration: 0.7
+  creditsFadeOutDuration: 0.7
 --- !u!114 &2075363651
 MonoBehaviour:
   m_ObjectHideFlags: 0

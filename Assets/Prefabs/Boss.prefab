@@ -235,6 +235,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e894163969693943989eb90161b8b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss
+  waypoints: []
+  speed: 3
+  atEnd: 0
+  faceMovement: 1
+  keepUpright: 1
+  turnSpeed: 360
+  stepSound:
+    Guid:
+      Data1: -610040553
+      Data2: 1338808390
+      Data3: -517207670
+      Data4: -587350847
+    Path: event:/SFX/NPC/Other/Boss_Moan
+  stepDistance: 1.5
+  moanLoop:
+    Guid:
+      Data1: -610040553
+      Data2: 1338808390
+      Data3: -517207670
+      Data4: -587350847
+    Path: event:/SFX/NPC/Other/Boss_Moan
+  debugLogs: 0
 --- !u!65 &9152810653894895025
 BoxCollider:
   m_ObjectHideFlags: 0

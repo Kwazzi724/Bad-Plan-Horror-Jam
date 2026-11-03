@@ -22,7 +22,6 @@ public class LevelAmbience : MonoBehaviour
 
     [Header("Ending Track")]
     [SerializeField] private EventReference endingTrack;
-    [SerializeField] private int endingStage = 7;
     [SerializeField] private float endingFadeInDuration = 3f;
 
     [Header("Debug")]
@@ -43,18 +42,19 @@ public class LevelAmbience : MonoBehaviour
             instance.start();
         }
 
+        BossTrigger.AnyTriggered += StartEndingTrack;
+
         gameManager = GameManager.Instance;
         if (gameManager == null) return;
 
         gameManager.StageEntered += HandleStageEntered;
         SetLoopForStage(Mathf.Max(1, gameManager.CurrentStageNumber));
-
-        if (gameManager.CurrentStageNumber == endingStage)
-            StartEndingTrack();
     }
 
     private void OnDestroy()
     {
+        BossTrigger.AnyTriggered -= StartEndingTrack;
+
         if (gameManager != null)
             gameManager.StageEntered -= HandleStageEntered;
 
@@ -103,12 +103,9 @@ public class LevelAmbience : MonoBehaviour
     private void HandleStageEntered(Stage stage, int stageNumber)
     {
         SetLoopForStage(stageNumber);
-
-        if (stageNumber == endingStage)
-            StartEndingTrack();
     }
 
-    private void StartEndingTrack()
+    public void StartEndingTrack()
     {
         if (endingTrack.IsNull || endingInstance.isValid()) return;
 

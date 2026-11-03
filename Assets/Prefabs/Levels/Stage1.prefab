@@ -5701,6 +5701,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LongWall
       objectReference: {fileID: 0}
+    - target: {fileID: 648476957107186859, guid: 0b16033be7c87364d875f4b7cc8e1bd2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

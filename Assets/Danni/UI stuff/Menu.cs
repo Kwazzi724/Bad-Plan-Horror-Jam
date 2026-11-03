@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +12,14 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject creditsPanel;
     [SerializeField] private GameObject quitButton;
 
+    [Header("Credits Music")]
+    [SerializeField] private EventReference creditsTrack;
+    [SerializeField] private float creditsFadeInDuration = 2f;
+    [SerializeField] private float creditsFadeOutDuration = 1f;
+
     private bool isStarting;
+    private EventInstance creditsInstance;
+    private float creditsVolume;
 
     private void Start()
     {
@@ -24,6 +33,26 @@ public class Menu : MonoBehaviour
         {
             ScreenFadeManager.Instance.FadeIn(fadeInDuration);
         }
+    }
+
+    private void Update()
+    {
+        if (!creditsInstance.isValid()) return;
+
+        if (creditsVolume < 1f)
+        {
+            creditsVolume = Mathf.MoveTowards(creditsVolume, 1f, Time.unscaledDeltaTime / Mathf.Max(0.01f, creditsFadeInDuration));
+            creditsInstance.setVolume(creditsVolume);
+        }
+
+        creditsInstance.getPlaybackState(out PLAYBACK_STATE state);
+        if (state == PLAYBACK_STATE.STOPPED)
+            creditsInstance.start();
+    }
+
+    private void OnDestroy()
+    {
+        StopCreditsTrack();
     }
 
     public void StartGame()
@@ -48,12 +77,42 @@ public class Menu : MonoBehaviour
 
         creditsPanel.SetActive(true);
         creditsPanel.transform.SetAsLastSibling();
+        StartCreditsTrack();
     }
 
     public void CloseCredits()
     {
         if (creditsPanel != null)
             creditsPanel.SetActive(false);
+
+        StopCreditsTrack();
+    }
+
+    private void StartCreditsTrack()
+    {
+        if (creditsTrack.IsNull || creditsInstance.isValid()) return;
+
+        try
+        {
+            creditsInstance = RuntimeManager.CreateInstance(creditsTrack);
+        }
+        catch (System.Exception)
+        {
+            Debug.LogWarning($"Menu: couldn't create {creditsTrack}.", this);
+            return;
+        }
+
+        creditsVolume = creditsFadeInDuration > 0f ? 0f : 1f;
+        creditsInstance.setVolume(creditsVolume);
+        creditsInstance.start();
+    }
+
+    private void StopCreditsTrack()
+    {
+        if (!creditsInstance.isValid()) return;
+
+        SoundFader.FadeOutAndRelease(creditsInstance, creditsFadeOutDuration);
+        creditsInstance.clearHandle();
     }
 
     public void QuitGame()

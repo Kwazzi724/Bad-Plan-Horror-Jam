@@ -13,6 +13,8 @@ public class BossTrigger : MonoBehaviour
 
     public event Action Triggered;
 
+    public static event Action AnyTriggered;
+
     private void Awake()
     {
         if (boss != null)
@@ -45,5 +47,6 @@ public class BossTrigger : MonoBehaviour
         else
             Debug.LogWarning($"BossTrigger '{name}': no Boss assigned to spawn.", this);
         Triggered?.Invoke();
+        AnyTriggered?.Invoke();
     }
 }
